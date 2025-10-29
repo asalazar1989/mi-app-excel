@@ -1,2462 +1,1281 @@
 <!DOCTYPE html>
-<html
-  lang="es"
->
+<html lang="es">
 <head>
-  <meta
-    charset="utf-8"
-  />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1"
-  />
-  <title>
-    Gestión ARL - Rangel · Excel Online (Réplica 1:1 Google)
-  </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión ARL - Rangel | Microsoft Excel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+body {
+  margin:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height:100vh;
+  background:#f0f2f5;
+  overflow:hidden;
+}
 
-  <!--
-    ÚNICAS dependencias externas permitidas por tu PROMPT:
-    - Bootstrap 5.3.2 (CSS y JS)
-    - Bootstrap Icons
-  -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-   tps://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-   =======================================================================
-       ESTILOS · réplica visual del sistema original (Google)
-       ========================================================================= */
+/* ========== PANTALLA DE LOGIN ========== */
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
+  padding: 20px;
+}
 
-    :root{
-      --color-primario           : #001f3f ;
-      --color-secundario         : #c0c0c0 ;
-      --gradiente                : linear-gradient(135deg, #667eea 0%, #764ba2 100%) ;
-      --ok                       : #2ecc71 ;
-      --warn                     : #f39c12 ;
-      --err                      : #e74c3c ;
-      --bg                       : #f6f8fc ;
-      --thead                    : #f3f5f9 ;
-      --line                     : #e8ebf2 ;
-      --shadow                   : rgba(0,0,0,.04) ;
-    }
+.login-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+  padding: 50px;
+  max-width: 450px;
+  text-align: center;
+  animation: fadeInScale 0.5s ease-out;
+}
 
-    html,
-    body{
-      height                     : 100% ;
-    }
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
-    body{
-      background                 : var(--bg) ;
-      color                      : #222 ;
-      -webkit-font-smoothing     : antialiased ;
-      -moz-osx-font-smoothing    : grayscale ;
-    }
+.login-logo {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 50px;
+  margin: 0 auto 25px;
+  box-shadow: 0 10px 30px rgba(0, 31, 63, 0.3);
+}
 
-    /* --------------------- Pantalla de Login --------------------- */
+.btn-login {
+  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 35px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
 
-    .login{
-      min-height                 : 100vh ;
-      display                    : flex ;
-      align-items                : center ;
-      justify-content            : center ;
-      background                 : var(--gradiente) ;
-      padding                    : 1.2rem ;
-    }
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 31, 63, 0.4);
+}
 
-    .login-card{
-      width                      : min(980px, 96vw) ;
-      background                 : #0b1736 ;
-      color                      : #fff ;
-      border-radius              : 16px ;
-      border                     : 1px solid #ffffff22 ;
-      box-shadow                 : 0 30px 84px rgba(0,0,0,.45) ;
-      padding                    : 1.6rem 1.8rem ;
-    }
+#sidebar {
+  width:180px;
+  background:#001f3f;
+  color:white;
+  padding:0.5rem;
+  padding-top:2.5rem;
+  overflow-y:auto;
+  position:fixed;
+  left:0;
+  top:0;
+  height:100vh;
+  z-index:100;
+  transition: left 0.3s ease;
+}
 
-    .login-card h1{
-      font-size                  : 1.7rem ;
-      margin                     : 0 ;
-      font-weight                : 800 ;
-      letter-spacing             : .2px ;
-    }
+#sidebar.collapsed {
+  left: -180px;
+}
 
-    .login-card .lead{
-      opacity                    : .9 ;
-    }
+#btnToggleSidebar {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
 
-    .login-status{
-      margin                     : 1rem 0 ;
-      background                 : #11224d ;
-      border                     : 1px solid #ffffff25 ;
-      padding                    : 1rem ;
-      border-radius              : 12px ;
-    }
+#btnToggleSidebar:hover {
+  background: rgba(255,255,255,0.25);
+}
 
-    .btn-ms{
-      background                 : #fff ;
-      color                      : #111 ;
-      border                     : 0 ;
-      font-weight                : 800 ;
-      padding                    : .85rem 1rem ;
-      border-radius              : 10px ;
-      display                    : inline-flex ;
-      align-items                : center ;
-      gap                        : .5rem ;
-    }
+#btnToggleSidebarFixed {
+  display: none;
+  position: fixed;
+  left: 5px;
+  top: 10px;
+  z-index: 1001;
+  background: #001f3f;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  font-size: 1rem;
+}
 
-    /* --------------------- Layout principal --------------------- */
+#btnToggleSidebarFixed:hover {
+  background: #003366;
+}
 
-    .app{
-      display                    : none ;
-      min-height                 : 100vh ;
-    }
+#sidebar h5 {
+  color:#c0c0c0;
+  margin-bottom:0.4rem;
+  text-align:center;
+  font-size:0.8rem;
+  font-weight:600;
+  padding:0.3rem 0;
+  line-height:1.2;
+}
 
-    .main-layout{
-      display                    : flex ;
-      align-items                : stretch ;
-    }
+#sidebar ul {
+  list-style:none;
+  padding:0;
+  margin:0;
+}
 
-    /* Sidebar */
+#sidebar li {
+  padding:0.4rem 0.5rem;
+  cursor:pointer;
+  border-radius:4px;
+  margin-bottom:2px;
+  position:relative;
+  font-size:0.8rem;
+  transition:all 0.2s ease;
+}
 
-    #sidebar{
-      width                      : 300px ;
-      background                 : #0d1a38 ;
-      color                      : #fff ;
-      padding                    : 1rem ;
-      position                   : sticky ;
-      top                        : 0 ;
-      height                     : 100vh ;
-      overflow                   : auto ;
-      box-shadow                 : 0 0 0 rgba(0,0,0,0) ;
-    }
+#sidebar li:hover, #sidebar li.active {
+  background:#c0c0c0;
+  color:#001f3f;
+  font-weight:bold;
+}
 
-    .brand{
-      font-weight                : 900 ;
-      letter-spacing             : .25px ;
-    }
+.accordion {
+  width:100%;
+  margin-top:0.2rem;
+}
 
-    .btn-aseg{
-      width                      : 100% ;
-      display                    : flex ;
-      align-items                : center ;
-      justify-content            : space-between ;
-      background                 : #14254d ;
-      border                     : 1px solid #ffffff22 ;
-      color                      : #fff ;
-      padding                    : .6rem .8rem ;
-      border-radius              : 10px ;
-      margin-bottom              : .55rem ;
-      transition                 : background .15s ease, border-color .15s ease ;
-    }
+.accordion-button {
+  background:#c0c0c0;
+  color:#001f3f;
+  font-weight:bold;
+  padding:0.3rem 0.4rem;
+  font-size:0.7rem;
+  line-height:1.2;
+}
 
-    .btn-aseg.active{
-      background                 : #1b3570 ;
-      border-color               : #ffffff35 ;
-    }
+.accordion-button:not(.collapsed) {
+  background:#ff2400;
+  color:white;
+}
 
-    /* Contenido */
+.accordion-body {
+  background:#001f3f;
+  padding:0.4rem;
+}
 
-    #content{
-      flex                       : 1 ;
-      padding                    : 1rem 1.1rem 2.2rem ;
-    }
+.accordion-body select {
+  width:100%;
+  font-size:0.75rem;
+  padding:0.25rem;
+}
 
-    .topbar{
-      display                    : flex ;
-      align-items                : center ;
-      justify-content            : space-between ;
-      gap                        : 1rem ;
-      margin                     : .2rem 0 .8rem ;
-    }
+#content {
+  margin-left: 180px;
+  padding:1rem;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  transition: margin-left 0.3s ease;
+}
 
-    .topbar .left{
-      display                    : flex ;
-      gap                        : .5rem ;
-      flex-wrap                  : wrap ;
-    }
+#content.expanded {
+  margin-left: 0;
+}
 
-    .badge-chip{
-      background                 : #eef2ff ;
-      color                      : #334 ;
-      font-weight                : 800 ;
-      border-radius              : 999px ;
-      padding                    : .35rem .6rem ;
-    }
+.filter-panel {
+  margin-bottom:0.75rem;
+  background:white;
+  padding:0.75rem;
+  border-radius:0.25rem;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  flex-shrink:0;
+}
 
-    /* --------------------- Paneles y contenedores --------------------- */
+.filter-panel h6 {
+  font-size:0.9rem;
+  margin-bottom:0.5rem;
+}
 
-    .panel{
-      background                 : #fff ;
-      border                     : 1px solid var(--line) ;
-      border-radius              : 12px ;
-      padding                    : .85rem .95rem ;
-      box-shadow                 : 0 4px 16px var(--shadow) ;
-      margin-bottom              : .8rem ;
-    }
+.filter-panel .form-control-sm {
+  padding:0.25rem 0.5rem;
+  font-size:0.8rem;
+}
 
-    .panel h6{
-      margin                     : 0 0 .6rem ;
-      font-weight                : 900 ;
-      color                      : #333 ;
-    }
+.table-wrapper {
+  flex-grow:1;
+  overflow:auto;
+  position:relative;
+  border:1px solid #ddd;
+  border-radius:8px;
+  background:white;
+}
 
-    /* KPIs */
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
 
-    .kpis{
-      display                    : grid ;
-      grid-template-columns      : repeat(6, minmax(150px, 1fr)) ;
-      gap                        : .55rem ;
-    }
+th, td {
+  padding:6px 8px;
+  border:1px solid #ddd;
+  text-align:left;
+  white-space:nowrap;
+}
 
-    .kpi{
-      background                 : #fff ;
-      border                     : 1px solid #e9ecf3 ;
-      border-radius              : 12px ;
-      padding                    : .75rem .9rem ;
-      box-shadow                 : 0 2px 10px var(--shadow) ;
-    }
+th {
+  background:#001f3f;
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:10;
+  font-size:0.75rem;
+  font-weight:600;
+}
 
-    .kpi .t{
-      font-size                  : .8rem ;
-      color                      : #6b7280 ;
-    }
+td {
+  font-size:0.85rem;
+}
 
-    .kpi .v{
-      font-size                  : 1.35rem ;
-      font-weight                : 900 ;
-    }
+.btn-edit-row {
+  padding:0.2rem 0.4rem;
+  font-size:0.7rem;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:3px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
 
-    /* Semáforo */
+.btn-edit-row:hover {
+  background:#0056b3;
+  transform:scale(1.05);
+}
 
-    .semaforo{
-      display                    : flex ;
-      gap                        : .5rem ;
-      align-items                : center ;
-      flex-wrap                  : wrap ;
-    }
+tr:nth-child(even) {
+  background:#f9f9f9;
+}
 
-    .chip{
-      display                    : flex ;
-      align-items                : center ;
-      gap                        : .45rem ;
-      background                 : #fff ;
-      border                     : 1px solid #e5e7eb ;
-      border-radius              : 999px ;
-      padding                    : .42rem .6rem ;
-      cursor                     : pointer ;
-      user-select                : none ;
-      font-weight                : 900 ;
-    }
+tr:hover {
+  background:#d9e6f2;
+  cursor:pointer;
+}
 
-    .chip .dot{
-      width                      : 10px ;
-      height                     : 10px ;
-      border-radius              : 50% ;
-    }
+.semaforo {
+  display:flex;
+  gap:1rem;
+  margin-bottom:0.75rem;
+  flex-wrap:wrap;
+  flex-shrink:0;
+}
 
-    .chip.green  .dot{ background : var(--ok) ; }
-    .chip.orange .dot{ background : var(--warn) ; }
-    .chip.red    .dot{ background : var(--err) ; }
+.indicador {
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  cursor:pointer;
+  padding:0.4rem 0.8rem;
+  border-radius:20px;
+  background:#f9f9f9;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  transition:transform 0.2s ease;
+  font-size:0.85rem;
+}
 
-    .chip.active{
-      outline                    : 2px solid #2563eb33 ;
-      background                 : #eef2ff ;
-    }
+.indicador:hover {
+  transform:scale(1.03);
+}
 
-    /* Filtros */
+.bolita {
+  width:14px;
+  height:14px;
+  border-radius:50%;
+}
 
-    .filters{
-      display                    : flex ;
-      gap                        : .5rem ;
-      align-items                : end ;
-      flex-wrap                  : wrap ;
-    }
+.verde { background:green; }
+.naranja { background:orange; }
+.rojo { background:red; }
 
-    .filters .form-label{
-      font-size                  : .78rem ;
-      color                      : #6b7280 ;
-    }
+.table-wrapper::-webkit-scrollbar {
+  height:12px;
+}
 
-    .searchbox{
-      max-width                  : 280px ;
-    }
+.table-wrapper::-webkit-scrollbar-track {
+  background:#f1f1f1;
+}
 
-    /* Tabla principal */
+.table-wrapper::-webkit-scrollbar-thumb {
+  background:#888;
+  border-radius:6px;
+}
 
-    .table-wrap{
-      background                 : #fff ;
-      border                     : 1px solid var(--line) ;
-      border-radius              : 12px ;
-      padding                    : .7rem ;
-      box-shadow                 : 0 4px 16px var(--shadow) ;
-      overflow                   : auto ;
-    }
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background:#555;
+}
 
-    table thead th{
-      position                   : sticky ;
-      top                        : 0 ;
-      background                 : var(--thead) ;
-      z-index                    : 1 ;
-      font-size                  : .82rem ;
-    }
+.table-wrapper {
+  overflow-x:scroll !important;
+  overflow-y:auto;
+}
 
-    .action-btn{
-      border                     : 1px solid #e5e7eb ;
-      background                 : #fff ;
-      border-radius              : 8px ;
-      padding                    : .35rem .55rem ;
-    }
+#modalEditarUsuario .modal-body {
+  padding: 0.75rem 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
 
-    /* Tiles de Citas e Inasistencias (7 + 7) */
+#modalEditarUsuario .form-label {
+  font-size: 0.7rem;
+  margin-bottom: 0.15rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
 
-    .tiles{
-      display                    : grid ;
-      grid-template-columns      : repeat(7, minmax(120px, 1fr)) ;
-      gap                        : .5rem ;
-    }
+#modalEditarUsuario .form-control,
+#modalEditarUsuario .form-select,
+#modalEditarUsuario textarea {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.4rem;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e0;
+  transition: border-color 0.2s ease;
+}
 
-    .tile{
-      background                 : #fff ;
-      border                     : 1px solid #e9ecf3 ;
-      border-radius              : 12px ;
-      padding                    : .6rem .75rem ;
-    }
+#modalEditarUsuario .form-control:focus,
+#modalEditarUsuario .form-select:focus,
+#modalEditarUsuario textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+}
 
-    .tile .h{
-      font-size                  : .78rem ;
-      color                      : #6b7280 ;
-    }
+#modalEditarUsuario textarea {
+  height: 50px !important;
+  resize: vertical;
+  min-height: 50px;
+}
 
-    .tile .n{
-      font-size                  : 1.2rem ;
-      font-weight                : 900 ;
-    }
+#modalEditarUsuario .mb-2 { 
+  margin-bottom: 0.4rem !important; 
+}
 
-    /* Tablas auxiliares (Pacientes por Auditor / Severidad) */
+#modalEditarUsuario .row.g-2 { 
+  gap: 0.4rem; 
+  row-gap: 0.4rem !important;
+}
 
-    .table-aux{
-      font-size                  : .92rem ;
-    }
+#modalEditarUsuario .cita-fecha-input {
+  padding: 0.25rem 0.4rem;
+  height: 28px;
+  font-size: 0.75rem;
+}
 
-    /* Modal */
+#modalEditarUsuario .seccion-form {
+  background: white;
+  padding: 0.65rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  margin-bottom: 0.6rem;
+}
 
-    .fieldset{
-      border                     : 1px dashed #e5e7eb ;
-      border-radius              : 10px ;
-      padding                    : .75rem ;
-      background                 : #fbfcff ;
-      margin-bottom              : .75rem ;
-    }
+#modalEditarUsuario .seccion-titulo {
+  color: #001f3f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid #007bff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
 
-    .fieldset legend{
-      font-size                  : .85rem ;
-      font-weight                : 800 ;
-      margin                     : 0 .4rem ;
-    }
+@media (min-width: 992px) {
+  #modalEditarUsuario .col-form { 
+    width: 25% !important;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  
+  #modalEditarUsuario .col-form-wide {
+    width: 50% !important;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  #modalEditarUsuario .col-form-full {
+    width: 100% !important;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
 
-    /* Loading Overlay */
+@media (min-width: 768px) and (max-width: 991px) {
+  #modalEditarUsuario .col-form { 
+    width: 50% !important;
+    flex: 0 0 50%;
+  }
+}
 
-    .overlay{
-      position                   : fixed ;
-      inset                      : 0 ;
-      display                    : none ;
-      align-items                : center ;
-      justify-content            : center ;
-      background                 : rgba(13,26,56,.55) ;
-      z-index                    : 1100 ;
-      color                      : #fff ;
-      backdrop-filter            : blur(2px) ;
-    }
+@media (max-width: 767px) {
+  #modalEditarUsuario .col-form,
+  #modalEditarUsuario .col-form-wide,
+  #modalEditarUsuario .col-form-full { 
+    width: 100% !important;
+    flex: 0 0 100%;
+  }
+}
 
-    .overlay .box{
-      background                 : #0b1736 ;
-      border                     : 1px solid #ffffff22 ;
-      border-radius              : 12px ;
-      padding                    : 1rem 1.25rem ;
-      display                    : flex ;
-      gap                        : .75rem ;
-      align-items                : center ;
-    }
+.semaforo-container {
+  background:white;
+  padding:0.5rem 0.75rem;
+  border-radius:0.25rem;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom:0.5rem;
+  flex-shrink:0;
+}
 
-    /* Responsivo */
+.indicador-cita {
+  display:flex;
+  align-items:center;
+  gap:0.3rem;
+  font-size:0.75rem;
+  transition:all 0.2s ease;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  cursor:pointer;
+}
 
-    @media ( max-width : 1200px ){
-      .kpis{
-        grid-template-columns    : repeat(3, 1fr) ;
-      }
-      .tiles{
-        grid-template-columns    : repeat(3, 1fr) ;
-      }
-    }
+.indicador-cita:hover {
+  transform:scale(1.05);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 
-    @media ( max-width : 768px ){
-      #sidebar{
-        position                 : static ;
-        width                    : 100% ;
-        height                   : auto ;
-      }
-      .kpis{
-        grid-template-columns    : repeat(2, 1fr) ;
-      }
-      .tiles{
-        grid-template-columns    : repeat(2, 1fr) ;
-      }
-    }
-  </style>
+.indicador-cita:active {
+  transform:scale(0.98);
+}
+
+.dashboard-container {
+  background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.dashboard-header h6 {
+  color: white;
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-toggle-dashboard {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.btn-toggle-dashboard:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+.btn-show-dashboard {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+  background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.btn-show-dashboard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+.dashboard-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  min-height: 85px;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.stat-primary .stat-icon { background: #e3f2fd; color: #1976d2; }
+.stat-success .stat-icon { background: #e8f5e9; color: #2e7d32; }
+.stat-warning .stat-icon { background: #fff3e0; color: #f57c00; }
+.stat-info .stat-icon { background: #e1f5fe; color: #0288d1; }
+.stat-danger .stat-icon { background: #fce4ec; color: #c2185b; }
+.stat-secondary .stat-icon { background: #f3e5f5; color: #7b1fa2; }
+
+.stat-info-text {
+  flex-grow: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1;
+}
+
+.stat-percentage {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.2rem;
+}
+
+.stat-table-container {
+  background: white;
+  border-radius: 10px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.stat-table-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stat-table-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.stat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.stat-table thead {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  z-index: 10;
+}
+
+.stat-table th {
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.stat-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: #495057;
+}
+
+.stat-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.stat-table-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.stat-table-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.stat-table-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.stat-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-width: 768px) {
+  .stat-card {
+    min-height: 70px;
+  }
+  
+  .stat-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .stat-value {
+    font-size: 1.3rem;
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay.show {
+  display: flex;
+}
+
+.loading-content {
+  background: white;
+  padding: 40px 60px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: fadeInScale 0.3s ease-out;
+}
+
+.spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #001f3f;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.user-info {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.75rem;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 8px;
+  background: #dc3545;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.btn-logout:hover {
+  background: #c82333;
+  transform: scale(1.02);
+}
+    </style>
 </head>
-
 <body>
-
-  <!-- ============================================================
-       LOGIN (idéntico en bloques y mensajes)
-       ============================================================ -->
-  <section
-    class="login"
-    id="login"
-  >
-    <div
-      class="login-card"
-    >
-      <div
-        class="d-flex align-items-center justify-content-between"
-      >
-        <div>
-          <h1>
-            Gestión ARL - Rangel
-          </h1>
-          <div
-            class="lead"
-          >
-            Sistema Microsoft Excel · UI idéntica · Operación 100%
-          </div>
-        </div>
-        <div>
-          <span
-            class="badge bg-light text-dark"
-          >
-            v1.0
-          </span>
-        </div>
-      </div>
-
-      <div
-        class="login-status"
-      >
-        <div
-          class="d-flex align-items-center justify-content-between"
-        >
-          <div>
-            <span
-              class="badge bg-success me-2"
-            >
-              ✔
-            </span>
-            <strong>
-              Sistema listo
-            </strong>
-            · Conectado con API
-          </div>
-          <div
-            class="small text-white-50"
-          >
-            Permisos: Files.ReadWrite.All
-          </div>
-        </div>
-        <div
-          class="text-white-50 mt-1"
-        >
-          Autenticación OAuth · Microsoft Graph · Excel Workbook · Dashboard · Semáforo · Filtros · Edición · Cierre
-        </div>
-      </div>
-
-      <div
-        class="d-flex gap-2"
-      >
-        <button
-          id="btnLogin"
-          class="btn btn-ms flex-fill"
-          type="button"
-        >
-          <i
-            class="bi bi-windows"
-          ></i>
-          Iniciar sesión con Microsoft
-        </button>
-
-        <button
-          id="btnDemo"
-          class="btn btn-outline-light"
-          type="button"
-          title="Modo de prueba sin tocar OneDrive"
-        >
-          DEMO
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       APLICACIÓN (estructura réplica 1:1)
-       ============================================================ -->
-  <div
-    class="app main-layout"
-    id="app"
-  >
-    <!-- Sidebar -->
-    <aside
-      id="sidebar"
-    >
-      <div
-        class="d-flex align-items-center justify-content-between mb-2"
-      >
-        <div
-          class="brand"
-        >
-          Gestión ARL
-        </div>
-
-        <button
-          id="btnLogout"
-          class="btn btn-sm btn-light"
-        >
-          <i
-            class="bi bi-box-arrow-right"
-          ></i>
-          Salir
-        </button>
-      </div>
-
-      <div
-        class="small mb-2"
-      >
-        Usuario:
-        <span
-          id="userName"
-        >
-          —
-        </span>
-      </div>
-
-      <hr
-        class="border-secondary-subtle"
-      />
-
-      <h6
-        class="mb-2"
-      >
-        Aseguradores
-      </h6>
-
-      <div
-        id="listSheets"
-      >
-      </div>
-
-      <hr
-        class="border-secondary-subtle"
-      />
-
-      <small>
-        <div
-          id="fileBadge"
-        >
-          Archivo:
-          —
-        </div>
-        <div
-          id="sheetBadge"
-        >
-          Hoja:
-          —
-        </div>
-      </small>
-    </aside>
-
-    <!-- Contenido -->
-    <main
-      id="content"
-    >
-      <!-- Topbar -->
-      <div
-        class="topbar"
-      >
-        <div
-          class="left"
-        >
-          <span
-            class="badge-chip"
-          >
-            <i
-              class="bi bi-activity"
-            ></i>
-            Dashboard Estadístico
-          </span>
-
-          <button
-            id="btnAdd"
-            class="btn btn-primary btn-sm"
-            type="button"
-          >
-            <i
-              class="bi bi-plus-lg"
-            ></i>
-            Agregar
-          </button>
-
-          <button
-            id="btnReload"
-            class="btn btn-outline-secondary btn-sm"
-            type="button"
-          >
-            <i
-              class="bi bi-arrow-repeat"
-            ></i>
-            Recargar
-          </button>
-        </div>
-
-        <div
-          class="right"
-        >
-        </div>
-      </div>
-
-      <!-- KPIs -->
-      <div
-        class="kpis mb-2"
-      >
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Casos Activos
-          </div>
-          <div
-            class="v"
-            id="kpiActivos"
-          >
-            0
-          </div>
-        </div>
-
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Población Activa
-          </div>
-          <div
-            class="v"
-            id="kpiPacientes"
-          >
-            0
-          </div>
-        </div>
-
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Siniestros Totales
-          </div>
-          <div
-            class="v"
-            id="kpiSiniestros"
-          >
-            0
-          </div>
-        </div>
-
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Masculino
-          </div>
-          <div
-            class="v"
-            id="kpiMasculino"
-          >
-            0
-          </div>
-        </div>
-
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Femenino
-          </div>
-          <div
-            class="v"
-            id="kpiFemenino"
-          >
-            0
-          </div>
-        </div>
-
-        <div
-          class="kpi"
-        >
-          <div
-            class="t"
-          >
-            Otro
-          </div>
-          <div
-            class="v"
-            id="kpiOtro"
-          >
-            0
-          </div>
-        </div>
-      </div>
-
-      <!-- Semáforo -->
-      <div
-        class="panel"
-      >
-        <div
-          class="d-flex align-items-center justify-content-between"
-        >
-          <h6>
-            📅 Seguimiento de Pacientes
-          </h6>
-
-          <button
-            id="btnVerTodos"
-            class="btn btn-link btn-sm"
-            type="button"
-          >
-            <i
-              class="bi bi-arrow-counterclockwise"
-            >
-            </i>
-            Ver todos
-          </button>
-        </div>
-
-        <div
-          class="semaforo mt-1"
-        >
-          <div
-            class="chip green"
-            data-sem="verde"
-            id="chipVerde"
-          >
-            <span
-              class="dot"
-            ></span>
-            <span
-              id="nVerde"
-            >
-              0
-            </span>
-            <small
-              class="text-muted ms-1"
-            >
-              (0–5 días)
-            </small>
-          </div>
-
-          <div
-            class="chip orange"
-            data-sem="naranja"
-            id="chipNaranja"
-          >
-            <span
-              class="dot"
-            ></span>
-            <span
-              id="nNaranja"
-            >
-              0
-            </span>
-            <small
-              class="text-muted ms-1"
-            >
-              (6–12 días)
-            </small>
-          </div>
-
-          <div
-            class="chip red"
-            data-sem="rojo"
-            id="chipRojo"
-          >
-            <span
-              class="dot"
-            ></span>
-            <span
-              id="nRojo"
-            >
-              0
-            </span>
-            <small
-              class="text-muted ms-1"
-            >
-              (13+ días)
-            </small>
-          </div>
-        </div>
-      </div>
-
-      <!-- Búsqueda y Filtros -->
-      <div
-        class="panel"
-      >
-        <h6>
-          🔎 Búsqueda
-        </h6>
-
-        <div
-          class="filters"
-        >
-          <div
-            class="searchbox"
-          >
-            <label
-              class="form-label"
-            >
-              Búsqueda
-            </label>
-            <input
-              type="text"
-              id="txtSearch"
-              class="form-control form-control-sm"
-              placeholder="Nombre, Cédula, Siniestro, Observación…"
-            />
-          </div>
-
-          <div>
-            <label
-              class="form-label"
-            >
-              Auditor
-            </label>
-            <select
-              id="selAuditor"
-              class="form-select form-select-sm"
-            >
-              <option
-                value=""
-              >
-                — Todos —
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label
-              class="form-label"
-            >
-              Desde (Ingreso a Rangel RHB)
-            </label>
-            <input
-              type="date"
-              id="fDesde"
-              class="form-control form-control-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              class="form-label"
-            >
-              Hasta
-            </label>
-            <input
-              type="date"
-              id="fHasta"
-              class="form-control form-control-sm"
-            />
-          </div>
-
-          <button
-            id="btnClear"
-            class="btn btn-outline-secondary btn-sm ms-auto"
-            type="button"
-          >
-            <i
-              class="bi bi-eraser"
-            >
-            </i>
-            Limpiar
-          </button>
-        </div>
-      </div>
-
-      <!-- Control de Citas -->
-      <div
-        class="panel"
-      >
-        <div
-          class="d-flex align-items-center justify-content-between"
-        >
-          <h6>
-            🏥 Control de Citas Médicas
-          </h6>
-
-          <button
-            id="btnVerTodasCitas"
-            class="btn btn-link btn-sm"
-            type="button"
-          >
-            <i
-              class="bi bi-arrow-repeat"
-            >
-            </i>
-            Ver todos
-          </button>
-        </div>
-
-        <div
-          class="tiles"
-          id="tilesCitas"
-        >
-        </div>
-      </div>
-
-      <!-- Inasistencias -->
-      <div
-        class="panel"
-      >
-        <h6>
-          🚫 Inasistencias Registradas
-        </h6>
-
-        <div
-          class="tiles"
-          id="tilesInasis"
-        >
-        </div>
-      </div>
-
-      <!-- Pacientes por Auditor -->
-      <div
-        class="panel"
-      >
-        <h6>
-          👩‍⚕️ Pacientes por Auditor
-        </h6>
-
-        <div
-          class="table-responsive"
-        >
-          <table
-            class="table table-sm table-aux"
-            id="tblAuditores"
-          >
-            <thead>
-              <tr>
-                <th>
-                  Auditor
-                </th>
-                <th
-                  class="text-end"
-                >
-                  Cantidad
-                </th>
-                <th
-                  class="text-end"
-                >
-                  %
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              id="tbodyAuditores"
-            >
-              <tr>
-                <td
-                  colspan="3"
-                  class="text-center text-muted"
-                >
-                  Sin datos
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Clasificación de Severidad -->
-      <div
-        class="panel"
-      >
-        <h6>
-          📊 Clasificación de Severidad
-        </h6>
-
-        <div
-          class="table-responsive"
-        >
-          <table
-            class="table table-sm table-aux"
-            id="tblSeveridad"
-          >
-            <thead>
-              <tr>
-                <th>
-                  Clasificación
-                </th>
-                <th
-                  class="text-end"
-                >
-                  Cantidad
-                </th>
-                <th
-                  class="text-end"
-                >
-                  %
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              id="tbodySeveridad"
-            >
-              <tr>
-                <td
-                  colspan="3"
-                  class="text-center text-muted"
-                >
-                  Sin datos
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tabla principal -->
-      <div
-        class="table-wrap"
-      >
-        <div
-          id="tbl"
-        >
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- ============================================================
-       MODAL · Agregar / Editar + Cierre
-       ============================================================ -->
-  <div
-    class="modal fade"
-    id="mdlEdit"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <div
-      class="modal-dialog modal-xl modal-dialog-scrollable"
-    >
-      <div
-        class="modal-content"
-      >
-        <div
-          class="modal-header"
-        >
-          <h5
-            class="modal-title"
-          >
-            <i
-              class="bi bi-pencil-square me-1"
-            >
-            </i>
-            <span
-              id="mdlTitle"
-            >
-              Editar Usuario
-            </span>
-          </h5>
-
-          <button
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Cerrar"
-          >
-          </button>
-        </div>
-
-        <div
-          class="modal-body"
-        >
-          <div
-            class="row g-3"
-          >
-            <div
-              class="col-12 col-lg-6"
-            >
-              <fieldset
-                class="fieldset"
-              >
-                <legend>
-                  🧑 Información del Paciente
-                </legend>
-
-                <div
-                  id="formPaciente"
-                  class="row g-2"
-                >
-                </div>
-
-                <div
-                  class="form-check mt-1"
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="chkEvento"
-                  />
-                  <label
-                    class="form-check-label"
-                    for="chkEvento"
-                  >
-                    Paciente por Evento (si guardas desde “Positiva”, se moverá a “Positiva Evento”)
-                  </label>
-                </div>
-              </fieldset>
+    <!-- ========== PANTALLA DE LOGIN ========== -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <i class="bi bi-hospital"></i>
             </div>
-
-            <div
-              class="col-12 col-lg-6"
-            >
-              <fieldset
-                class="fieldset"
-              >
-                <legend>
-                  📋 Seguimiento y Estado
-                </legend>
-
-                <div
-                  id="formSeguimiento"
-                  class="row g-2"
-                >
-                </div>
-              </fieldset>
-
-              <div
-                class="row g-2 align-items-end"
-              >
-                <div
-                  class="col-12 col-md-6"
-                >
-                  <label
-                    class="form-label"
-                  >
-                    * Tipo de Cierre
-                  </label>
-                  <select
-                    id="tipoCierre"
-                    class="form-select"
-                  >
-                    <option
-                      value=""
-                    >
-                      — Seleccione motivo de cierre —
-                    </option>
-                    <option
-                      value="Cierre Caso Auditor"
-                    >
-                      Cierre Caso Auditor
-                    </option>
-                    <option
-                      value="Cierre Caso Desertor"
-                    >
-                      Cierre Caso Desertor
-                    </option>
-                    <option
-                      value="Cierre Caso Acta"
-                    >
-                      Cierre Caso Acta
-                    </option>
-                    <option
-                      value="Cierre Caso Finalizó Ciclo"
-                    >
-                      Cierre Caso Finalizó Ciclo
-                    </option>
-                  </select>
-                </div>
-
-                <div
-                  class="col d-flex gap-2"
-                >
-                  <button
-                    class="btn btn-outline-danger"
-                    id="btnCerrarCaso"
-                    type="button"
-                  >
-                    <i
-                      class="bi bi-x-octagon"
-                    ></i>
-                    Cerrar Caso
-                  </button>
-
-                  <button
-                    class="btn btn-primary ms-auto"
-                    id="btnGuardar"
-                    type="button"
-                  >
-                    <i
-                      class="bi bi-save"
-                    ></i>
-                    Actualizar
-                  </button>
-                </div>
-              </div>
-
-              <div
-                class="form-text mt-2"
-              >
-                Cálculos en zona horaria
-                <b>
-                  America/Bogota
-                </b>
-                .
-              </div>
-            </div>
-          </div>
+            <h2 style="margin-bottom: 12px; color: #001f3f; font-weight: 700;">Gestión ARL Rangel</h2>
+            <p style="color: #6c757d; margin-bottom: 35px; font-size: 15px;">Sistema de Seguimiento Médico | Microsoft Excel</p>
+            <button class="btn-login" onclick="iniciarSesionMicrosoft()">
+                <i class="bi bi-microsoft" style="font-size: 22px;"></i>
+                <span>Iniciar sesión con Microsoft</span>
+            </button>
+            <p style="margin-top: 25px; font-size: 12px; color: #999;">
+                Versión 7.0 - Microsoft Graph API Integration
+            </p>
         </div>
-
-      </div>
     </div>
-  </div>
 
-  <!-- ============================================================
-       LOADING OVERLAY
-       ============================================================ -->
-  <div
-    class="overlay"
-    id="overlay"
-  >
-    <div
-      class="box"
-    >
-      <div
-        class="spinner-border text-light"
-        role="status"
-        style="width:1.5rem; height:1.5rem"
-      >
-      </div>
-      <div
-        id="ovText"
-      >
-        Procesando...
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js</script>
-
-  <script>
-    /* =======================================================================
-       CONFIGURACIÓN · ESTADO
-       ======================================================================= */
-
-    const CONFIG = {
-      clientId                 : 'fd5c8d86-882e-4942-9b59-4fec3bc0d267' ,
-      redirectUri              : 'https://asalazar1989.github.io/mi-app-excel/' ,
-      scopes                   : 'User.Read Files.ReadWrite Files.ReadWrite.All' ,
-      authUrl                  : 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize' ,
-      graph                    : 'https://graph.microsoft.com/v1.0'
-    } ;
-
-    // Producción: conéctate a OneDrive/Excel
-    let DEMO_MODE              = false ; // ← pon true si quieres probar sin tocar tu Excel
-
-    const FILE_CANDIDATES      = [
-      'Seguimiento ARL - Rangel (2)' ,
-      'Seguimiento ARL - Rangel' ,
-      'ARL Rangel' ,
-      'Seguimiento Rangel'
-    ] ;
-
-    const SHEETS               = [
-      'Positiva' ,
-      'Positiva Evento' ,
-      'Colmena' ,
-      'Colsanitas' ,
-      'CERRADOS'
-    ] ;
-
-    // 7 CITAS + 7 INASISTENCIAS (nombres exactos)
-    const COL_CITAS            = [
-      'FISIATRA' ,
-      'JUNTA MEDICA' ,
-      'VALORACION OCUPACIONAL' ,
-      'MEDICINA LABORAL' ,
-      'PSICOLOGIA' ,
-      'TERAPIA OCUPACIONAL' ,
-      'TERAPIA FISICA'
-    ] ;
-
-    const COL_INASIS           = [
-      'INASISTENCIA FISIATRA' ,
-      'INASISTENCIA JUNTA MEDICA' ,
-      'INASISTENCIA VALORACION OCUPACIONAL' ,
-      'INASISTENCIA MEDICINA LABORAL' ,
-      'INASISTENCIA PSICOLOGIA' ,
-      'INASISTENCIA TERAPIA OCUPACIONAL' ,
-      'INASISTENCIA TERAPIA FISICA'
-    ] ;
-
-    // Extras específicos de “Positiva Evento” (nombres EXACTOS como en Apps Script)
-    const EVENTO_EXTRAS        = [
-      'ELECTRODIAGNOSTICO' ,
-      'TERAPIA FISICA' ,
-      'CARTA DE RECOMENDACIONES' ,
-      'PRUEBA DE TRABAJO' ,
-      'TERAPIA OCUPACIONAL' ,
-      'PSICOLOGIA' ,
-      'MEDICO DOLOR' ,
-      'BLOQUEO' ,
-      'NUTRICION'
-    ] ;
-
-    const BASE_HEADERS         = [
-      'SINIESTRO' ,
-      '# MATRICULA' ,
-      'CEDULA' ,
-      'NOMBRE' ,
-      'FECHA DE ASIGNACION A LA IPS' ,
-      'GENERO' ,
-      'MAYOR A 56 AÑOS SI O NO' ,
-      'AUDITOR' ,
-      'CLASIFICACION SEVERIDAD' ,
-      'CITA INICIAL' ,
-      'JUNTA MEDICA' ,
-      'INASISTENCIA JUNTA MEDICA' ,
-      'FISIATRA' ,
-      'INASISTENCIA FISIATRA' ,
-      'VALORACION OCUPACIONAL' ,
-      'INASISTENCIA VALORACION OCUPACIONAL' ,
-      'MEDICINA LABORAL' ,
-      'INASISTENCIA MEDICINA LABORAL' ,
-      'PSICOLOGIA' ,
-      'INASISTENCIA PSICOLOGIA' ,
-      'TERAPIA OCUPACIONAL' ,
-      'INASISTENCIA TERAPIA OCUPACIONAL' ,
-      'TERAPIA FISICA' ,
-      'INASISTENCIA TERAPIA FISICA' ,
-      'ALTA INMEDIATA' ,
-      'ESTADO DE LA MATRICULA' ,
-      'FECHA CIERRE' ,
-      'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES' ,
-      'OBSERVACION' ,
-      'SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS' ,
-      'OBSERVACION FACTURACION' ,
-      'Fecha Último Seguimiento' ,
-      'Hoy' ,
-      'Días sin seguimiento' ,
-      'OBSERVACION (final)'
-    ] ;
-
-    const STATE = {
-      token                   : null ,
-      me                      : null ,
-      file                    : { id : null , name : null } ,
-      sheet                   : 'Positiva' ,
-      headers                 : [] ,        // Array<string>
-      rows                    : [] ,        // Array<Array<any>> (permite duplicados)
-      filteredIdx             : [] ,        // Índices filtrados
-      // filtros
-      sem                     : null ,      // 'verde' | 'naranja' | 'rojo' | null
-      auditor                 : '' ,
-      buscar                  : '' ,
-      desde                   : null ,
-      hasta                   : null
-    } ;
-
-    /* =======================================================================
-       HELPERS · Fechas, Excel, utilidades
-       ======================================================================= */
-
-    const $  = ( s ) => document.querySelector( s ) ;
-    const $$ = ( s ) => Array.from( document.querySelectorAll( s ) ) ;
-
-    function toast( msg , type = 'info' ){
-      const d              = document.createElement( 'div' ) ;
-      d.className          = `alert alert-${ type } position-fixed top-0 start-50 translate-middle-x mt-3 shadow` ;
-      d.style.zIndex       = 2500 ;
-      d.textContent        = msg ;
-      document.body.appendChild( d ) ;
-      setTimeout( () => d.remove() , 2600 ) ;
-    }
-
-    function showLoad( t = 'Procesando...' ){
-      $( '#ovText' ).textContent = t ;
-      $( '#overlay' ).style.display = 'flex' ;
-    }
-
-    function hideLoad(){
-      $( '#overlay' ).style.display = 'none' ;
-    }
-
-    function sleep( ms ){
-      return new Promise( r => setTimeout( r , ms ) ) ;
-    }
-
-    function esc( s ){
-      return String( s ?? '' ).replace(
-        /[&<>"']/g ,
-        m => ( { '&' : '&amp;' , '<' : '&lt;' , '>' : '&gt;' , '"' : '&quot;' , "'" : '&#39;' } )[ m ]
-      ) ;
-    }
-
-    function toISO( d ){
-      if( !d ) return '' ;
-      const dt   = ( d instanceof Date ) ? d : new Date( d ) ;
-      const y    = dt.getFullYear() ;
-      const m    = String( dt.getMonth() + 1 ).padStart( 2 , '0' ) ;
-      const da   = String( dt.getDate() ).padStart( 2 , '0' ) ;
-      return `${ y }-${ m }-${ da }` ;
-    }
-
-    function parseExcelDate( v ){
-      if( v == null || v === '' ) return null ;
-      if( typeof v === 'number' ){
-        const base = new Date( Date.UTC( 1899 , 11 , 30 ) ) ;
-        return new Date( base.getTime() + v * 86400000 ) ;
-      }
-      const dt = new Date( v ) ;
-      return isNaN( dt ) ? null : dt ;
-    }
-
-    function diffDaysBog( from , to = new Date() ){
-      if( !from ) return '' ;
-      const a = new Date( from ) ;
-      const b = new Date( to   ) ;
-      a.setHours( 0 , 0 , 0 , 0 ) ;
-      b.setHours( 0 , 0 , 0 , 0 ) ;
-      return Math.floor( ( b - a ) / 86400000 ) ;
-    }
-
-    function colLetter( i ){
-      let s = '' ;
-      i++ ;
-      while( i > 0 ){
-        const m  = ( i - 1 ) % 26 ;
-        s        = String.fromCharCode( 65 + m ) + s ;
-        i        = Math.floor( ( i - 1 ) / 26 ) ;
-      }
-      return s ;
-    }
-
-    /* Detección robusta de encabezados clave (tolera variantes) */
-    function findHeaderIndex( nameLike ){
-      const norm   = ( t ) => String( t || '' ).toLowerCase().normalize( 'NFD' ).replace( /\p{Diacritic}/gu , '' ) ;
-      const Hn     = STATE.headers.map( norm ) ;
-      const target = norm( nameLike ) ;
-      let idx      = Hn.indexOf( target ) ;
-      if( idx >= 0 ) return idx ;
-
-      const patterns = {
-        'fecha_ultimo_seg'   : [ /fecha.*ultimo.*seguimiento/ ] ,
-        'hoy'                : [ /^hoy$/ ] ,
-        'dias_sin_segui'     : [ /dias.*sin.*seguimiento/ ] ,
-        'auditor'            : [ /^auditor$/ ] ,
-        'nombre'             : [ /^nombre$/ ] ,
-        'cedula'             : [ /^cedula$/ ] ,
-        'siniestro'          : [ /^siniestro$/ ] ,
-        'clasif'             : [ /^clasificacion.*severidad$/ ] ,
-        'f_asignacion'       : [ /fecha.*asignacion.*ips/ ]
-      } ;
-
-      for( const [ k , arr ] of Object.entries( patterns ) ){
-        if( target.includes( k ) ){
-          for( const rx of arr ){
-            const j = Hn.findIndex( h => rx.test( h ) ) ;
-            if( j >= 0 ) return j ;
-          }
-        }
-      }
-      return -1 ;
-    }
-
-    function expectedHeadersFor( sheet ){
-      const h      = [ ...BASE_HEADERS ] ;
-      if( sheet === 'Positiva Evento' ){
-        EVENTO_EXTRAS.forEach( c => {
-          if( !h.includes( c ) ){
-            h.push( c ) ;
-          }
-        } ) ;
-      }
-      return h ;
-    }
-
-    /* =======================================================================
-       AUTH + GRAPH
-       ======================================================================= */
-
-    function buildAuthUrl(){
-      const p = new URLSearchParams( {
-        client_id     : CONFIG.clientId ,
-        response_type : 'token' ,
-        redirect_uri  : CONFIG.redirectUri ,
-        scope         : CONFIG.scopes ,
-        response_mode : 'fragment' ,
-        state         : Math.random().toString( 36 ).slice( 2 )
-      } ) ;
-      return `${ CONFIG.authUrl }?${ p.toString() }` ;
-    }
-
-    function parseHashToken(){
-      if( location.hash.includes( 'access_token=' ) ){
-        const h = new URLSearchParams( location.hash.slice( 1 ) ) ;
-        return h.get( 'access_token' ) ;
-      }
-      return null ;
-    }
-
-    async function gfetch( path , { method = 'GET' , body , headers = {} } = {} ){
-      const res = await fetch(
-        `${ CONFIG.graph }${ path }`,
-        {
-          method  ,
-          headers : {
-            'Authorization' : `Bearer ${ STATE.token }` ,
-            'Content-Type'  : 'application/json' ,
-            ...headers
-          } ,
-          body    : body ? JSON.stringify( body ) : undefined
-        }
-      ) ;
-      if( !res.ok ){
-        const t = await res.text().catch( () => '' ) ;
-        throw new Error( `${ method } ${ path } → ${ res.status }: ${ t }` ) ;
-      }
-      if( res.status === 204 ){
-        return null ;
-      }
-      return res.json() ;
-    }
-
-    const gGET   = ( p     ) => gfetch( p , { method : 'GET'   } ) ;
-    const gPOST  = ( p , b ) => gfetch( p , { method : 'POST'  , body : b } ) ;
-    const gPATCH = ( p , b ) => gfetch( p , { method : 'PATCH' , body : b } ) ;
-
-    /* =======================================================================
-       WORKBOOK: encontrar/crear · hojas · encabezados · estilos
-       ======================================================================= */
-
-    async function ensureWorkbook(){
-      $( '#fileBadge' ).textContent = 'Buscando archivo...' ;
-
-      for( const cand of FILE_CANDIDATES ){
-        try{
-          const r    = await gGET( `/me/drive/root/search(q='${ encodeURIComponent( cand ) }')` ) ;
-          const item = ( r.value || [] ).find(
-            f => ( f.name || '' ).toLowerCase().includes( cand.toLowerCase() )
-              && ( f.file?.mimeType?.includes( 'spreadsheet' ) || f.name.endsWith( '.xlsx' ) )
-          ) ;
-          if( item ){
-            STATE.file.id   = item.id ;
-            STATE.file.name = item.name ;
-            $( '#fileBadge' ).textContent = `Archivo: ${ item.name }` ;
-            return ;
-          }
-        }catch( _ ){
-          // seguir con el siguiente candidato
-        }
-      }
-
-      const ok = confirm(
-        'No se encontró el libro. ¿Deseas crearlo automáticamente con hojas y encabezados estándar?'
-      ) ;
-      if( !ok ){
-        throw new Error( 'Archivo no encontrado.' ) ;
-      }
-
-      const created = await createEmptyWorkbook(
-        'Seguimiento ARL - Rangel (2).xlsx'
-      ) ;
-
-      STATE.file.id   = created.id ;
-      STATE.file.name = created.name ;
-
-      $( '#fileBadge' ).textContent = `Archivo: ${ created.name }` ;
-
-      await ensureSheetsAndHeaders() ;
-    }
-
-    async function createEmptyWorkbook( name ){
-      const url  = `/me/drive/root:/${ encodeURIComponent( name ) }:/content` ;
-      const blob = new Blob(
-        [ '' ] ,
-        { type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
-      ) ;
-      const res  = await fetch(
-        `${ CONFIG.graph }${ url }` ,
-        {
-          method  : 'PUT' ,
-          headers : { 'Authorization' : `Bearer ${ STATE.token }` } ,
-          body    : blob
-        }
-      ) ;
-      if( !res.ok ){
-        throw new Error( 'No fue posible crear el libro.' ) ;
-      }
-      return res.json() ;
-    }
-
-    async function ensureSheetsAndHeaders(){
-      const ws    = await gGET(
-        `/me/drive/items/${ STATE.file.id }/workbook/worksheets`
-      ) ;
-      const names = ( ws.value || [] ).map( x => x.name ) ;
-
-      // Crear faltantes
-      for( const s of SHEETS ){
-        if( !names.includes( s ) ){
-          await gPOST(
-            `/me/drive/items/${ STATE.file.id }/workbook/worksheets/add` ,
-            { name : s }
-          ) ;
-          await sleep( 250 ) ;
-        }
-      }
-
-      // Asegurar headers base + extras evento + estilos de cabecera
-      for( const s of SHEETS ){
-        const headers = expectedHeadersFor( s ) ;
-        await forceHeaders( s , headers ) ;
-        await styleHeaderStrip( s , headers ) ;
-      }
-    }
-
-    async function forceHeaders( sheetName , headers ){
-      const used     = await gGET(
-        `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( sheetName ) }')/usedRange(valuesOnly=true)`
-      ).catch( () => null ) ;
-
-      let existing   = [] ;
-
-      if( used?.values?.length > 0 ){
-        existing      = ( used.values[ 0 ] || [] ).map( v => String( v ?? '' ).trim() ) ;
-      }
-
-      // añadir faltantes al final (sin renombrar existentes)
-      const set       = new Set( existing ) ;
-      headers.forEach(
-        h => {
-          if( !set.has( h ) ){
-            existing.push( h ) ;
-          }
-        }
-      ) ;
-
-      if( existing.length === 0 ){
-        existing = headers.slice() ;
-      }
-
-      const last      = colLetter( existing.length - 1 ) ;
-
-      await gPATCH(
-        `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( sheetName ) }')/range(address='A1:${ last }1')` ,
-        { values : [ existing ] }
-      ) ;
-    }
-
-    async function styleHeaderStrip( sheet , headers ){
-      try{
-        const last = colLetter( headers.length - 1 ) ;
-
-        // Azul #001f3f cabecera
-        await gPATCH(
-          `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( sheet ) }')/range(address='A1:${ last }1')/format/fill` ,
-          { color : '#001f3f' }
-        ) ;
-
-        await gPATCH(
-          `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( sheet ) }')/range(address='A1:${ last }1')/format/font` ,
-          { color : '#ffffff' , bold : true }
-        ) ;
-
-        // Inasistencias en rojo #d9534f
-        for( let i = 0 ; i < headers.length ; i++ ){
-          const h = headers[ i ] ;
-          if( h.toUpperCase().startsWith( 'INASISTENCIA ' ) ){
-            const col = colLetter( i ) ;
-            await gPATCH(
-              `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( sheet ) }')/range(address='${ col }1:${ col }1')/format/fill` ,
-              { color : '#d9534f' }
-            ).catch( () => {} ) ;
-          }
-        }
-      }catch( _ ){
-        // opcional: estilizado puede fallar si permisos de formato están limitados
-      }
-    }
-
-    /* =======================================================================
-       CARGA DE DATOS · RENDER (filas como arrays para tolerar duplicados)
-       ======================================================================= */
-
-    async function loadSheet( name ){
-      STATE.sheet = name ;
-      $( '#sheetBadge' ).textContent = `Hoja: ${ name }` ;
-
-      if( DEMO_MODE ){
-        const d   = demoData( name ) ;
-        STATE.headers = d.headers ;
-        STATE.rows    = d.rows ;
-        afterLoad() ;
-        return ;
-      }
-
-      await ensureSheetsAndHeaders() ;
-
-      const used  = await gGET(
-        `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( name ) }')/usedRange(valuesOnly=true)`
-      ).catch( () => null ) ;
-
-      const vals  = used?.values || [] ;
-
-      if( vals.length === 0 ){
-        STATE.headers = expectedHeadersFor( name ) ;
-        STATE.rows    = [] ;
-        afterLoad() ;
-        return ;
-      }
-
-      STATE.headers = ( vals[ 0 ] || [] ).map( v => String( v ?? '' ).trim() ) ;
-      STATE.rows    = vals.slice( 1 ) ; // matriz pura
-
-      // Recalc "Hoy" y "Días sin seguimiento"
-      const idxHoy  = findHeaderIndex( 'hoy' ) ;
-      const idxFUS  = findHeaderIndex( 'fecha_ultimo_seg' ) ;
-      const idxDS   = findHeaderIndex( 'dias_sin_segui' ) ;
-
-      const recalc  = ( arr ) => {
-        const fseg  = ( idxFUS >= 0 ) ? parseExcelDate( arr[ idxFUS ] ) : null ;
-        const hoy   = new Date() ;
-        hoy.setHours( 0 , 0 , 0 , 0 ) ;
-        if( idxHoy >= 0 ){
-          arr[ idxHoy ] = toISO( hoy ) ;
-        }
-        if( idxDS >= 0 ){
-          arr[ idxDS ] = fseg ? diffDaysBog( fseg , hoy ) : '' ;
-        }
-      } ;
-
-      STATE.rows.forEach( row => recalc( row ) ) ;
-
-      afterLoad() ;
-    }
-
-    function afterLoad(){
-      renderSheets() ;
-      buildTiles() ;
-      buildAuditoresOptions() ;
-      applyFilters() ;
-      renderTable() ;
-      renderAuxTables() ;
-      updateKpis() ;
-      updateSemaforoCounts() ;
-    }
-
-    function renderSheets(){
-      const cont = $( '#listSheets' ) ;
-      cont.innerHTML = SHEETS.map(
-        s => (
-          s === 'CERRADOS'
-          ? `
-              <hr class="border-secondary-subtle my-2" />
-              <button
-                class="btn-aseg ${ STATE.sheet === s ? 'active' : '' }"
-                onclick="switchSheet('${ s }')"
-              >
-                <span>
-                  <i class="bi bi-archive me-1"></i>
-                  ${ s }
-                </span>
-                <i class="bi bi-chevron-right"></i>
-              </button>
-            `
-          : `
-              <button
-                class="btn-aseg ${ STATE.sheet === s ? 'active' : '' }"
-                onclick="switchSheet('${ s }')"
-              >
-                <span>
-                  <i class="bi bi-folder2-open me-1"></i>
-                  ${ s }
-                </span>
-                <i class="bi bi-chevron-right"></i>
-              </button>
-            `
-        )
-      ).join( '' ) ;
-
-      $( '#btnAdd' ).disabled = ( STATE.sheet === 'CERRADOS' ) ;
-    }
-
-    async function switchSheet( s ){
-      await loadSheet( s ) ;
-    }
-
-    /* =======================================================================
-       FILTROS + DASHBOARD + SEMÁFORO
-       ======================================================================= */
-
-    function getIndex( hName ){
-      return STATE.headers.indexOf( hName ) ;
-    }
-
-    function applyFilters(){
-      const idxAud   = findHeaderIndex( 'auditor' ) ;
-      const idxNom   = findHeaderIndex( 'nombre'  ) ;
-      const idxCed   = findHeaderIndex( 'cedula'  ) ;
-      const idxSin   = findHeaderIndex( 'siniestro' ) ;
-      const idxObs   = STATE.headers.findIndex(
-        h => /^OBSERVACION(\s*\(final\))?$/i.test( h )
-      ) ;
-      const idxFAsg  = findHeaderIndex( 'f_asignacion' ) ;
-      const idxDS    = findHeaderIndex( 'dias_sin_segui' ) ;
-
-      const query    = ( STATE.buscar || '' ).toLowerCase() ;
-      const aud      = ( STATE.auditor || '' ).toLowerCase() ;
-      const df       = STATE.desde ? new Date( STATE.desde ) : null ;
-      const dt       = STATE.hasta ? new Date( STATE.hasta ) : null ;
-
-      STATE.filteredIdx = [] ;
-
-      STATE.rows.forEach(
-        ( r , i ) => {
-          // búsqueda libre
-          const blob = [
-            ( idxNom >= 0 ? r[ idxNom ] : '' ) ,
-            ( idxCed >= 0 ? r[ idxCed ] : '' ) ,
-            ( idxSin >= 0 ? r[ idxSin ] : '' ) ,
-            ( idxObs >= 0 ? r[ idxObs ] : '' )
-          ]
-          .map( x => String( x || '' ).toLowerCase() )
-          .join( ' ' ) ;
-
-          if( query && !blob.includes( query ) ){
-            return ;
-          }
-
-          // auditor
-          const a = ( idxAud >= 0 ? String( r[ idxAud ] || '' ).toLowerCase() : '' ) ;
-          if( aud && !a.includes( aud ) ){
-            return ;
-          }
-
-          // fecha asignación
-          const fa = ( idxFAsg >= 0 ? parseExcelDate( r[ idxFAsg ] ) : null ) ;
-          if( df && fa && fa < df ){
-            return ;
-          }
-          if( dt && fa && fa > dt ){
-            return ;
-          }
-
-          // semáforo
-          const d  = ( idxDS >= 0 ? Number( r[ idxDS ] || 0 ) : 0 ) ;
-          if( STATE.sem === 'verde'   && !( d <= 5 ) ){
-            return ;
-          }
-          if( STATE.sem === 'naranja' && !( d >= 6 && d <= 12 ) ){
-            return ;
-          }
-          if( STATE.sem === 'rojo'    && !( d >= 13 ) ){
-            return ;
-          }
-
-          STATE.filteredIdx.push( i ) ;
-        }
-      ) ;
-
-      // Tiles (citas)
-      const countsC = Object.fromEntries( COL_CITAS.map( c => [ c , 0 ] ) ) ;
-      COL_CITAS.forEach(
-        ( c ) => {
-          const idx = getIndex( c ) ;
-          if( idx >= 0 ){
-            STATE.filteredIdx.forEach(
-              i => {
-                if( STATE.rows[ i ][ idx ] ){
-                  countsC[ c ]++ ;
-                }
-              }
-            ) ;
-          }
-        }
-      ) ;
-      COL_CITAS.forEach(
-        c => {
-          const el = $( `#tc_${ hash( c ) }` ) ;
-          if( el ) el.textContent = countsC[ c ] ;
-        }
-      ) ;
-
-      // Tiles (inasistencias)
-      const countsI = Object.fromEntries( COL_INASIS.map( c => [ c , 0 ] ) ) ;
-      COL_INASIS.forEach(
-        ( c ) => {
-          const idx = getIndex( c ) ;
-          if( idx >= 0 ){
-            STATE.filteredIdx.forEach(
-              i => {
-                const v = String( STATE.rows[ i ][ idx ] || '' ).trim().toUpperCase() ;
-                if( v === 'SI' || v === 'NO ASISTE' ){
-                  countsI[ c ]++ ;
-                }
-              }
-            ) ;
-          }
-        }
-      ) ;
-      COL_INASIS.forEach(
-        c => {
-          const el = $( `#ti_${ hash( c ) }` ) ;
-          if( el ) el.textContent = countsI[ c ] ;
-        }
-      ) ;
-    }
-
-    function updateKpis(){
-      const idxGen  = STATE.headers.indexOf( 'GENERO'   ) ;
-      const idxCed  = findHeaderIndex( 'cedula'         ) ;
-      const idxSin  = findHeaderIndex( 'siniestro'      ) ;
-
-      $( '#kpiActivos'   ).textContent = String( STATE.filteredIdx.length ) ;
-
-      const setCed = new Set() ;
-      const setSin = new Set() ;
-      let m = 0 , f = 0 , o = 0 ;
-
-      STATE.filteredIdx.forEach(
-        i => {
-          const r = STATE.rows[ i ] ;
-          if( idxCed >= 0 && r[ idxCed ] ){
-            setCed.add( String( r[ idxCed ] ).trim() ) ;
-          }
-          if( idxSin >= 0 && r[ idxSin ] ){
-            setSin.add( String( r[ idxSin ] ).trim() ) ;
-          }
-          const g = ( idxGen >= 0 ? String( r[ idxGen ] || '' ).toLowerCase() : '' ) ;
-          if( g.startsWith( 'masc' ) ){
-            m++ ;
-          }else if( g.startsWith( 'fem' ) ){
-            f++ ;
-          }else{
-            o++ ;
-          }
-        }
-      ) ;
-
-      $( '#kpiPacientes' ).textContent = String( setCed.size ) ;
-      $( '#kpiSiniestros').textContent = String( setSin.size ) ;
-      $( '#kpiMasculino' ).textContent = String( m ) ;
-      $( '#kpiFemenino'  ).textContent = String( f ) ;
-      $( '#kpiOtro'      ).textContent = String( o ) ;
-    }
-
-    function updateSemaforoCounts(){
-      const idxDS = findHeaderIndex( 'dias_sin_segui' ) ;
-      let v = 0 , n = 0 , r = 0 ;
-
-      STATE.filteredIdx.forEach(
-        i => {
-          const d = ( idxDS >= 0 ? Number( STATE.rows[ i ][ idxDS ] || 0 ) : 0 ) ;
-          if( d <= 5 ){
-            v++ ;
-          }else if( d <= 12 ){
-            n++ ;
-          }else{
-            r++ ;
-          }
-        }
-      ) ;
-
-      $( '#nVerde'   ).textContent = v ;
-      $( '#nNaranja' ).textContent = n ;
-      $( '#nRojo'    ).textContent = r ;
-    }
-
-    /* Tablas auxiliares */
-
-    function renderAuxTables(){
-      const idxAud = findHeaderIndex( 'auditor' ) ;
-      const idxCls = findHeaderIndex( 'clasif'  ) ;
-
-      // Auditores
-      const mapAud = new Map() ;
-      STATE.filteredIdx.forEach(
-        i => {
-          const a = ( idxAud >= 0 ? String( STATE.rows[ i ][ idxAud ] || '' ).trim() : '' ) ;
-          if( !a ) return ;
-          mapAud.set( a , ( mapAud.get( a ) || 0 ) + 1 ) ;
-        }
-      ) ;
-
-      const total  = STATE.filteredIdx.length || 1 ;
-
-      const rowsAud = Array.from( mapAud.entries() )
-        .sort( ( a , b ) => b[ 1 ] - a[ 1 ] )
-        .map(
-          ( [ a , c ] ) => `
-            <tr>
-              <td>${ esc( a ) }</td>
-              <td class="text-end">${ c }</td>
-              <td class="text-end">${ ( ( c * 100 ) / total ).toFixed( 1 ) }%</td>
-            </tr>
-          `
-        )
-        .join( '' ) ;
-
-      $( '#tbodyAuditores' ).innerHTML = rowsAud || `
-        <tr>
-          <td colspan="3" class="text-center text-muted">
-            Sin datos
-          </td>
-        </tr>
-      ` ;
-
-      // Severidad
-      const mapSv = new Map() ;
-      STATE.filteredIdx.forEach(
-        i => {
-          const s = ( idxCls >= 0 ? String( STATE.rows[ i ][ idxCls ] || '' ).trim() : '' ) ;
-          if( !s ) return ;
-          mapSv.set( s , ( mapSv.get( s ) || 0 ) + 1 ) ;
-        }
-      ) ;
-
-      const rowsSv = Array.from( mapSv.entries() )
-        .sort( ( a , b ) => b[ 1 ] - a[ 1 ] )
-        .map(
-          ( [ s , c ] ) => `
-            <tr>
-              <td>${ esc( s ) }</td>
-              <td class="text-end">${ c }</td>
-              <td class="text-end">${ ( ( c * 100 ) / total ).toFixed( 1 ) }%</td>
-            </tr>
-          `
-        )
-        .join( '' ) ;
-
-      $( '#tbodySeveridad' ).innerHTML = rowsSv || `
-        <tr>
-          <td colspan="3" class="text-center text-muted">
-            Sin datos
-          </td>
-        </tr>
-      ` ;
-    }
-
-    function buildAuditoresOptions(){
-      const idxAud = findHeaderIndex( 'auditor' ) ;
-      const set    = new Set() ;
-
-      STATE.rows.forEach(
-        r => {
-          const a = ( idxAud >= 0 ? String( r[ idxAud ] || '' ).trim() : '' ) ;
-          if( a ) set.add( a ) ;
-        }
-      ) ;
-
-      const arr = Array.from( set ).sort(
-        ( a , b ) => a.localeCompare( b , 'es' )
-      ) ;
-
-      $( '#selAuditor' ).innerHTML = `
-        <option value="">
-          — Todos —
-        </option>
-        ${ arr.map( a => `<option value="${ esc( a ) }">${ esc( a ) }</option>` ).join( '' ) }
-      ` ;
-    }
-
-    function buildTiles(){
-      $( '#tilesCitas' ).innerHTML = COL_CITAS.map(
-        c => `
-          <div class="tile">
-            <div class="h">${ esc( c ) }</div>
-            <div class="n" id="tc_${ hash( c ) }">0</div>
-          </div>
-        `
-      ).join( '' ) ;
-
-      $( '#tilesInasis' ).innerHTML = COL_INASIS.map(
-        c => `
-          <div class="tile">
-            <div class="h">${ esc( c ) }</div>
-            <div class="n" id="ti_${ hash( c ) }">0</div>
-          </div>
-        `
-      ).join( '' ) ;
-    }
-
-    function hash( s ){
-      return s.replace( /\W+/g , '_' ) ;
-    }
-
-    /* =======================================================================
-       TABLA PRINCIPAL
-       ======================================================================= */
-
-    function renderTable(){
-      const H      = STATE.headers ;
-      const thead  = `
-        <th class="text-nowrap">
-          Acciones
-        </th>
-        ${ H.map( h => `<th class="text-nowrap">${ esc( h ) }</th>` ).join( '' ) }
-      ` ;
-
-      const rows   = STATE.filteredIdx.map(
-        ( ri ) => {
-          const r   = STATE.rows[ ri ] ;
-          const tds = r.map(
-            ( v ) => {
-              const d = parseExcelDate( v ) ;
-              return `<td>${ esc( d ? toISO( d ) : v ) }</td>` ;
-            }
-          ).join( '' ) ;
-
-          return `
-            <tr>
-              <td class="text-nowrap">
-                <button
-                  class="action-btn"
-                  onclick="openEdit(${ ri })"
-                  title="Editar"
-                  type="button"
-                >
-                  <i class="bi bi-pencil-square"></i>
+    <!-- ========== APLICACIÓN PRINCIPAL ========== -->
+    <div id="mainApp" style="display: none;">
+        <!-- SIDEBAR -->
+        <nav id="sidebar">
+            <button id="btnToggleSidebar" onclick="toggleSidebar()" title="Ocultar menú">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <h5>Seguimiento ARL - Rangel</h5>
+            <ul id="aseguradoresList"></ul>
+            
+            <div class="mt-2 text-center">
+                <button id="btnAbrirAgregar" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario" style="font-size:0.75rem; padding:0.35rem 0.4rem;">
+                    ➕ Agregar
                 </button>
-              </td>
-              ${ tds }
-            </tr>
-          ` ;
-        }
-      ).join( '' ) ;
-
-      $( '#tbl' ).innerHTML = `
-        <div
-          class="table-responsive"
-        >
-          <table
-            class="table table-sm table-hover align-middle"
-          >
-            <thead>
-              <tr>
-                ${ thead }
-              </tr>
-            </thead>
-            <tbody>
-              ${ rows || `<tr><td colspan="${ H.length + 1 }" class="text-center text-muted">Sin datos</td></tr>` }
-            </tbody>
-          </table>
-        </div>
-      ` ;
-    }
-
-    /* =======================================================================
-       MODAL · Agregar / Editar / Cerrar Caso
-       ======================================================================= */
-
-    const modal = new bootstrap.Modal( '#mdlEdit' ) ;
-
-    function openAdd(){
-      const obj = {} ;
-      buildForms( obj , true , -1 ) ;
-      $( '#mdlTitle' ).textContent = 'Agregar Usuario' ;
-      $( '#tipoCierre' ).value     = '' ;
-      modal.show() ;
-    }
-
-    function openEdit( realIndex ){
-      const row   = STATE.rows[ realIndex ] ;
-      const obj   = rowArrayToObject( row ) ;
-      buildForms( obj , false , realIndex ) ;
-      $( '#mdlTitle' ).textContent = `Editar Usuario (fila ${ realIndex + 2 })` ;
-      $( '#tipoCierre' ).value     = '' ;
-      modal.show() ;
-    }
-
-    function rowArrayToObject( arr ){
-      const obj = {} ;
-      STATE.headers.forEach(
-        ( h , i ) => obj[ h ] = arr[ i ]
-      ) ;
-      return obj ;
-    }
-
-    function buildForms( rowObj , isNew , realIndex ){
-      const H              = STATE.headers ;
-      const camposPaciente = [
-        'SINIESTRO' ,
-        '# MATRICULA' ,
-        'CEDULA' ,
-        'NOMBRE' ,
-        'FECHA DE ASIGNACION A LA IPS' ,
-        'GENERO' ,
-        'MAYOR A 56 AÑOS SI O NO' ,
-        'AUDITOR' ,
-        'CLASIFICACION SEVERIDAD'
-      ] ;
-      const setPaciente    = new Set( camposPaciente ) ;
-
-      const htmlP          = [] ;
-      const htmlS          = [] ;
-
-      H.forEach(
-        h => {
-          const v       = rowObj[ h ] ?? '' ;
-          const isDate  = /(fecha|hoy|cita|junta|fisiatra|valoracion|medicina|psicologia|terapia)/i.test( h )
-                       || /^(Fecha\s*[\w]*\s*Seguimiento|FECHA DE ASIGNACION A LA IPS|FECHA CIERRE|Hoy)$/i.test( h ) ;
-          const isArea  = /^OBSERVACION(\s*\(final\))?$/i.test( h )
-                       || /FACTURACION/i.test( h ) ;
-          const isNum   = [
-                            'SINIESTRO' ,
-                            '# MATRICULA' ,
-                            'CEDULA' ,
-                            'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES' ,
-                            'Días sin seguimiento'
-                          ].includes( h ) ;
-          const ro      = [ 'Hoy' , 'Días sin seguimiento' ].includes( h ) ;
-
-          let ctrl      = '' ;
-
-          if( isDate ){
-            ctrl        = `
-              <input
-                type="date"
-                class="form-control"
-                id="f_${ hash( h ) }"
-                value="${ esc( toISO( parseExcelDate( v ) ) ) }"
-                ${ ro ? 'readonly' : '' }
-              />
-            ` ;
-          }else if( isArea ){
-            ctrl        = `
-              <textarea
-                rows="2"
-                class="form-control"
-                id="f_${ hash( h ) }"
-                ${ ro ? 'readonly' : '' }
-              >${ esc( v ) }</textarea>
-            ` ;
-          }else if( h === 'GENERO' ){
-            ctrl        = `
-              <select
-                class="form-select"
-                id="f_${ hash( h ) }"
-              >
-                <option value="">
-                  — Seleccione —
-                </option>
-                <option ${ v === 'Masculino' ? 'selected' : '' }>
-                  Masculino
-                </option>
-                <option ${ v === 'Femenino' ? 'selected' : '' }>
-                  Femenino
-                </option>
-                <option ${ v === 'Otro' ? 'selected' : '' }>
-                  Otro
-                </option>
-              </select>
-            ` ;
-          }else if( h === 'MAYOR A 56 AÑOS SI O NO' ){
-            ctrl        = `
-              <select
-                class="form-select"
-                id="f_${ hash( h ) }"
-              >
-                <option value="">
-                  — Seleccione —
-                </option>
-                <option ${ String( v ).toUpperCase() === 'SI' ? 'selected' : '' }>
-                  SI
-                </option>
-                <option ${ String( v ).toUpperCase() === 'NO' ? 'selected' : '' }>
-                  NO
-                </option>
-              </select>
-            ` ;
-          }else if( h === 'CLASIFICACION SEVERIDAD' ){
-            const ops  = [
-              'AT Caso Muy Leve' ,
-              'AT Caso Leve' ,
-              'AT Caso Moderado' ,
-              'AT Caso Grave' ,
-              'AT Caso Muy Grave' ,
-              'AT Caso Severo' ,
-              'Enfermedad Laboral' ,
-              'Sin asignación de cita'
-            ] ;
-            ctrl        = `
-              <select
-                class="form-select"
-                id="f_${ hash( h ) }"
-              >
-                <option value="">
-                  — Seleccione —
-                </option>
-                ${ ops.map( o => `<option ${ o === v ? 'selected' : '' }>${ o }</option>` ).join( '' ) }
-              </select>
-            ` ;
-          }else if( isNum ){
-            ctrl        = `
-              <input
-                type="number"
-                class="form-control"
-                id="f_${ hash( h ) }"
-                value="${ esc( v ) }"
-                ${ ro ? 'readonly' : '' }
-              />
-            ` ;
-          }else{
-            ctrl        = `
-              <input
-                type="text"
-                class="form-control"
-                id="f_${ hash( h ) }"
-                value="${ esc( v ) }"
-                ${ ro ? 'readonly' : '' }
-              />
-            ` ;
-          }
-
-          const block   = `
-            <div class="col-12 col-md-6">
-              <label class="form-label">
-                ${ esc( h ) }
-              </label>
-              ${ ctrl }
             </div>
-          ` ;
 
-          ( setPaciente.has( h ) ? htmlP : htmlS ).push( block ) ;
-        }
-      ) ;
+            <div class="user-info">
+                <p id="userEmail" style="margin-bottom: 5px; opacity: 0.9; word-break: break-word;"></p>
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                </button>
+            </div>
+        </nav>
 
-      $( '#formPaciente'   ).innerHTML = htmlP.join( '' ) ;
-      $( '#formSeguimiento').innerHTML = htmlS.join( '' ) ;
+        <button id="btnToggleSidebarFixed" onclick="toggleSidebar()" title="Mostrar menú">
+            <i class="bi bi-chevron-right"></i>
+        </button>
 
-      $( '#chkEvento' ).checked = false ;
-      $( '#chkEvento' ).closest( '.form-check' ).style.display = ( STATE.sheet === 'Positiva' ) ? '' : 'none' ;
+        <main id="content">
+            <!-- DASHBOARD -->
+            <div id="dashboardPanel" class="dashboard-container" style="display:none;">
+                <div class="dashboard-header">
+                    <h6><i class="bi bi-graph-up-arrow"></i> Dashboard Estadístico - <span id="dashboardHojaActual">---</span></h6>
+                    <button class="btn-toggle-dashboard" onclick="toggleDashboard()" title="Ocultar dashboard">
+                        <i class="bi bi-chevron-up"></i>
+                    </button>
+                </div>
+                
+                <div class="dashboard-content" id="dashboardContent">
+                    <div class="row g-2">
+                        <div class="col-md-4 col-lg-2">
+                            <div class="stat-card stat-primary">
+                                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Casos Activos</div>
+                                    <div class="stat-value" id="stat-poblacion-total">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <div class="stat-card stat-success">
+                                <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Población Activa</div>
+                                    <div class="stat-value" id="stat-pacientes-unicos">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <div class="stat-card stat-warning">
+                                <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Siniestros Totales</div>
+                                    <div class="stat-value" id="stat-siniestros">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <div class="stat-card stat-info">
+                                <div class="stat-icon"><i class="bi bi-gender-male"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Masculino</div>
+                                    <div class="stat-value" id="stat-masculino">0</div>
+                                    <div class="stat-percentage" id="stat-masculino-pct">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <div class="stat-card stat-danger">
+                                <div class="stat-icon"><i class="bi bi-gender-female"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Femenino</div>
+                                    <div class="stat-value" id="stat-femenino">0</div>
+                                    <div class="stat-percentage" id="stat-femenino-pct">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <div class="stat-card stat-secondary">
+                                <div class="stat-icon"><i class="bi bi-gender-ambiguous"></i></div>
+                                <div class="stat-info-text">
+                                    <div class="stat-label">Otro</div>
+                                    <div class="stat-value" id="stat-otro">0</div>
+                                    <div class="stat-percentage" id="stat-otro-pct">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-6">
+                            <div class="stat-table-container">
+                                <h6 class="stat-table-title"><i class="bi bi-person-badge"></i> Pacientes por Auditor</h6>
+                                <div class="stat-table-scroll">
+                                    <table class="stat-table" id="tabla-auditores">
+                                        <thead>
+                                            <tr>
+                                                <th>Auditor</th>
+                                                <th style="text-align:center;">Cantidad</th>
+                                                <th style="text-align:center;">%</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-auditores">
+                                            <tr><td colspan="3" style="text-align:center; color:#999;">Sin datos</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-table-container">
+                                <h6 class="stat-table-title"><i class="bi bi-clipboard-data"></i> Clasificación de Severidad</h6>
+                                <div class="stat-table-scroll">
+                                    <table class="stat-table" id="tabla-severidad">
+                                        <thead>
+                                            <tr>
+                                                <th>Clasificación</th>
+                                                <th style="text-align:center;">Cantidad</th>
+                                                <th style="text-align:center;">%</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-severidad">
+                                            <tr><td colspan="3" style="text-align:center; color:#999;">Sin datos</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      $( '#btnGuardar'   ).onclick = () => guardar( isNew , realIndex ) ;
-      $( '#btnCerrarCaso').onclick = () => cerrarCaso( realIndex ) ;
-    }
+            <button id="btnMostrarDashboard" class="btn-show-dashboard" onclick="toggleDashboard()" style="display:none;" title="Mostrar dashboard">
+                <i class="bi bi-graph-up-arrow"></i> Estadísticas
+            </button>
 
-    async function guardar( isNew , realIndex ){
-      const H   = STATE.headers ;
-      const obj = {} ;
+            <!-- SECCIÓN COMBINADA: SEMÁFORO 1 + FILTRO EN DOS COLUMNAS -->
+            <div style="display:grid; grid-template-columns: 2.5fr 1.5fr 1fr; gap:0.5rem; margin-bottom:0.75rem; align-items:start;">
+                <!-- COLUMNA 1: SEMÁFORO DE SEGUIMIENTO -->
+                <div class="semaforo-container" style="margin-bottom:0;">
+                    <h6 style="font-size:0.75rem; font-weight:500; color:#001f3f; margin-bottom:0.3rem;">📅 Seguimiento de Pacientes</h6>
+                    <div class="semaforo">
+                        <div class="indicador" onclick="filtrarPorSemaforo('verde')" title="Filtrar 0–5 días">
+                            <div class="bolita verde"></div>
+                            <span id="conteo-verde">0</span> pacientes (0–5 días)
+                        </div>
+                        <div class="indicador" onclick="filtrarPorSemaforo('naranja')" title="Filtrar 6–12 días">
+                            <div class="bolita naranja"></div>
+                            <span id="conteo-naranja">0</span> pacientes (6–12 días)
+                        </div>
+                        <div class="indicador" onclick="filtrarPorSemaforo('rojo')" title="Filtrar 13+ días">
+                            <div class="bolita rojo"></div>
+                            <span id="conteo-rojo">0</span> pacientes (13+ días)
+                        </div>
+                        <div class="indicador" onclick="filtrarPorSemaforo('todos')" title="Quitar filtro semáforo">
+                            🔄 Ver todos
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA 2: FILTRO DE FECHA -->
+                <div class="filter-panel" style="margin-bottom:0; padding:0.6rem; background:white; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.3rem;">
+                        <i class="bi bi-calendar-event"></i> Filtro por Fecha de Ingreso
+                    </h6>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.3rem; margin-bottom:0.4rem;">
+                        <div>
+                            <label style="font-size:0.6rem; font-weight:600; color:#666; margin-bottom:0.1rem; display:block;">Desde</label>
+                            <input type="date" id="fechaDesde" class="form-control form-control-sm" style="font-size:0.7rem; padding:0.25rem 0.3rem; height:24px; border:1px solid #cbd5e0; border-radius:4px;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.6rem; font-weight:600; color:#666; margin-bottom:0.1rem; display:block;">Hasta</label>
+                            <input type="date" id="fechaHasta" class="form-control form-control-sm" style="font-size:0.7rem; padding:0.25rem 0.3rem; height:24px; border:1px solid #cbd5e0; border-radius:4px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA 3: BÚSQUEDA DE TEXTO -->
+                <div class="filter-panel" style="margin-bottom:0; padding:0.6rem; background:white; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.3rem;">
+                        <i class="bi bi-search"></i> Búsqueda
+                    </h6>
+                    <input type="text" id="searchFree" class="form-control form-control-sm" placeholder="Buscar..." style="font-size:0.7rem; padding:0.35rem 0.5rem; border:1px solid #001f3f; border-radius:4px; margin-bottom:0.3rem;">
+                    <button class="btn btn-dark btn-sm w-100" onclick="aplicarFiltros()" style="font-weight:600; font-size:0.65rem; padding:0.3rem; border-radius:4px; background:#001f3f; border:none; margin-bottom:0.2rem;">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="limpiarFiltros()" style="font-weight:600; font-size:0.6rem; padding:0.25rem; border-radius:4px;">
+                        <i class="bi bi-x-circle"></i> Limpiar
+                    </button>
+                </div>
+            </div>
 
-      H.forEach(
-        h => {
-          const el = $( `#f_${ hash( h ) }` ) ;
-          if( !el ) return ;
-          obj[ h ] = ( el.type === 'date' && el.value ) ? el.value : el.value ;
-        }
-      ) ;
+            <!-- SEMÁFORO 2: CITAS MÉDICAS -->
+            <div id="semaforoCitas" class="semaforo-container" style="display:none;">
+                <h6 style="font-size:0.75rem; font-weight:600; color:#001f3f; margin-bottom:0.5rem;">🏥 Control de Citas Médicas</h6>
+                
+                <!-- SECCIÓN: CITAS PENDIENTES -->
+                <div style="background:#f8f9fa; padding:0.5rem; border-radius:8px; margin-bottom:0.5rem;">
+                    <h6 style="font-size:0.7rem; font-weight:600; color:#2e7d32; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.3rem;">
+                        <i class="bi bi-calendar-check"></i> Citas Pendientes
+                    </h6>
+                    <div class="semaforo" style="flex-wrap:wrap;">
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('FISIATRA')" style="background:#e3f2fd; border:1px solid #1976d2; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#1976d2;">🩺 Fisiatra:</span>
+                            <span id="conteo-fisiatra" style="font-weight:bold; color:#1976d2;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('JUNTA MEDICA')" style="background:#f3e5f5; border:1px solid #7b1fa2; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#7b1fa2;">👥 Junta Médica:</span>
+                            <span id="conteo-junta" style="font-weight:bold; color:#7b1fa2;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('VALORACION OCUPACIONAL')" style="background:#fff3e0; border:1px solid #e65100; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#e65100;">💼 Valoración Ocup.:</span>
+                            <span id="conteo-valoracion" style="font-weight:bold; color:#e65100;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('MEDICINA LABORAL')" style="background:#e8f5e9; border:1px solid #2e7d32; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#2e7d32;">⚕️ Medicina Lab.:</span>
+                            <span id="conteo-medicina-laboral" style="font-weight:bold; color:#2e7d32;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('PSICOLOGIA')" style="background:#fce4ec; border:1px solid #c2185b; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#c2185b;">🧠 Psicología:</span>
+                            <span id="conteo-psicologia" style="font-weight:bold; color:#c2185b;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA OCUPACIONAL')" style="background:#e0f2f1; border:1px solid #00695c; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#00695c;">🛠️ Terapia Ocup.:</span>
+                            <span id="conteo-terapia-ocupacional" style="font-weight:bold; color:#00695c;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA FISICA')" style="background:#fff9c4; border:1px solid #f57f17; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
+                            <span style="font-weight:600; color:#f57f17;">🏃 Terapia Física:</span>
+                            <span id="conteo-terapia-fisica" style="font-weight:bold; color:#f57f17;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('todos')" style="background:#eceff1; border:2px solid #546e7a; padding:0.3rem 0.8rem; border-radius:15px;" title="Click para quitar filtros">
+                            <span style="font-weight:600; color:#546e7a;">🔄 Ver todos</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SECCIÓN: INASISTENCIAS -->
+                <div style="background:#fff5f5; padding:0.5rem; border-radius:8px; border-left:4px solid #d9534f;">
+                    <h6 style="font-size:0.7rem; font-weight:600; color:#d9534f; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.3rem;">
+                        <i class="bi bi-x-circle-fill"></i> Inasistencias Registradas
+                    </h6>
+                    <div class="semaforo" style="flex-wrap:wrap;">
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('FISIATRA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">🩺 Fisiatra:</span>
+                            <span id="inasistencia-fisiatra" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('JUNTA MEDICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">👥 Junta Médica:</span>
+                            <span id="inasistencia-junta" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('VALORACION OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">💼 Valoración Ocup.:</span>
+                            <span id="inasistencia-valoracion" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('MEDICINA LABORAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">⚕️ Medicina Lab.:</span>
+                            <span id="inasistencia-medicina-laboral" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('PSICOLOGIA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">🧠 Psicología:</span>
+                            <span id="inasistencia-psicologia" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">🛠️ Terapia Ocup.:</span>
+                            <span id="inasistencia-terapia-ocupacional" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA FISICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
+                            <span style="font-weight:600; color:#c62828;">🏃 Terapia Física:</span>
+                            <span id="inasistencia-terapia-fisica" style="font-weight:bold; color:#c62828;">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      // Recalcular "Hoy" y "Días sin seguimiento"
-      const idxHoy  = findHeaderIndex( 'hoy' ) ;
-      const idxFUS  = findHeaderIndex( 'fecha_ultimo_seg' ) ;
-      const idxDS   = findHeaderIndex( 'dias_sin_segui' ) ;
+            <!-- TABLA DE DATOS -->
+            <div class="table-wrapper">
+                <table id="tablaDatos">
+                    <thead id="tablaHead"></thead>
+                    <tbody id="tablaBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 
-      const today   = new Date() ;
-      today.setHours( 0 , 0 , 0 , 0 ) ;
+    <!-- ========== MODAL AGREGAR USUARIO ========== -->
+    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">➕ Agregar Usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarUsuario">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label class="form-label">Asegurador</label>
+                                <select class="form-select" name="hoja" required>
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="Positiva">Positiva</option>
+                                    <option value="Colmena">Colmena</option>
+                                    <option value="Colsanitas">Colsanitas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label d-block">Paciente por Evento</label>
+                                <div class="form-check" style="padding-top:0.4rem;">
+                                    <input class="form-check-input" type="checkbox" name="PACIENTE_EVENTO" id="checkPacienteEvento">
+                                    <label class="form-check-label" for="checkPacienteEvento" style="font-size:0.85rem;">
+                                        Sí, es paciente por evento
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4"><label class="form-label">SINIESTRO</label><input class="form-control" name="SINIESTRO"></div>
+                            <div class="col-md-4"><label class="form-label"># MATRICULA</label><input class="form-control" name="# MATRICULA"></div>
+                            <div class="col-md-4"><label class="form-label">CEDULA</label><input class="form-control" name="CEDULA"></div>
+                            <div class="col-md-4"><label class="form-label">NOMBRE</label><input class="form-control" name="NOMBRE"></div>
+                            <div class="col-md-4"><label class="form-label">FECHA DE ASIGNACION A LA IPS</label><input type="date" class="form-control" name="FECHA DE ASIGNACION A LA IPS"></div>
+                            <div class="col-md-4">
+                                <label class="form-label">GENERO</label>
+                                <select class="form-select" name="GENERO">
+                                    <option value="">-- Seleccione --</option>
+                                    <option>Masculino</option>
+                                    <option>Femenino</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><label class="form-label">MAYOR A 56 AÑOS SI O NO</label>
+                                <select class="form-select" name="MAYOR A 56 AÑOS SI O NO">
+                                    <option value="">-- Seleccione --</option>
+                                    <option>SI</option>
+                                    <option>NO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">CLASIFICACION SEVERIDAD</label>
+                                <select class="form-select" name="CLASIFICACION SEVERIDAD">
+                                    <option value="">-- Seleccione --</option>
+                                    <option>AT Caso Muy Leve</option>
+                                    <option>AT Caso Leve</option>
+                                    <option>AT Caso Moderado</option>
+                                    <option>AT Caso Grave</option>
+                                    <option>AT Caso Muy Grave</option>
+                                    <option>AT Caso Severo</option>
+                                    <option>Enfermedad Laboral</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><label class="form-label">CITA INICIAL</label><input type="date" class="form-control" name="CITA INICIAL"></div>
+                            <div class="col-md-4"><label class="form-label">ALTA INMEDIATA</label><input class="form-control" name="ALTA INMEDIATA"></div>
+                            <div class="col-md-4"><label class="form-label">ESTADO DE LA MATRICULA</label><input class="form-control" name="ESTADO DE LA MATRICULA"></div>
+                            <div class="col-md-4"><label class="form-label">FECHA CIERRE</label><input type="date" class="form-control" name="FECHA CIERRE"></div>
+                            <div class="col-md-4"><label class="form-label">NUM AGENDAMIENTOS y CITAS FORMALES INICIALES</label><input type="number" class="form-control" name="NUM AGENDAMIENTOS y CITAS FORMALES INICIALES"></div>
+                            <div class="col-md-4"><label class="form-label">OBSERVACION</label><textarea class="form-control" name="OBSERVACION"></textarea></div>
+                            <div class="col-md-4"><label class="form-label">SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOR</label><textarea class="form-control" name="SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOR"></textarea></div>
+                            <div class="col-md-4">
+                                <label class="form-label">AUDITOR</label>
+                                <select class="form-select" name="AUDITOR">
+                                    <option value="">-- Seleccione --</option>
+                                    <option>FABIAN MACIAS</option>
+                                    <option>YANETH OBREGON</option>
+                                    <option>MELISA SANCHEZ</option>
+                                    <option>ANGELA LOPEZ</option>
+                                    <option>ADRIANA VILLOTA</option>
+                                    <option>YULAINE VERGARA</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><label class="form-label">OBSERVACION FACTURACION</label><textarea class="form-control" name="OBSERVACION FACTURACION"></textarea></div>
+                            <div class="col-md-4"><label class="form-label">Fecha Último Seguimiento</label><input type="date" class="form-control" name="Fecha Último Seguimiento"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="btnGuardarUsuario">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      if( idxHoy >= 0 ){
-        obj[ H[ idxHoy ] ] = toISO( today ) ;
-      }
+    <!-- ========== MODAL EDITAR USUARIO ========== -->
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content" style="border:none; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #001f3f 0%, #003366 100%); border:none; padding:1rem 1.25rem;">
+                    <h5 class="modal-title text-white" style="font-size:1.1rem; font-weight:600; letter-spacing:0.3px;">
+                        <i class="bi bi-pencil-square" style="font-size:1rem;"></i> Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="background:#f8f9fa;">
+                    <form id="formEditarUsuario">
+                        <input type="hidden" id="editRowIndex" name="rowIndex">
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-person-badge" style="font-size:0.9rem;"></i> Información del Paciente
+                            </h6>
+                            <div id="seccionPaciente" class="row g-2"></div>
+                        </div>
+                        <div style="height:1px; background:linear-gradient(to right, transparent, #cbd5e0 20%, #cbd5e0 80%, transparent); margin:0.8rem 0;"></div>
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-clipboard-check" style="font-size:0.9rem;"></i> Seguimiento y Estado
+                            </h6>
+                            <div id="seccionSeguimiento" class="row g-2"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background:#f8f9fa; border-top:1px solid #dee2e6; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem;">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </button>
+                    <div style="flex-grow:1; max-width:350px;">
+                        <label class="form-label" style="font-size:0.75rem; margin-bottom:0.25rem; font-weight:600; color:#d9534f;">
+                            * Tipo de Cierre (requerido para cerrar caso)
+                        </label>
+                        <select class="form-select form-select-sm" id="selectTipoCierre" style="font-size:0.8rem; border:1px solid #ced4da;">
+                            <option value="">-- Seleccione motivo de cierre --</option>
+                            <option value="Cierre Caso Auditor">Cierre Caso Auditor</option>
+                            <option value="Cierre Caso Desertor">Cierre Caso Desertor</option>
+                            <option value="Cierre Caso Acta">Cierre Caso Acta</option>
+                            <option value="Cierre Caso Finalizó Ciclo">Cierre Caso Finalizó Ciclo</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-warning btn-sm" id="btnCerrarCaso" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem;">
+                        <i class="bi bi-folder-x"></i> Cerrar Caso
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnActualizarUsuario" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem; background:#001f3f; border:none;">
+                        <i class="bi bi-check-circle"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      if( idxDS >= 0 ){
-        const keyFUS = ( idxFUS >= 0 ? H[ idxFUS ] : null ) ;
-        const fseg   = keyFUS ? new Date( obj[ keyFUS ] ) : null ;
-        obj[ H[ idxDS ] ] = fseg ? diffDaysBog( fseg , today ) : '' ;
-      }
+    <!-- ========== LOADING OVERLAY ========== -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p id="loadingMessage" style="margin: 0; color: #001f3f; font-weight: 600; font-size: 16px;">Cargando...</p>
+        </div>
+    </div>
 
-      const toEvento = ( $( '#chkEvento' ).checked && STATE.sheet === 'Positiva' ) ;
-
-      if( DEMO_MODE ){
-        const row = H.map( h => obj[ h ] ?? '' ) ;
-        if( isNew ){
-          STATE.rows.push( row ) ;
-        }else{
-          STATE.rows[ realIndex ] = row ;
-        }
-        applyFilters() ;
-        renderTable() ;
-        renderAuxTables() ;
-        updateKpis() ;
-        updateSemaforoCounts() ;
-        toast( 'Guardado (DEMO).' , 'success' ) ;
-        modal.hide() ;
-        return ;
-      }
-
-      showLoad( 'Guardando en Excel...' ) ;
-
-      try{
-        await forceHeaders( STATE.sheet , expectedHeadersFor( STATE.sheet ) ) ;
-
-        const used    = await gGET(
-          `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( STATE.sheet ) }')/usedRange(valuesOnly=true)`
-        ).catch( () => null ) ;
-
-        const lastCol = colLetter( H.length - 1 ) ;
-
-        if( isNew ){
-          const targetSheet = toEvento ? 'Positiva Evento' : STATE.sheet ;
-
-          await forceHeaders( targetSheet , expectedHeadersFor( targetSheet ) ) ;
-
-          const usedDest    = await gGET(
-            `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( targetSheet ) }')/usedRange(valuesOnly=true)`
-          ).catch( () => null ) ;
-
-          const hdrsDest    = ( usedDest?.values?.[ 0 ] || [] ).map( v => String( v ?? '' ).trim() ) ;
-          const lastDest    = colLetter( hdrsDest.length - 1 ) ;
-          const nextRow     = ( usedDest?.values?.length || 1 ) + 1 ;
-          const ordered     = hdrsDest.map( h => obj[ h ] ?? '' ) ;
-
-          await gPATCH(
-            `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent( targetSheet ) }')/range(address='A${ nextRow }:${ lastDest }${ nextRow }')` ,
-            { values : [ ordered ] }
-          ) ;
-
-          toast(`Usuario agregado a ${ targetSheet }.`,'success');
-        } else {
-          // --- Actualización en la misma hoja ---
-          const real    = realIndex + 2; // +1 por encabezado, +1 porque index inicia en 0
-          const ordered = H.map(h => obj[h] ?? '');
-          await gPATCH(
-            `/me/drive/items/${ STATE.file.id }/workbook/worksheets('${ encodeURIComponent(STATE.sheet) }')/range(address='A${ real }:${ lastCol }${ real }')`,
-            { values:[ ordered ] }
-          );
-          toast('Actualizado correctamente.','success');
-        }
-
-        // Cerrar modal y recargar hoja actual
-        modal.hide();
-        await loadSheet( STATE.sheet );
-
-      } catch (e) {
-        console.error(e);
-        toast('Error al guardar: ' + e.message, 'danger');
-      } finally {
-        hideLoad();
-      }
-    }
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="code-microsoft.js"></script>
+</body>
+</html>
