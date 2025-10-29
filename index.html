@@ -289,16 +289,49 @@ body {
   border-radius: 0.5rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex-shrink: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.dashboard-panel.collapsed {
+  max-height: 50px;
+  opacity: 0.95;
+}
+
+.dashboard-panel.collapsed .dashboard-content {
+  display: none;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
 .dashboard-title {
   font-size: 1.1rem;
   font-weight: bold;
   color: #001f3f;
-  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin: 0;
+}
+
+.btn-toggle-dashboard {
+  background: #001f3f;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle-dashboard:hover {
+  background: #003366;
 }
 
 .stats-container {
@@ -339,6 +372,199 @@ body {
   color: #666;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+/* ========== TABLAS DE DASHBOARD ========== */
+.dashboard-tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-table-card {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+}
+
+.dashboard-table-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #001f3f;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-mini-table {
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.dashboard-mini-table th {
+  background: #001f3f;
+  color: white;
+  padding: 0.4rem;
+  text-align: left;
+  font-size: 0.75rem;
+}
+
+.dashboard-mini-table td {
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-mini-table tr:hover {
+  background: #e8f4f8;
+}
+
+/* ========== CONTROL DE CITAS ========== */
+.citas-control {
+  margin-bottom: 0.75rem;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.citas-section {
+  margin-bottom: 1rem;
+}
+
+.citas-section:last-child {
+  margin-bottom: 0;
+}
+
+.citas-section-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #001f3f;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.citas-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cita-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.cita-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.cita-badge.pendiente {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.cita-badge.inasistencia {
+  background: #ffebee;
+  color: #c62828;
+  border-color: #c62828;
+}
+
+.cita-badge-count {
+  background: #001f3f;
+  color: white;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.cita-badge.ver-todos {
+  background: #e0e0e0;
+  color: #333;
+  border-color: #999;
+}
+
+/* ========== FILTROS Y BÚSQUEDA ========== */
+.filtros-busqueda {
+  margin-bottom: 0.75rem;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.filtros-container {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.filtro-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filtro-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.filtro-input {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.btn-buscar, .btn-limpiar {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-buscar {
+  background: #001f3f;
+  color: white;
+}
+
+.btn-buscar:hover {
+  background: #003366;
+}
+
+.btn-limpiar {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-limpiar:hover {
+  background: #5a6268;
 }
 
 /* ========== SEMÁFORO ========== */
@@ -703,45 +929,245 @@ textarea.form-control {
   <main id="content">
     <!-- Dashboard -->
     <div class="dashboard-panel" id="dashboardPanel">
-      <div class="dashboard-title">
-        <i class="bi bi-bar-chart-fill"></i>
-        Dashboard Estadístico - <span id="dashboardHojaName">Positiva</span>
+      <div class="dashboard-header">
+        <div class="dashboard-title">
+          <i class="bi bi-bar-chart-fill"></i>
+          Dashboard Estadístico - <span id="dashboardHojaName">Positiva</span>
+        </div>
+        <button class="btn-toggle-dashboard" id="btnToggleDashboard">
+          <i class="bi bi-chevron-up"></i> Ocultar
+        </button>
       </div>
-      <div class="stats-container">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="bi bi-people-fill" style="color: #007bff;"></i>
+      
+      <div class="dashboard-content">
+        <!-- Estadísticas Principales -->
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-people-fill" style="color: #007bff;"></i>
+            </div>
+            <div class="stat-value" id="statCasosActivos">0</div>
+            <div class="stat-label">Casos Activos</div>
           </div>
-          <div class="stat-value" id="statCasosActivos">0</div>
-          <div class="stat-label">Casos Activos</div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-person-check-fill" style="color: #28a745;"></i>
+            </div>
+            <div class="stat-value" id="statPoblacionActiva">0</div>
+            <div class="stat-label">Población Activa</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107;"></i>
+            </div>
+            <div class="stat-value" id="statSiniestros">0</div>
+            <div class="stat-label">Siniestros Totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-gender-male" style="color: #17a2b8;"></i>
+            </div>
+            <div class="stat-value" id="statMasculino">0</div>
+            <div class="stat-label">Masculino</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-gender-female" style="color: #e83e8c;"></i>
+            </div>
+            <div class="stat-value" id="statFemenino">0</div>
+            <div class="stat-label">Femenino</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-gender-ambiguous" style="color: #6f42c1;"></i>
+            </div>
+            <div class="stat-value" id="statOtro">0</div>
+            <div class="stat-label">Otro</div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="bi bi-person-check-fill" style="color: #28a745;"></i>
+        
+        <!-- Tablas de Dashboard -->
+        <div class="dashboard-tables">
+          <!-- Pacientes por Auditor -->
+          <div class="dashboard-table-card">
+            <div class="dashboard-table-title">
+              <i class="bi bi-person-badge"></i>
+              Pacientes por Auditor
+            </div>
+            <table class="dashboard-mini-table">
+              <thead>
+                <tr>
+                  <th>AUDITOR</th>
+                  <th style="text-align: center;">CANTIDAD</th>
+                  <th style="text-align: center;">%</th>
+                </tr>
+              </thead>
+              <tbody id="tablaPacientesPorAuditor">
+                <tr>
+                  <td colspan="3" style="text-align: center; padding: 1rem; color: #999;">
+                    Sin datos
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="stat-value" id="statPoblacionActiva">0</div>
-          <div class="stat-label">Población Activa</div>
+          
+          <!-- Clasificación de Severidad -->
+          <div class="dashboard-table-card">
+            <div class="dashboard-table-title">
+              <i class="bi bi-shield-fill-exclamation"></i>
+              Clasificación de Severidad
+            </div>
+            <table class="dashboard-mini-table">
+              <thead>
+                <tr>
+                  <th>CLASIFICACIÓN</th>
+                  <th style="text-align: center;">CANTIDAD</th>
+                  <th style="text-align: center;">%</th>
+                </tr>
+              </thead>
+              <tbody id="tablaClasificacionSeveridad">
+                <tr>
+                  <td colspan="3" style="text-align: center; padding: 1rem; color: #999;">
+                    Sin datos
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107;"></i>
-          </div>
-          <div class="stat-value" id="statSiniestros">0</div>
-          <div class="stat-label">Siniestros Totales</div>
+      </div>
+    </div>
+    
+    <!-- Control de Citas Médicas -->
+    <div class="citas-control">
+      <!-- Citas Pendientes -->
+      <div class="citas-section">
+        <div class="citas-section-title">
+          <i class="bi bi-clipboard-check"></i>
+          Citas Pendientes
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="bi bi-gender-male" style="color: #17a2b8;"></i>
+        <div class="citas-badges" id="citasPendientes">
+          <div class="cita-badge pendiente">
+            <i class="bi bi-heart-pulse"></i>
+            <span>Fisiatra:</span>
+            <span class="cita-badge-count" id="citaFisiatra">0</span>
           </div>
-          <div class="stat-value" id="statMasculino">0</div>
-          <div class="stat-label">Masculino</div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-people"></i>
+            <span>Junta Médica:</span>
+            <span class="cita-badge-count" id="citaJuntaMedica">0</span>
+          </div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-briefcase"></i>
+            <span>Valoración Ocup:</span>
+            <span class="cita-badge-count" id="citaValoracionOcup">0</span>
+          </div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-hospital"></i>
+            <span>Medicina Lab:</span>
+            <span class="cita-badge-count" id="citaMedicinaLab">0</span>
+          </div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-emoji-smile"></i>
+            <span>Psicología:</span>
+            <span class="cita-badge-count" id="citaPsicologia">0</span>
+          </div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-tools"></i>
+            <span>Terapia Ocup:</span>
+            <span class="cita-badge-count" id="citaTerapiaOcup">0</span>
+          </div>
+          <div class="cita-badge pendiente">
+            <i class="bi bi-activity"></i>
+            <span>Terapia Física:</span>
+            <span class="cita-badge-count" id="citaTerapiaFisica">0</span>
+          </div>
+          <div class="cita-badge ver-todos">
+            <i class="bi bi-eye"></i>
+            <span>Ver todos</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="bi bi-gender-female" style="color: #e83e8c;"></i>
+      </div>
+      
+      <!-- Inasistencias Registradas -->
+      <div class="citas-section">
+        <div class="citas-section-title">
+          <i class="bi bi-x-circle"></i>
+          Inasistencias Registradas
+        </div>
+        <div class="citas-badges" id="inasistenciasRegistradas">
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-heart-pulse"></i>
+            <span>Fisiatra:</span>
+            <span class="cita-badge-count" id="inasistFisiatra">0</span>
           </div>
-          <div class="stat-value" id="statFemenino">0</div>
-          <div class="stat-label">Femenino</div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-people"></i>
+            <span>Junta Médica:</span>
+            <span class="cita-badge-count" id="inasistJuntaMedica">0</span>
+          </div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-briefcase"></i>
+            <span>Valoración Ocup:</span>
+            <span class="cita-badge-count" id="inasistValoracionOcup">0</span>
+          </div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-hospital"></i>
+            <span>Medicina Lab:</span>
+            <span class="cita-badge-count" id="inasistMedicinaLab">0</span>
+          </div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-emoji-smile"></i>
+            <span>Psicología:</span>
+            <span class="cita-badge-count" id="inasistPsicologia">0</span>
+          </div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-tools"></i>
+            <span>Terapia Ocup:</span>
+            <span class="cita-badge-count" id="inasistTerapiaOcup">0</span>
+          </div>
+          <div class="cita-badge inasistencia">
+            <i class="bi bi-activity"></i>
+            <span>Terapia Física:</span>
+            <span class="cita-badge-count" id="inasistTerapiaFisica">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Filtros y Búsqueda -->
+    <div class="filtros-busqueda">
+      <div class="filtros-container">
+        <div class="filtro-group">
+          <label class="filtro-label">
+            <i class="bi bi-calendar-range"></i>
+            Filtro por Fecha de Ingreso a Rangel RHB
+          </label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="date" class="filtro-input" id="fechaDesde" placeholder="Desde">
+            <input type="date" class="filtro-input" id="fechaHasta" placeholder="Hasta">
+          </div>
+        </div>
+        
+        <div class="filtro-group">
+          <label class="filtro-label">
+            <i class="bi bi-search"></i>
+            Búsqueda
+          </label>
+          <input type="text" class="filtro-input" id="campoBusqueda" placeholder="Buscar...">
+        </div>
+        
+        <div class="filtro-group" style="flex: 0; min-width: auto;">
+          <label class="filtro-label" style="visibility: hidden;">Acciones</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-buscar" id="btnAplicarFiltros">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+            <button class="btn-limpiar" id="btnLimpiarFiltros">
+              <i class="bi bi-x-circle"></i> Limpiar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -865,14 +1291,25 @@ textarea.form-control {
           <div class="form-section">
             <div class="form-section-title">
               <i class="bi bi-building"></i>
-              Seleccionar Asegurador
+              Asegurador
             </div>
-            <select class="form-select" name="hoja" required>
-              <option value="">-- Seleccione Asegurador --</option>
-              <option value="Positiva">Positiva</option>
-              <option value="Colmena">Colmena</option>
-              <option value="Colsanitas">Colsanitas</option>
-            </select>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Asegurador *</label>
+                <select class="form-select" name="hoja" id="selectAseguradorAgregar" required>
+                  <option value="">-- Seleccione --</option>
+                  <option value="Positiva">Positiva</option>
+                  <option value="Colmena">Colmena</option>
+                  <option value="Colsanitas">Colsanitas</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">
+                  <input type="checkbox" id="checkPacienteEvento" style="margin-right: 0.5rem;">
+                  Sí, es paciente por evento
+                </label>
+              </div>
+            </div>
           </div>
           
           <div class="form-section">
@@ -880,7 +1317,102 @@ textarea.form-control {
               <i class="bi bi-person-badge"></i>
               Información del Paciente
             </div>
-            <div class="row" id="seccionAgregarPaciente"></div>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">SINIESTRO *</label>
+                <input type="text" class="form-control" name="SINIESTRO" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label"># MATRICULA *</label>
+                <input type="text" class="form-control" name="# MATRICULA" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">CEDULA *</label>
+                <input type="text" class="form-control" name="CEDULA" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">NOMBRE *</label>
+                <input type="text" class="form-control" name="NOMBRE" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">FECHA DE ASIGNACION A LA IPS</label>
+                <input type="date" class="form-control" name="FECHA DE ASIGNACION A LA IPS">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">GENERO</label>
+                <select class="form-select" name="GENERO">
+                  <option value="">-- Seleccione --</option>
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">MAYOR A 56 AÑOS SI O NO</label>
+                <select class="form-select" name="MAYOR A 56 AÑOS SI O NO">
+                  <option value="">-- Seleccione --</option>
+                  <option>SI</option>
+                  <option>NO</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">CLASIFICACION SEVERIDAD</label>
+                <select class="form-select" name="CLASIFICACION SEVERIDAD">
+                  <option value="">-- Seleccione --</option>
+                  <option>AT Caso Muy Leve</option>
+                  <option>AT Caso Leve</option>
+                  <option>AT Caso Moderado</option>
+                  <option>AT Caso Grave</option>
+                  <option>AT Caso Muy Grave</option>
+                  <option>AT Caso Severo</option>
+                  <option>Enfermedad Laboral</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">AUDITOR</label>
+                <select class="form-select" name="AUDITOR">
+                  <option value="">-- Seleccione --</option>
+                  <option>FABIAN MACIAS</option>
+                  <option>YANETH OBREGON</option>
+                  <option>MELISA SANCHEZ</option>
+                  <option>ANGELA LOPEZ</option>
+                  <option>ADRIANA VILLOTA</option>
+                  <option>YULAINE VERGARA</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ALTA INMEDIATA</label>
+                <input type="text" class="form-control" name="ALTA INMEDIATA">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ESTADO DE LA MATRICULA</label>
+                <input type="text" class="form-control" name="ESTADO DE LA MATRICULA">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">FECHA CIERRE</label>
+                <input type="date" class="form-control" name="FECHA CIERRE">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">NUM AGENDAMIENTOS y CITAS FORMALES INICIALES</label>
+                <input type="number" class="form-control" name="NUM AGENDAMIENTOS y CITAS FORMALES INICIALES">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS</label>
+                <input type="text" class="form-control" name="SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS">
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">OBSERVACION</label>
+                <textarea class="form-control" name="OBSERVACION" rows="2"></textarea>
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">OBSERVACION FACTURACION</label>
+                <textarea class="form-control" name="OBSERVACION FACTURACION" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Fecha Último Seguimiento</label>
+                <input type="date" class="form-control" name="Fecha Último Seguimiento">
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -1225,6 +1757,51 @@ function aplicarFiltrosAFila(row) {
     }
   }
   
+  // Filtro por fecha de ingreso
+  const fechaDesde = document.getElementById('fechaDesde').value;
+  const fechaHasta = document.getElementById('fechaHasta').value;
+  
+  if (fechaDesde || fechaHasta) {
+    const fechaAsignacion = row['FECHA DE ASIGNACION A LA IPS'];
+    if (fechaAsignacion) {
+      let fechaRow;
+      if (fechaAsignacion instanceof Date) {
+        fechaRow = fechaAsignacion;
+      } else if (typeof fechaAsignacion === 'string') {
+        if (fechaAsignacion.includes('/')) {
+          const partes = fechaAsignacion.split('/');
+          fechaRow = new Date(partes[2], partes[1] - 1, partes[0]);
+        } else {
+          fechaRow = new Date(fechaAsignacion);
+        }
+      }
+      
+      if (fechaRow) {
+        if (fechaDesde) {
+          const desde = new Date(fechaDesde);
+          if (fechaRow < desde) return false;
+        }
+        if (fechaHasta) {
+          const hasta = new Date(fechaHasta);
+          if (fechaRow > hasta) return false;
+        }
+      }
+    }
+  }
+  
+  // Filtro de búsqueda
+  const textoBusqueda = document.getElementById('campoBusqueda').value.toLowerCase();
+  if (textoBusqueda) {
+    let encontrado = false;
+    STATE.headers.forEach(header => {
+      const valor = String(row[header] || '').toLowerCase();
+      if (valor.includes(textoBusqueda)) {
+        encontrado = true;
+      }
+    });
+    if (!encontrado) return false;
+  }
+  
   return true;
 }
 
@@ -1291,19 +1868,159 @@ function calcularEstadisticasDashboard() {
   // Contadores por género
   let masculino = 0;
   let femenino = 0;
+  let otro = 0;
   
   filasFiltradas.forEach(row => {
-    const genero = row['GENERO'] || '';
-    if (genero.toLowerCase().includes('masculino')) masculino++;
-    if (genero.toLowerCase().includes('femenino')) femenino++;
+    const genero = (row['GENERO'] || '').toLowerCase();
+    if (genero.includes('masculino')) masculino++;
+    else if (genero.includes('femenino')) femenino++;
+    else if (genero && genero !== '') otro++;
   });
   
-  // Actualizar UI
+  // Actualizar UI principales
   document.getElementById('statCasosActivos').textContent = casosActivos;
   document.getElementById('statPoblacionActiva').textContent = poblacionActiva;
   document.getElementById('statSiniestros').textContent = siniestros;
   document.getElementById('statMasculino').textContent = masculino;
   document.getElementById('statFemenino').textContent = femenino;
+  document.getElementById('statOtro').textContent = otro;
+  
+  // Calcular tabla de pacientes por auditor
+  calcularTablaPacientesPorAuditor(filasFiltradas);
+  
+  // Calcular tabla de clasificación de severidad
+  calcularTablaClasificacionSeveridad(filasFiltradas);
+  
+  // Calcular citas pendientes e inasistencias
+  calcularCitasEInasistencias(filasFiltradas);
+}
+
+function calcularTablaPacientesPorAuditor(filas) {
+  const tbody = document.getElementById('tablaPacientesPorAuditor');
+  const conteoAuditores = {};
+  const total = filas.length;
+  
+  filas.forEach(row => {
+    const auditor = row['AUDITOR'] || 'Sin asignar';
+    conteoAuditores[auditor] = (conteoAuditores[auditor] || 0) + 1;
+  });
+  
+  // Ordenar por cantidad descendente
+  const auditoresOrdenados = Object.entries(conteoAuditores)
+    .sort((a, b) => b[1] - a[1]);
+  
+  if (auditoresOrdenados.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 1rem; color: #999;">Sin datos</td></tr>';
+    return;
+  }
+  
+  let html = '';
+  auditoresOrdenados.forEach(([auditor, cantidad]) => {
+    const porcentaje = ((cantidad / total) * 100).toFixed(1);
+    html += `
+      <tr>
+        <td>${auditor}</td>
+        <td style="text-align: center; font-weight: bold;">${cantidad}</td>
+        <td style="text-align: center;">${porcentaje}%</td>
+      </tr>
+    `;
+  });
+  
+  tbody.innerHTML = html;
+}
+
+function calcularTablaClasificacionSeveridad(filas) {
+  const tbody = document.getElementById('tablaClasificacionSeveridad');
+  const conteoSeveridad = {};
+  const total = filas.length;
+  
+  filas.forEach(row => {
+    const severidad = row['CLASIFICACION SEVERIDAD'] || 'Sin clasificar';
+    conteoSeveridad[severidad] = (conteoSeveridad[severidad] || 0) + 1;
+  });
+  
+  // Ordenar por cantidad descendente
+  const severidadOrdenada = Object.entries(conteoSeveridad)
+    .sort((a, b) => b[1] - a[1]);
+  
+  if (severidadOrdenada.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 1rem; color: #999;">Sin datos</td></tr>';
+    return;
+  }
+  
+  let html = '';
+  severidadOrdenada.forEach(([severidad, cantidad]) => {
+    const porcentaje = ((cantidad / total) * 100).toFixed(1);
+    html += `
+      <tr>
+        <td>${severidad}</td>
+        <td style="text-align: center; font-weight: bold;">${cantidad}</td>
+        <td style="text-align: center;">${porcentaje}%</td>
+      </tr>
+    `;
+  });
+  
+  tbody.innerHTML = html;
+}
+
+function calcularCitasEInasistencias(filas) {
+  // Citas pendientes (contar los que tienen fecha asignada pero no "Sin asignación de cita")
+  const citas = {
+    'FISIATRA': 0,
+    'JUNTA MEDICA': 0,
+    'VALORACION OCUPACIONAL': 0,
+    'MEDICINA LABORAL': 0,
+    'PSICOLOGIA': 0,
+    'TERAPIA OCUPACIONAL': 0,
+    'TERAPIA FISICA': 0
+  };
+  
+  // Inasistencias (contar los que tienen "SI" en campo de inasistencia)
+  const inasistencias = {
+    'INASISTENCIA FISIATRA': 0,
+    'INASISTENCIA JUNTA MEDICA': 0,
+    'INASISTENCIA VALORACION OCUPACIONAL': 0,
+    'INASISTENCIA MEDICINA LABORAL': 0,
+    'INASISTENCIA PSICOLOGIA': 0,
+    'INASISTENCIA TERAPIA OCUPACIONAL': 0,
+    'INASISTENCIA TERAPIA FISICA': 0
+  };
+  
+  filas.forEach(row => {
+    // Contar citas pendientes
+    Object.keys(citas).forEach(campo => {
+      const valor = row[campo];
+      if (valor && valor !== '' && valor !== 'Sin asignación de cita') {
+        citas[campo]++;
+      }
+    });
+    
+    // Contar inasistencias
+    Object.keys(inasistencias).forEach(campo => {
+      const valor = row[campo];
+      if (valor === 'SI') {
+        inasistencias[campo]++;
+      }
+    });
+  });
+  
+  // Actualizar UI de citas pendientes
+  document.getElementById('citaFisiatra').textContent = citas['FISIATRA'];
+  document.getElementById('citaJuntaMedica').textContent = citas['JUNTA MEDICA'];
+  document.getElementById('citaValoracionOcup').textContent = citas['VALORACION OCUPACIONAL'];
+  document.getElementById('citaMedicinaLab').textContent = citas['MEDICINA LABORAL'];
+  document.getElementById('citaPsicologia').textContent = citas['PSICOLOGIA'];
+  document.getElementById('citaTerapiaOcup').textContent = citas['TERAPIA OCUPACIONAL'];
+  document.getElementById('citaTerapiaFisica').textContent = citas['TERAPIA FISICA'];
+  
+  // Actualizar UI de inasistencias
+  document.getElementById('inasistFisiatra').textContent = inasistencias['INASISTENCIA FISIATRA'];
+  document.getElementById('inasistJuntaMedica').textContent = inasistencias['INASISTENCIA JUNTA MEDICA'];
+  document.getElementById('inasistValoracionOcup').textContent = inasistencias['INASISTENCIA VALORACION OCUPACIONAL'];
+  document.getElementById('inasistMedicinaLab').textContent = inasistencias['INASISTENCIA MEDICINA LABORAL'];
+  document.getElementById('inasistPsicologia').textContent = inasistencias['INASISTENCIA PSICOLOGIA'];
+  document.getElementById('inasistTerapiaOcup').textContent = inasistencias['INASISTENCIA TERAPIA OCUPACIONAL'];
+  document.getElementById('inasistTerapiaFisica').textContent = inasistencias['INASISTENCIA TERAPIA FISICA'];
 }
 
 // ========== FUNCIONES DE MODAL EDITAR ==========
@@ -1362,92 +2079,185 @@ function abrirModalEditar(rowIndex) {
 
 function crearCampoFormulario(header, valor) {
   const div = document.createElement('div');
-  div.className = 'col-md-3 mb-3';
   
   const headerUpper = header.toUpperCase();
-  let inputHTML = '';
   
-  // Determinar tipo de campo
-  if (headerUpper === 'CLASIFICACION SEVERIDAD') {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <select class="form-select" name="${header}">
-        <option value="">-- Seleccione --</option>
-        <option ${valor==='AT Caso Muy Leve'?'selected':''}>AT Caso Muy Leve</option>
-        <option ${valor==='AT Caso Leve'?'selected':''}>AT Caso Leve</option>
-        <option ${valor==='AT Caso Moderado'?'selected':''}>AT Caso Moderado</option>
-        <option ${valor==='AT Caso Grave'?'selected':''}>AT Caso Grave</option>
-        <option ${valor==='AT Caso Muy Grave'?'selected':''}>AT Caso Muy Grave</option>
-        <option ${valor==='AT Caso Severo'?'selected':''}>AT Caso Severo</option>
-        <option ${valor==='Enfermedad Laboral'?'selected':''}>Enfermedad Laboral</option>
-      </select>
-    `;
-  } else if (headerUpper === 'AUDITOR') {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <select class="form-select" name="${header}">
-        <option value="">-- Seleccione --</option>
-        <option ${valor==='FABIAN MACIAS'?'selected':''}>FABIAN MACIAS</option>
-        <option ${valor==='YANETH OBREGON'?'selected':''}>YANETH OBREGON</option>
-        <option ${valor==='MELISA SANCHEZ'?'selected':''}>MELISA SANCHEZ</option>
-        <option ${valor==='ANGELA LOPEZ'?'selected':''}>ANGELA LOPEZ</option>
-        <option ${valor==='ADRIANA VILLOTA'?'selected':''}>ADRIANA VILLOTA</option>
-        <option ${valor==='YULAINE VERGARA'?'selected':''}>YULAINE VERGARA</option>
-      </select>
-    `;
-  } else if (headerUpper === 'GENERO') {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <select class="form-select" name="${header}">
-        <option value="">-- Seleccione --</option>
-        <option ${valor==='Masculino'?'selected':''}>Masculino</option>
-        <option ${valor==='Femenino'?'selected':''}>Femenino</option>
-        <option ${valor==='Otro'?'selected':''}>Otro</option>
-      </select>
-    `;
-  } else if (headerUpper === 'MAYOR A 56 AÑOS SI O NO') {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <select class="form-select" name="${header}">
-        <option value="">-- Seleccione --</option>
-        <option ${valor==='SI'?'selected':''}>SI</option>
-        <option ${valor==='NO'?'selected':''}>NO</option>
-      </select>
-    `;
-  } else if (header.toLowerCase().includes('fecha')) {
+  // Campos de citas médicas con dropdown especial y checkbox de inasistencia
+  const camposCitas = ['FISIATRA', 'JUNTA MEDICA', 'VALORACION OCUPACIONAL', 'MEDICINA LABORAL', 'PSICOLOGIA', 'TERAPIA OCUPACIONAL', 'TERAPIA FISICA'];
+  
+  if (camposCitas.includes(headerUpper)) {
+    div.className = 'col-md-4 mb-3';
+    
+    // Determinar estado actual del campo
+    let estadoActual = 'vacio';
     let valorFecha = '';
-    if (valor instanceof Date) {
-      valorFecha = valor.toISOString().split('T')[0];
-    } else if (typeof valor === 'string' && valor) {
-      valorFecha = valor;
+    
+    if (valor === 'Sin asignación de cita') {
+      estadoActual = 'sinAsignacion';
+    } else if (valor && valor !== '') {
+      estadoActual = 'conFecha';
+      if (valor instanceof Date) {
+        valorFecha = valor.toISOString().split('T')[0];
+      } else if (typeof valor === 'string') {
+        if (valor.includes('/')) {
+          const partes = valor.split('/');
+          if (partes.length === 3) {
+            valorFecha = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+          }
+        } else {
+          valorFecha = valor;
+        }
+      }
     }
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <input type="date" class="form-control" name="${header}" value="${valorFecha}">
+    
+    // Buscar campo de inasistencia correspondiente
+    const columnaInasistencia = 'INASISTENCIA ' + header;
+    const row = STATE.rows[parseInt(document.getElementById('editRowIndex').value)];
+    const tieneInasistencia = row && row[columnaInasistencia] === 'SI';
+    
+    const selectId = `select_${header.replace(/ /g, '_')}`;
+    const fechaId = `fecha_${header.replace(/ /g, '_')}`;
+    const checkId = `check_${header.replace(/ /g, '_')}`;
+    
+    div.innerHTML = `
+      <div style="border: 1px solid #ddd; border-radius: 0.5rem; padding: 0.75rem; background: #f8f9fa;">
+        <label class="form-label" style="font-weight: bold; margin-bottom: 0.5rem;">${header}</label>
+        
+        <select class="form-select form-select-sm mb-2" id="${selectId}" onchange="manejarCambioCita('${selectId}', '${fechaId}', '${header}')">
+          <option value="vacio" ${estadoActual === 'vacio' ? 'selected' : ''}>-- Vacío --</option>
+          <option value="sinAsignacion" ${estadoActual === 'sinAsignacion' ? 'selected' : ''}>Sin asignación de cita</option>
+          <option value="conFecha" ${estadoActual === 'conFecha' ? 'selected' : ''}>Asignar fecha</option>
+        </select>
+        
+        <input type="date" class="form-control form-control-sm mb-2" id="${fechaId}" name="${header}" 
+               value="${valorFecha}" 
+               style="display: ${estadoActual === 'conFecha' ? 'block' : 'none'}">
+        
+        <input type="hidden" class="cita-valor-final" name="${header}" value="${valor || ''}">
+        
+        ${STATE.headers.includes(columnaInasistencia) ? `
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding: 0.3rem; background: #ffebee; border-radius: 0.25rem;">
+          <input type="checkbox" class="form-check-input" id="${checkId}" name="${columnaInasistencia}" 
+                 ${tieneInasistencia ? 'checked' : ''} 
+                 style="margin: 0; width: 18px; height: 18px;">
+          <label for="${checkId}" style="margin: 0; font-size: 0.85rem; color: #c62828; font-weight: 600; cursor: pointer;">
+            <i class="bi bi-x-circle"></i> Inasistió
+          </label>
+        </div>
+        ` : ''}
+      </div>
     `;
-  } else if (headerUpper.includes('OBSERVACION')) {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <textarea class="form-control" name="${header}" rows="2">${valor || ''}</textarea>
-    `;
-  } else if (header.toLowerCase().includes('inasistencia')) {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <select class="form-select" name="${header}">
-        <option value="">-- Seleccione --</option>
-        <option ${valor==='SI'?'selected':''}>SI</option>
-        <option ${valor==='NO'?'selected':''}>NO</option>
-      </select>
-    `;
-  } else {
-    inputHTML = `
-      <label class="form-label">${header}</label>
-      <input type="text" class="form-control" name="${header}" value="${valor || ''}">
-    `;
+  } 
+  // Campos de inasistencia individuales (si no se mostraron con las citas)
+  else if (headerUpper.includes('INASISTENCIA')) {
+    // Skip - ya se manejan junto con las citas
+    return null;
+  }
+  // Resto de campos normales
+  else {
+    div.className = 'col-md-3 mb-3';
+    let inputHTML = '';
+    
+    if (headerUpper === 'CLASIFICACION SEVERIDAD') {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <select class="form-select" name="${header}">
+          <option value="">-- Seleccione --</option>
+          <option ${valor==='AT Caso Muy Leve'?'selected':''}>AT Caso Muy Leve</option>
+          <option ${valor==='AT Caso Leve'?'selected':''}>AT Caso Leve</option>
+          <option ${valor==='AT Caso Moderado'?'selected':''}>AT Caso Moderado</option>
+          <option ${valor==='AT Caso Grave'?'selected':''}>AT Caso Grave</option>
+          <option ${valor==='AT Caso Muy Grave'?'selected':''}>AT Caso Muy Grave</option>
+          <option ${valor==='AT Caso Severo'?'selected':''}>AT Caso Severo</option>
+          <option ${valor==='Enfermedad Laboral'?'selected':''}>Enfermedad Laboral</option>
+        </select>
+      `;
+    } else if (headerUpper === 'AUDITOR') {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <select class="form-select" name="${header}">
+          <option value="">-- Seleccione --</option>
+          <option ${valor==='FABIAN MACIAS'?'selected':''}>FABIAN MACIAS</option>
+          <option ${valor==='YANETH OBREGON'?'selected':''}>YANETH OBREGON</option>
+          <option ${valor==='MELISA SANCHEZ'?'selected':''}>MELISA SANCHEZ</option>
+          <option ${valor==='ANGELA LOPEZ'?'selected':''}>ANGELA LOPEZ</option>
+          <option ${valor==='ADRIANA VILLOTA'?'selected':''}>ADRIANA VILLOTA</option>
+          <option ${valor==='YULAINE VERGARA'?'selected':''}>YULAINE VERGARA</option>
+        </select>
+      `;
+    } else if (headerUpper === 'GENERO') {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <select class="form-select" name="${header}">
+          <option value="">-- Seleccione --</option>
+          <option ${valor==='Masculino'?'selected':''}>Masculino</option>
+          <option ${valor==='Femenino'?'selected':''}>Femenino</option>
+          <option ${valor==='Otro'?'selected':''}>Otro</option>
+        </select>
+      `;
+    } else if (headerUpper === 'MAYOR A 56 AÑOS SI O NO') {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <select class="form-select" name="${header}">
+          <option value="">-- Seleccione --</option>
+          <option ${valor==='SI'?'selected':''}>SI</option>
+          <option ${valor==='NO'?'selected':''}>NO</option>
+        </select>
+      `;
+    } else if (header.toLowerCase().includes('fecha')) {
+      let valorFecha = '';
+      if (valor instanceof Date) {
+        valorFecha = valor.toISOString().split('T')[0];
+      } else if (typeof valor === 'string' && valor) {
+        if (valor.includes('/')) {
+          const partes = valor.split('/');
+          if (partes.length === 3) {
+            valorFecha = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+          }
+        } else {
+          valorFecha = valor;
+        }
+      }
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <input type="date" class="form-control" name="${header}" value="${valorFecha}">
+      `;
+    } else if (headerUpper.includes('OBSERVACION')) {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <textarea class="form-control" name="${header}" rows="2">${valor || ''}</textarea>
+      `;
+    } else {
+      inputHTML = `
+        <label class="form-label">${header}</label>
+        <input type="text" class="form-control" name="${header}" value="${valor || ''}">
+      `;
+    }
+    
+    div.innerHTML = inputHTML;
   }
   
-  div.innerHTML = inputHTML;
   return div;
+}
+
+// Función para manejar cambio en dropdown de citas
+function manejarCambioCita(selectId, fechaId, nombreCampo) {
+  const select = document.getElementById(selectId);
+  const fechaInput = document.getElementById(fechaId);
+  const hiddenInput = document.querySelector(`input[name="${nombreCampo}"].cita-valor-final`);
+  
+  if (select.value === 'vacio') {
+    fechaInput.style.display = 'none';
+    fechaInput.value = '';
+    if (hiddenInput) hiddenInput.value = '';
+  } else if (select.value === 'sinAsignacion') {
+    fechaInput.style.display = 'none';
+    fechaInput.value = '';
+    if (hiddenInput) hiddenInput.value = 'Sin asignación de cita';
+  } else if (select.value === 'conFecha') {
+    fechaInput.style.display = 'block';
+    // El valor se tomará del input de fecha
+  }
 }
 
 function recogerDatosDelFormularioEditar() {
@@ -1631,6 +2441,94 @@ async function cerrarCasoExcel() {
   }
 }
 
+// ========== FUNCIONES DE AGREGAR USUARIO ==========
+async function agregarUsuarioExcel() {
+  try {
+    const form = document.getElementById('formAgregarUsuario');
+    const hoja = document.getElementById('selectAseguradorAgregar').value;
+    
+    if (!hoja) {
+      showMessage('warning', 'Debe seleccionar un asegurador');
+      return;
+    }
+    
+    // Recoger datos del formulario
+    const datos = {};
+    form.querySelectorAll('input[name], select[name], textarea[name]').forEach(field => {
+      if (field.name && field.name !== 'hoja') {
+        datos[field.name] = field.value;
+      }
+    });
+    
+    // Calcular "Hoy" y "Días sin seguimiento"
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    datos['Hoy'] = hoy.toISOString().split('T')[0];
+    
+    const fechaUltimoSeguimiento = datos['Fecha Último Seguimiento'];
+    if (fechaUltimoSeguimiento) {
+      const fechaSeguimiento = new Date(fechaUltimoSeguimiento);
+      const diferenciaDias = Math.floor((hoy - fechaSeguimiento) / (1000 * 60 * 60 * 24));
+      datos['Días sin seguimiento'] = diferenciaDias >= 0 ? diferenciaDias : 0;
+    } else {
+      datos['Días sin seguimiento'] = '';
+    }
+    
+    showLoading('Agregando usuario...');
+    
+    // Obtener worksheet
+    const worksheets = await llamarGraphAPI(`/me/drive/items/${STATE.excelFileId}/workbook/worksheets`);
+    const worksheet = worksheets.value.find(ws => ws.name.toLowerCase() === hoja.toLowerCase());
+    
+    if (!worksheet) {
+      throw new Error(`No se encontró la hoja "${hoja}"`);
+    }
+    
+    // Obtener headers de la hoja
+    const usedRange = await llamarGraphAPI(
+      `/me/drive/items/${STATE.excelFileId}/workbook/worksheets/${worksheet.id}/usedRange`
+    );
+    
+    const headers = usedRange.values[0];
+    
+    // Construir array de valores en el orden de los headers
+    const valores = headers.map(header => datos[header] || '');
+    
+    // Calcular última fila
+    const ultimaFila = usedRange.rowCount + 1;
+    const ultimaColumna = getColumnLetter(headers.length);
+    const rangeAddress = `A${ultimaFila}:${ultimaColumna}${ultimaFila}`;
+    
+    // Insertar en Excel
+    await llamarGraphAPI(
+      `/me/drive/items/${STATE.excelFileId}/workbook/worksheets/${worksheet.id}/range(address='${rangeAddress}')`,
+      'PATCH',
+      { values: [valores] }
+    );
+    
+    // Cerrar modal
+    const modalEl = document.getElementById('modalAgregarUsuario');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+    
+    // Limpiar formulario
+    form.reset();
+    
+    // Recargar datos si estamos en esa hoja
+    if (STATE.hoja === hoja) {
+      await cargarDatosHoja(STATE.hoja);
+    }
+    
+    hideLoading();
+    showMessage('success', `Usuario agregado correctamente a ${hoja}`);
+    
+  } catch (error) {
+    hideLoading();
+    console.error('Error al agregar usuario:', error);
+    showMessage('error', `Error al agregar usuario: ${error.message}`);
+  }
+}
+
 // ========== FUNCIONES AUXILIARES ==========
 function showLoading(message = 'Cargando...') {
   document.getElementById('loadingText').textContent = message;
@@ -1745,7 +2643,46 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Botón agregar
   document.getElementById('btnAgregar').addEventListener('click', function() {
-    showMessage('info', 'Función de agregar usuario en desarrollo');
+    const modal = new bootstrap.Modal(document.getElementById('modalAgregarUsuario'));
+    modal.show();
+  });
+  
+  // Botón guardar usuario (agregar)
+  document.getElementById('btnGuardarUsuario').addEventListener('click', async function() {
+    await agregarUsuarioExcel();
+  });
+  
+  // Toggle dashboard
+  document.getElementById('btnToggleDashboard').addEventListener('click', function() {
+    const dashboard = document.getElementById('dashboardPanel');
+    const btn = this;
+    
+    if (dashboard.classList.contains('collapsed')) {
+      dashboard.classList.remove('collapsed');
+      btn.innerHTML = '<i class="bi bi-chevron-up"></i> Ocultar';
+    } else {
+      dashboard.classList.add('collapsed');
+      btn.innerHTML = '<i class="bi bi-chevron-down"></i> Mostrar';
+    }
+  });
+  
+  // Botón aplicar filtros
+  document.getElementById('btnAplicarFiltros').addEventListener('click', function() {
+    renderTable();
+    calcularEstadisticasDashboard();
+  });
+  
+  // Botón limpiar filtros
+  document.getElementById('btnLimpiarFiltros').addEventListener('click', function() {
+    document.getElementById('fechaDesde').value = '';
+    document.getElementById('fechaHasta').value = '';
+    document.getElementById('campoBusqueda').value = '';
+    STATE.auditorSeleccionado = '';
+    STATE.filtroSemaforo = 'todos';
+    document.getElementById('selectAuditor').value = '';
+    document.querySelectorAll('.indicador').forEach(i => i.classList.remove('active'));
+    renderTable();
+    calcularEstadisticasDashboard();
   });
   
   // Verificar si hay token en URL
