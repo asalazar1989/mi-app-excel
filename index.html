@@ -752,13 +752,12 @@
         // ====================================
         const CONFIG = {
             clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267',
-            redirectUri: 'https://asalazar1989.github.io/mi-app-excel/',
-            fileName: 'Seguimiento ARL - Rangel.xlsx' // Buscaremos por nombre
+            redirectUri: 'https://asalazar1989.github.io/mi-app-excel/'
         };
 
         let accessToken = null;
         let userData = null;
-        let excelFileId = null; // Se obtendrá dinámicamente
+        let excelFileId = null; // Se obtendrá dinámicamente buscando por "ARL Rangel"
         
         const STATE = {
             hoja: '',
@@ -832,11 +831,11 @@
         }
 
         async function buscarArchivoExcel() {
-            console.log('🔍 Buscando archivo:', CONFIG.fileName);
+            console.log('🔍 Buscando archivo Excel ARL...');
             
             try {
-                // Buscar el archivo en OneDrive
-                const searchUrl = `https://graph.microsoft.com/v1.0/me/drive/root/search(q='${encodeURIComponent(CONFIG.fileName)}')`;
+                // Buscar por "ARL Rangel" para ser más flexible
+                const searchUrl = `https://graph.microsoft.com/v1.0/me/drive/root/search(q='ARL Rangel')`;
                 console.log('📡 URL búsqueda:', searchUrl);
                 
                 const response = await fetch(searchUrl, {
@@ -849,36 +848,47 @@
                 
                 const data = await response.json();
                 console.log('📁 Archivos encontrados:', data.value.length);
+                console.log('📋 Lista de archivos:', data.value.map(f => f.name));
                 
                 if (data.value.length === 0) {
-                    throw new Error(`No se encontró el archivo "${CONFIG.fileName}" en tu OneDrive.\n\nAsegúrate de que:\n1. El archivo existe\n2. Está en tu OneDrive\n3. El nombre es exacto: "${CONFIG.fileName}"`);
+                    throw new Error(`No se encontró ningún archivo con "ARL Rangel" en tu OneDrive.\n\nPor favor:\n1. Verifica que el archivo existe\n2. Está en tu OneDrive (no en SharePoint)\n3. El nombre contiene "ARL" y "Rangel"`);
                 }
                 
-                // Buscar el archivo exacto (por nombre completo)
-                const archivoExacto = data.value.find(file => 
-                    file.name.toLowerCase() === CONFIG.fileName.toLowerCase()
+                // Buscar archivos Excel (.xlsx, .xlsm, .xls)
+                const archivosExcel = data.value.filter(file => 
+                    file.name.toLowerCase().includes('arl') && 
+                    file.name.toLowerCase().includes('rangel') &&
+                    (file.name.toLowerCase().endsWith('.xlsx') || 
+                     file.name.toLowerCase().endsWith('.xlsm') ||
+                     file.name.toLowerCase().endsWith('.xls'))
                 );
                 
-                if (!archivoExacto) {
-                    // Si no se encuentra exacto, tomar el primero que contenga "ARL"
-                    const archivoARL = data.value.find(file => 
-                        file.name.toLowerCase().includes('arl') && 
-                        file.name.toLowerCase().includes('rangel')
+                console.log('📊 Archivos Excel encontrados:', archivosExcel.length);
+                
+                if (archivosExcel.length === 0) {
+                    // Si no encontró Excel, tomar el primero que tenga ARL y Rangel
+                    const primerArchivo = data.value.find(f => 
+                        f.name.toLowerCase().includes('arl') && 
+                        f.name.toLowerCase().includes('rangel')
                     );
                     
-                    if (archivoARL) {
-                        excelFileId = archivoARL.id;
-                        console.log('✅ Archivo encontrado (similar):', archivoARL.name);
+                    if (primerArchivo) {
+                        excelFileId = primerArchivo.id;
+                        console.log('✅ Archivo encontrado:', primerArchivo.name);
                         console.log('📁 File ID:', excelFileId);
-                        showMessage('info', `Usando archivo: ${archivoARL.name}`);
+                        console.log('📄 Tipo:', primerArchivo.file?.mimeType);
+                        showMessage('success', `✅ Conectado a: ${primerArchivo.name}`);
                     } else {
-                        throw new Error(`Archivo no encontrado. Archivos disponibles:\n${data.value.map(f => f.name).join('\n')}`);
+                        throw new Error(`No se encontró archivo Excel. Archivos disponibles:\n${data.value.map(f => f.name).join('\n')}`);
                     }
                 } else {
-                    excelFileId = archivoExacto.id;
-                    console.log('✅ Archivo encontrado:', archivoExacto.name);
+                    // Tomar el primero que sea Excel
+                    const archivoExcel = archivosExcel[0];
+                    excelFileId = archivoExcel.id;
+                    console.log('✅ Archivo Excel encontrado:', archivoExcel.name);
                     console.log('📁 File ID:', excelFileId);
-                    showMessage('success', `✅ Conectado a: ${archivoExacto.name}`);
+                    console.log('📄 Tipo:', archivoExcel.file?.mimeType);
+                    showMessage('success', `✅ Conectado a: ${archivoExcel.name}`);
                 }
                 
             } catch (error) {
