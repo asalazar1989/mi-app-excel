@@ -859,24 +859,79 @@
 
         async function cargarDatosHoja(nombreHoja) {
             showLoading(`Cargando datos de ${nombreHoja}...`);
+            console.log('🔍 Iniciando carga de hoja:', nombreHoja);
+            console.log('📁 File ID:', CONFIG.fileId);
+            console.log('🔑 Token presente:', !!accessToken);
+            
             try {
-                const url = `https://graph.microsoft.com/v1.0/me/drive/items/${CONFIG.fileId}/workbook/worksheets/${nombreHoja}/range(address='A1:AH1000')`;
+                // PASO 1: Obtener información del workbook
+                const workbookUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${CONFIG.fileId}/workbook/worksheets`;
+                console.log('📡 URL Worksheets:', workbookUrl);
                 
-                const response = await fetch(url, {
+                const worksheetsResponse = await fetch(workbookUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!worksheetsResponse.ok) {
+                    const errorText = await worksheetsResponse.text();
+                    console.error('❌ Error worksheets:', worksheetsResponse.status, errorText);
+                    throw new Error(`Error al obtener hojas: ${worksheetsResponse.status} - ${errorText}`);
+                }
+                
+                const worksheetsData = await worksheetsResponse.json();
+                console.log('📋 Hojas disponibles:', worksheetsData.value.map(s => s.name));
+                
+                // Buscar la hoja exacta (case-insensitive)
+                const hojaExacta = worksheetsData.value.find(s => 
+                    s.name.toLowerCase() === nombreHoja.toLowerCase()
+                );
+                
+                if (!hojaExacta) {
+                    throw new Error(`Hoja "${nombreHoja}" no encontrada. Hojas disponibles: ${worksheetsData.value.map(s => s.name).join(', ')}`);
+                }
+                
+                const nombreHojaExacto = hojaExacta.name;
+                console.log('✅ Hoja encontrada:', nombreHojaExacto);
+                
+                // PASO 2: Obtener el rango usado de la hoja
+                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${CONFIG.fileId}/workbook/worksheets/${encodeURIComponent(nombreHojaExacto)}/usedRange`;
+                console.log('📡 URL UsedRange:', usedRangeUrl);
+                
+                const response = await fetch(usedRangeUrl, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Content-Type': 'application/json'
                     }
                 });
 
-                if (!response.ok) throw new Error(`Error al leer hoja: ${response.status}`);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('❌ Error usedRange:', response.status, errorText);
+                    throw new Error(`Error al leer datos: ${response.status} - ${errorText}`);
+                }
 
                 const data = await response.json();
+                console.log('📊 Datos recibidos:', {
+                    filas: data.values.length,
+                    columnas: data.values[0]?.length,
+                    primeraFila: data.values[0]
+                });
+                
+                if (!data.values || data.values.length === 0) {
+                    throw new Error('La hoja está vacía');
+                }
+                
                 STATE.headers = data.values[0];
+                console.log('📋 Headers:', STATE.headers);
                 
                 const rows = data.values.slice(1).filter(row => 
                     row.some(cell => cell !== null && cell !== '')
                 );
+                
+                console.log('📊 Filas filtradas:', rows.length);
                 
                 STATE.rows = rows.map(row => {
                     const obj = {};
@@ -886,11 +941,15 @@
                     return obj;
                 });
 
+                console.log('✅ Datos procesados:', STATE.rows.length, 'registros');
+                console.log('👁️ Primer registro:', STATE.rows[0]);
+
                 renderTable();
                 actualizarSemaforo();
                 actualizarSemaforoCitas();
                 calcularEstadisticasDashboard();
                 hideLoading();
+                showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
                 
                 const semaforoCitas = document.getElementById('semaforoCitas');
                 if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas') {
@@ -901,7 +960,9 @@
                 
             } catch (error) {
                 hideLoading();
-                showMessage('error', `Error al cargar datos: ${error.message}`);
+                console.error('❌ ERROR COMPLETO:', error);
+                alert(`❌ Error al cargar datos:\n\n${error.message}\n\nRevisa la consola (F12) para más detalles.`);
+                showMessage('error', `Error: ${error.message}`);
             }
         }
 
@@ -909,6 +970,10 @@
         // RENDERIZADO DE TABLA
         // ====================================
         function renderTable() {
+            console.log('🎨 Renderizando tabla...');
+            console.log('📊 Headers:', STATE.headers.length);
+            console.log('📋 Rows:', STATE.rows.length);
+            
             const th = document.getElementById('tablaHead');
             th.innerHTML = '';
             const trHead = document.createElement('tr');
@@ -928,9 +993,25 @@
             const tb = document.getElementById('tablaBody');
             tb.innerHTML = '';
             
+            if (STATE.rows.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = STATE.headers.length + 1;
+                td.style.cssText = 'text-align:center; padding:40px; color:#999; font-size:1.1rem;';
+                td.innerHTML = '📭 No hay datos para mostrar<br><small style="font-size:0.85rem;">Intenta seleccionar otra hoja o revisa la conexión</small>';
+                tr.appendChild(td);
+                tb.appendChild(tr);
+                console.log('⚠️ No hay filas para mostrar');
+                return;
+            }
+            
+            let filasVisibles = 0;
+            
             STATE.rows.forEach((r, idx) => {
                 let mostrar = aplicarFiltrosAFila(r);
                 if (!mostrar) return;
+                
+                filasVisibles++;
                 
                 const tr = document.createElement('tr');
                 const tdAcciones = document.createElement('td');
@@ -949,6 +1030,18 @@
                 });
                 tb.appendChild(tr);
             });
+            
+            console.log('✅ Tabla renderizada:', filasVisibles, 'filas visibles');
+            
+            if (filasVisibles === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = STATE.headers.length + 1;
+                td.style.cssText = 'text-align:center; padding:40px; color:#999; font-size:1.1rem;';
+                td.innerHTML = '🔍 No se encontraron resultados con los filtros aplicados<br><small style="font-size:0.85rem;">Intenta limpiar los filtros</small>';
+                tr.appendChild(td);
+                tb.appendChild(tr);
+            }
         }
 
         function aplicarFiltrosAFila(r) {
@@ -1320,7 +1413,33 @@
 
         function showMessage(type, message) {
             console.log(`[${type.toUpperCase()}] ${message}`);
-            // Aquí podrías implementar toasts o alerts
+            
+            // Crear contenedor de alertas si no existe
+            let alertContainer = document.getElementById('alertContainer');
+            if (!alertContainer) {
+                alertContainer = document.createElement('div');
+                alertContainer.id = 'alertContainer';
+                alertContainer.style.cssText = 'position:fixed; top:20px; right:20px; z-index:10000; max-width:400px;';
+                document.body.appendChild(alertContainer);
+            }
+            
+            // Crear alerta
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
+            alert.role = 'alert';
+            alert.style.cssText = 'margin-bottom:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            // Auto-cerrar después de 5 segundos
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 150);
+            }, 5000);
         }
     </script>
 </body>
