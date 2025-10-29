@@ -1,909 +1,906 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Gestión ARL - Rangel · Excel Online</title>
-
-  <!-- Bootstrap 5 + Icons (únicas dependencias permitidas) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet--primary:#001f3f;
-      --gray:#c0c0c0;
-      --grad:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      --green:#2ecc71; --orange:#f39c12; --red:#e74c3c;
-      --bg:#f6f8fc;
-      --head:#f3f5f9;
-    }
-    html,body{height:100%}
-    body{background:var(--bg)}
-    /* ===== Login ===== */
-    .login{min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--grad);}
-    .card-login{
-      width:min(860px,95vw); background:#0b1736; color:#fff; border-radius:16px; border:1px solid #ffffff1f;
-      box-shadow:0 30px 80px rgba(0,0,0,.45); padding:1.6rem 1.8rem;
-    }
-    .card-login h1{font-size:1.65rem; margin:0}
-    .card-login .sub{opacity:.85}
-    .status{
-      background:#0f2146; border:1px solid #ffffff22; padding:.9rem 1rem; border-radius:12px; margin:1rem 0;
-    }
-    .btn-ms{background:#fff; color:#111; border:0; font-weight:700; border-radius:10px; padding:.8rem 1rem}
-    /* ===== Layout ===== */
-    .app{display:none; min-height:100vh}
-    aside#sidebar{width:290px; background:#0d1a38; color:#fff; padding:1rem; position:sticky; top:0}
-    .brand{font-weight:800; letter-spacing:.3px}
-    .btn-aseg{
-      width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem;
-      background:#13244d; color:#fff; border:1px solid #ffffff16; border-radius:10px; padding:.6rem .8rem; margin-bottom:.55rem;
-    }
-    .btn-aseg.active{background:#1a3370; border-color:#ffffff38}
-    main#content{flex:1; padding:1rem 1.1rem 2.25rem}
-    .topbar{display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.6rem}
-    .topbar .left{display:flex; gap:.5rem; flex-wrap:wrap}
-    .badge-chip{background:#eef2ff; color:#334; border-radius:999px; padding:.35rem .6rem; font-weight:700}
-    /* ===== Paneles ===== */
-    .panel{
-      background:#fff; border:1px solid #e8ebf2; border-radius:12px; padding:.85rem .95rem;
-      box-shadow:0 4px 18px rgba(0,0,0,.04); margin-bottom:.8rem;
-    }
-    .panel h6{font-weight:800; color:#334; margin:0 0 .6rem}
-    /* ===== Dashboard ===== */
-    .kpis{display:grid; grid-template-columns: repeat(6, minmax(150px,1fr)); gap:.55rem}
-    .kpi{background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.75rem .9rem; box-shadow:0 2px 10px rgba(0,0,0,.04)}
-    .kpi .t{font-size:.8rem; color:#6b7280}
-    .kpi .v{font-size:1.35rem; font-weight:900}
-    /* ===== Semáforo ===== */
-    .semaforo{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap}
-    .chip{
-      display:flex; align-items:center; gap:.45rem; background:#fff; border:1px solid #e5e7eb; border-radius:999px; padding:.42rem .6rem; cursor:pointer; user-select:none; font-weight:800
-    }
-    .chip .dot{width:10px; height:10px; border-radius:50%}
-    .chip.green .dot{background:var(--green)}
-    .chip.orange .dot{background:var(--orange)}
-    .chip.red .dot{background:var(--red)}
-    .chip.active{outline:2px solid #2563eb33; background:#eef2ff}
-    /* ===== Filtros ===== */
-    .filters{display:flex; gap:.5rem; align-items:end; flex-wrap:wrap}
-    .filters .form-label{font-size:.78rem; color:#6b7280}
-    .searchbox{max-width:260px}
-    /* ===== Tablas ===== */
-    .table-wrap{background:#fff; border:1px solid #e8ebf2; border-radius:12px; padding:.7rem; box-shadow:0 4px 16px rgba(0,0,0,.04); overflow:auto}
-    table thead th{position:sticky; top:0; background:var(--head); z-index:2; font-size:.82rem}
-    .action-btn{border:1px solid #e5e7eb; background:#fff; border-radius:8px; padding:.35rem .55rem}
-    /* ===== Mini-cards para Citas e Inasistencias ===== */
-    .tiles{display:grid; grid-template-columns: repeat(7, minmax(120px,1fr)); gap:.5rem}
-    .tile{background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.6rem .75rem}
-    .tile .h{font-size:.78rem; color:#6b7280}
-    .tile .n{font-size:1.2rem; font-weight:900}
-    .titlebar{display:flex; align-items:center; justify-content:space-between}
-    /* ===== Modal ===== */
-    .fieldset{border:1px dashed #e5e7eb; border-radius:10px; padding:.75rem; background:#fbfcff; margin-bottom:.75rem}
-    .fieldset legend{font-size:.85rem; font-weight:800; margin:0 .4rem}
-    /* ===== Loading ===== */
-    .overlay{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(13,26,56,.55); z-index:1100; color:#fff; backdrop-filter: blur(2px)}
-    .overlay .box{background:#0b1736; border:1px solid #ffffff22; border-radius:12px; padding:1rem 1.25rem; display:flex; gap:.75rem; align-items:center}
-    @media (max-width:1200px){ .kpis{grid-template-columns: repeat(3,1fr)} .tiles{grid-template-columns:repeat(3,1fr)} }
-    @media (max-width:768px){ aside#sidebar{position:static; width:100%} .kpis{grid-template-columns: repeat(2,1fr)} .tiles{grid-template-columns:repeat(2,1fr)} }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gestión ARL - Rangel | Excel Online (OneDrive)</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+/* --- (CSS adaptado desde tu Index original, resumido para este archivo) --- */
+body{margin:0;font-family:'Segoe UI',Tahoma, Geneva, Verdana,sans-serif;height:100vh;background:#f0f2f5;overflow:hidden}
+#sidebar{width:180px;background:#001f3f;color:white;padding:0.5rem;padding-top:2.5rem;overflow-y:auto;position:fixed;left:0;top:0;height:100vh;z-index:100;transition:left .3s}
+#btnToggleSidebar{position:absolute;right:5px;top:5px;z-index:1000;background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:.3rem .5rem;cursor:pointer}
+#content{margin-left:180px;padding:1rem;overflow:auto;display:flex;flex-direction:column;height:100vh;transition:margin-left .3s}
+.table-wrapper{flex-grow:1;overflow:auto;position:relative;border:1px solid #ddd;border-radius:8px;background:white}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{padding:6px 8px;border:1px solid #ddd;text-align:left;white-space:nowrap}
+th{background:#001f3f;color:white;position:sticky;top:0;z-index:10;font-size:.75rem;font-weight:600}
+.semaforo{display:flex;gap:1rem;margin-bottom:.75rem;flex-wrap:wrap}
+.indicador{display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:20px;background:#f9f9f9}
+.bolita{width:14px;height:14px;border-radius:50%}.verde{background:green}.naranja{background:orange}.rojo{background:red}
+.modal-body{max-height:70vh;overflow-y:auto}
+</style>
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
-<section class="login" id="login">
-  <div class="card-login">
-    <div class="d-flex align-items-center justify-content-between">
-      <div>
-        <h1>Gestión ARL - Rangel</h1>
-        <div class="sub">Sistema Microsoft Excel (UI idéntica · Funcional 100%)</div>
+<!-- LOGIN overlay -->
+<div id="loginScreen" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea,#764ba2);z-index:2000;">
+  <div style="width:960px;max-width:95%;background:white;border-radius:12px;padding:1.1rem;box-shadow:0 6px 20px rgba(0,0,0,.2)">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div style="flex:1">
+        <h3 style="margin:0;color:#001f3f">Gestión ARL - Rangel</h3>
+        <p style="margin:0.2rem 0;color:#333">Sistema Microsoft Excel Online — OneDrive Personal</p>
       </div>
-      <div><span class="badge bg-light text-dark">v1.0</span></div>
-    </div>
-
-    <div class="status mt-3">
-      <div class="d-flex align-items-center justify-content-between">
-        <div><span class="badge bg-success me-2">✔</span><strong>Sistema listo</strong> · Conectado con Graph (OAuth)</div>
-        <div class="small text-white-50">Requiere permiso: Files.ReadWrite.All</div>
+      <div style="display:flex;gap:.5rem">
+        <button id="btnSignIn" class="btn btn-primary">🔐 Iniciar sesión Microsoft</button>
+        <button id="btnSignOut" class="btn btn-outline-secondary" style="display:none">Cerrar sesión</button>
       </div>
     </div>
-
-    <div class="d-flex gap-2">
-      <button id="btnLogin" class="btn btn-ms flex-fill" type="button">
-        <i class="bi bi-windows"></i> Iniciar sesión con Microsoft
-      </button>
-      <button id="btnDemo" class="btn btn-outline-light" type="button" title="Modo de prueba sin tocar OneDrive">
-        DEMO
-      </button>
-    </div>
+    <hr />
+    <div id="loginStatus" style="font-size:.9rem;color:#444">Estado: esperando inicio de sesión...</div>
   </div>
-</section>
-
-<!-- ===== APLICACIÓN ===== -->
-<div class="app" id="app">
-  <aside id="sidebar">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <div class="brand">Gestión ARL</div>
-      <button id="btnLogout" class="btn btn-sm btn-light"><i class="bi bi-box-arrow-right"></i> Salir</button>
-    </div>
-
-    <div class="small mb-2">Usuario: <span id="userName">—</span></div>
-    <hr class="border-secondary-subtle"/>
-
-    <h6 class="mb-2">Aseguradores</h6>
-    <div id="listSheets"></div>
-
-    <hr class="border-secondary-subtle"/>
-    <div class="small"><span id="fileBadge">Archivo: —</span><br><span id="sheetBadge">Hoja: —</span></div>
-  </aside>
-
-  <main id="content">
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="left">
-        <span class="badge-chip"><i class="bi bi-graph-up"></i> Dashboard Estadístico</span>
-        <button id="btnAdd" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Agregar</button>
-        <button id="btnReload" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> Recargar</button>
-      </div>
-      <div class="right"></div>
-    </div>
-
-    <!-- KPIs -->
-    <div class="kpis mb-2">
-      <div class="kpi"><div class="t">Casos Activos</div><div class="v" id="kpiActivos">0</div></div>
-      <div class="kpi"><div class="t">Población Activa</div><div class="v" id="kpiPacientes">0</div></div>
-      <div class="kpi"><div class="t">Siniestros Totales</div><div class="v" id="kpiSiniestros">0</div></div>
-      <div class="kpi"><div class="t">Masculino</div><div class="v" id="kpiMasculino">0</div></div>
-      <div class="kpi"><div class="t">Femenino</div><div class="v" id="kpiFemenino">0</div></div>
-      <div class="kpi"><div class="t">Otro</div><div class="v" id="kpiOtro">0</div></div>
-    </div>
-
-    <!-- Semáforo -->
-    <div class="panel">
-      <div class="titlebar">
-        <h6>📅 Seguimiento de Pacientes</h6>
-        <button id="btnVerTodos" class="btn btn-link btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Ver todos</button>
-      </div>
-      <div class="semaforo">
-        <div class="chip green"  data-sem="verde"   id="chipVerde"><span class="dot"></span> <span id="nVerde">0</span> <small class="text-muted ms-1">(0–5 días)</small></div>
-        <div class="chip orange" data-sem="naranja" id="chipNaranja"><span class="dot"></span> <span id="nNaranja">0</span> <small class="text-muted ms-1">(6–12 días)</small></div>
-        <div class="chip red"    data-sem="rojo"    id="chipRojo"><span class="dot"></span> <span id="nRojo">0</span> <small class="text-muted ms-1">(13+ días)</small></div>
-      </div>
-    </div>
-
-    <!-- Filtros -->
-    <div class="panel">
-      <div class="titlebar">
-        <h6>🔎 Búsqueda y Filtros</h6>
-      </div>
-      <div class="filters">
-        <div class="searchbox">
-          <label class="form-label">Búsqueda</label>
-          <input type="text" id="txtSearch" class="form-control form-control-sm" placeholder="Por nombre, cédula, siniestro, observación...">
-        </div>
-        <div>
-          <label class="form-label">Auditor</label>
-          <select id="selAuditor" class="form-select form-select-sm">
-            <option value="">— Todos —</option>
-          </select>
-        </div>
-        <div>
-          <label class="form-label">Desde (Ingreso a Rangel RHB)</label>
-          <input type="date" id="fDesde" class="form-control form-control-sm">
-        </div>
-        <div>
-          <label class="form-label">Hasta</label>
-          <input type="date" id="fHasta" class="form-control form-control-sm">
-        </div>
-        <button id="btnClear" class="btn btn-outline-secondary btn-sm ms-auto"><i class="bi bi-eraser"></i> Limpiar</button>
-      </div>
-    </div>
-
-    <!-- Control de Citas -->
-    <div class="panel">
-      <div class="titlebar">
-        <h6>🏥 Control de Citas Médicas</h6>
-        <button id="btnVerTodasCitas" class="btn btn-link btn-sm"><i class="bi bi-arrow-repeat"></i> Ver todos</button>
-      </div>
-      <div class="tiles" id="tilesCitas">
-        <!-- 7 tiles de citas -->
-      </div>
-    </div>
-
-    <!-- Inasistencias -->
-    <div class="panel">
-      <div class="titlebar">
-        <h6>🚫 Inasistencias Registradas</h6>
-      </div>
-      <div class="tiles" id="tilesInasistencias">
-        <!-- 7 tiles de inasistencias -->
-      </div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="table-wrap">
-      <div id="tbl"></div>
-    </div>
-  </main>
 </div>
 
-<!-- ===== MODAL AGREGAR/EDITAR ===== -->
-<div class="modal fade" id="mdlEdit" tabindex="-1" aria-hidden="true">
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <button id="btnToggleSidebar" onclick="toggleSidebar()" title="Ocultar menú"><i class="bi bi-chevron-left"></i></button>
+  <h5>Seguimiento ARL - Rangel</h5>
+  <ul id="aseguradoresList" style="padding-left:0"></ul>
+  <div class="mt-2 text-center">
+    <button id="btnAbrirAgregar" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario" style="font-size:.75rem;padding:.35rem .4rem;">➕ Agregar</button>
+  </div>
+</nav>
+
+<main id="content">
+  <!-- DASHBOARD -->
+  <div id="dashboardPanel" style="display:none;margin-bottom:.8rem;background:linear-gradient(135deg,#001f3f 0%,#c0c0c0 100%);border-radius:12px;padding:1rem;color:white;">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h6 style="margin:0"><i class="bi bi-graph-up-arrow"></i> Dashboard Estadístico - <span id="dashboardHojaActual">---</span></h6>
+      <button class="btn btn-sm btn-light" onclick="toggleDashboard()">Ocultar</button>
+    </div>
+    <div style="margin-top:.6rem;display:flex;gap:.6rem;flex-wrap:wrap">
+      <div style="background:white;padding:.6rem;border-radius:8px;color:#001f3f;min-width:150px"><div style="font-size:.7rem">Casos Activos</div><div style="font-size:1.3rem;font-weight:700" id="stat-poblacion-total">0</div></div>
+      <div style="background:white;padding:.6rem;border-radius:8px;color:#2e7d32;min-width:150px"><div style="font-size:.7rem">Población Activa</div><div style="font-size:1.3rem;font-weight:700" id="stat-pacientes-unicos">0</div></div>
+      <div style="background:white;padding:.6rem;border-radius:8px;color:#f57c00;min-width:150px"><div style="font-size:.7rem">Siniestros Totales</div><div style="font-size:1.3rem;font-weight:700" id="stat-siniestros">0</div></div>
+    </div>
+  </div>
+
+  <!-- SEMAFOROS + FILTROS -->
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:.5rem;margin-bottom:.5rem">
+    <div class="semaforo" id="semaforoPrincipal" style="background:white;padding:.6rem;border-radius:8px">
+      <div class="indicador" onclick="filtrarPorSemaforo('verde')"><div class="bolita verde"></div><span id="conteo-verde">0</span> pacientes (0–5 días)</div>
+      <div class="indicador" onclick="filtrarPorSemaforo('naranja')"><div class="bolita naranja"></div><span id="conteo-naranja">0</span> pacientes (6–12 días)</div>
+      <div class="indicador" onclick="filtrarPorSemaforo('rojo')"><div class="bolita rojo"></div><span id="conteo-rojo">0</span> pacientes (13+ días)</div>
+      <div class="indicador" onclick="filtrarPorSemaforo('todos')">🔄 Ver todos</div>
+    </div>
+
+    <div style="display:flex;gap:.5rem">
+      <div style="background:white;padding:.6rem;border-radius:8px;flex:1">
+        <label style="font-size:.75rem">Desde</label>
+        <input type="date" id="fechaDesde" class="form-control form-control-sm" />
+      </div>
+      <div style="background:white;padding:.6rem;border-radius:8px;flex:1">
+        <label style="font-size:.75rem">Hasta</label>
+        <input type="date" id="fechaHasta" class="form-control form-control-sm" />
+      </div>
+    </div>
+  </div>
+
+  <!-- BÚSQUEDA -->
+  <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+    <input id="searchFree" type="text" placeholder="Buscar..." class="form-control form-control-sm" />
+    <button class="btn btn-dark btn-sm" onclick="aplicarFiltros()">Buscar</button>
+    <button class="btn btn-outline-secondary btn-sm" onclick="limpiarFiltros()">Limpiar</button>
+    <div style="flex:1"></div>
+    <div id="fileInfo" style="align-self:center;color:#666;font-size:.9rem"></div>
+  </div>
+
+  <!-- CONTROL CITAS (simplificado visualmente) -->
+  <div id="semaforoCitas" style="display:none;margin-bottom:.5rem"></div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper">
+    <table id="tablaDatos">
+      <thead id="tablaHead"></thead>
+      <tbody id="tablaBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- MODAL AGREGAR -->
+<div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-pencil-square me-1"></i><span id="mdlTitle">Editar Usuario</span></h5>
-        <button class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
+      <div class="modal-header bg-dark text-white"><h5 class="modal-title">➕ Agregar Usuario</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
-        <div class="row g-3">
-          <div class="col-12 col-lg-6">
-            <fieldset class="fieldset">
-              <legend>🧑 Información del Paciente</legend>
-              <div id="formPaciente" class="row g-2"></div>
-              <div class="form-check mt-1">
-                <input class="form-check-input" type="checkbox" id="chkEvento">
-                <label class="form-check-label" for="chkEvento">Paciente por Evento (mover a “Positiva Evento” al guardar si estás en Positiva)</label>
-              </div>
-            </fieldset>
-          </div>
-          <div class="col-12 col-lg-6">
-            <fieldset class="fieldset">
-              <legend>📋 Seguimiento y Estado</legend>
-              <div id="formSeguimiento" class="row g-2"></div>
-            </fieldset>
-            <div class="row g-2 align-items-end">
-              <div class="col-12 col-md-6">
-                <label class="form-label">* Tipo de Cierre (requerido para cerrar)</label>
-                <select id="tipoCierre" class="form-select">
-                  <option value="">— Seleccione motivo de cierre —</option>
-                  <option value="Cierre Caso Auditor">Cierre Caso Auditor</option>
-                  <option value="Cierre Caso Desertor">Cierre Caso Desertor</option>
-                  <option value="Cierre Caso Acta">Cierre Caso Acta</option>
-                  <option value="Cierre Caso Finalizó Ciclo">Cierre Caso Finalizó Ciclo</option>
-                </select>
-              </div>
-              <div class="col d-flex gap-2">
-                <button class="btn btn-outline-danger" id="btnCerrarCaso"><i class="bi bi-x-octagon"></i> Cerrar Caso</button>
-                <button class="btn btn-primary ms-auto" id="btnGuardar"><i class="bi bi-save"></i> Actualizar</button>
-              </div>
+        <form id="formAgregarUsuario">
+          <div class="row g-2" id="formAgregarFields">
+            <!-- generamos dinámicamente algunos campos mínimos -->
+            <div class="col-md-4">
+              <label class="form-label">Hoja destino</label>
+              <select class="form-select" name="hoja" required>
+                <option value="Positiva">Positiva</option>
+                <option value="Colmena">Colmena</option>
+                <option value="Colsanitas">Colsanitas</option>
+              </select>
             </div>
-            <div class="form-text mt-2">Los cálculos usan zona horaria <b>America/Bogota</b>.</div>
+            <div class="col-md-4"><label class="form-label">SINIESTRO</label><input class="form-control" name="SINIESTRO"></div>
+            <div class="col-md-4"><label class="form-label"># MATRICULA</label><input class="form-control" name="# MATRICULA"></div>
+            <div class="col-md-4"><label class="form-label">CEDULA</label><input class="form-control" name="CEDULA"></div>
+            <div class="col-md-4"><label class="form-label">NOMBRE</label><input class="form-control" name="NOMBRE"></div>
+            <div class="col-md-4"><label class="form-label">FECHA DE ASIGNACION A LA IPS</label><input type="date" class="form-control" name="FECHA DE ASIGNACION A LA IPS"></div>
+            <!-- resto de campos pueden agregarse según headers existentes -->
           </div>
-        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="handleAgregarUsuario()">Agregar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== LOADING ===== -->
-<div class="overlay" id="overlay">
-  <div class="box">
-    <div class="spinner-border text-light" role="status" style="width:1.5rem;height:1.5rem"></div>
-    <div id="ovText">Procesando...</div>
+<!-- MODAL EDITAR (dinámico) -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white"><h5 class="modal-title">✏️ Editar Usuario</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="formEditarUsuario">
+          <div id="editarFields" class="row g-2"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <select id="tipoCierreSelect" class="form-select" style="width:220px">
+          <option value="">Tipo de Cierre</option>
+          <option>Alta</option>
+          <option>Remisión</option>
+          <option>Fallecimiento</option>
+          <option>Otro</option>
+        </select>
+        <button class="btn btn-danger" onclick="handleCerrarCaso()">Cerrar Caso</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success" onclick="handleActualizarUsuario()">Actualizar</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Bootstrap JS -->
-https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js</script>
+<!-- Loading overlay -->
+<div id="loadingOverlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:3000">
+  <div style="background:white;padding:1rem;border-radius:8px">Cargando ...</div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- MSAL JS -->
+<script src="https://alcdn.msauth.net/browser/2.28.2/js/msal-browser.min.js"></script>
 
 <script>
-/* =========================
-   CONFIG / ESTADO
-   ========================= */
+/*
+  INDEX.HTML -> Microsoft Graph edition (OneDrive personal)
+  - Usa MSAL para autenticación
+  - Busca archivo "Seguimiento ARL - Rangel.xlsx" en la raíz de OneDrive
+  - Lee worksheet seleccionado, renderiza tabla y modal para editar/crear filas
+  - Cierra caso: copia a CERRADOS y limpia fila original
+*/
+
+/* ========== CONFIG (REEMPLAZAR clientId por tu app registrada) ========== */
 const CONFIG = {
-  clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267',
-  redirectUri: 'https://asalazar1989.github.io/mi-app-excel/',
-  scopes: 'User.Read Files.ReadWrite Files.ReadWrite.All',
-  authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-  graph: 'https://graph.microsoft.com/v1.0'
+  clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267', // <- reemplaza por tu clientId si es necesario
+  redirectUri: window.location.origin + window.location.pathname,
+  scopes: ['User.Read', 'Files.ReadWrite'] // si necesitas Files.ReadWrite.All añádelo en Azure AD
 };
-// Producción: conecta a OneDrive/Excel
-let DEMO_MODE = false; // <-- si quieres probar sin tocar datos, pon true
 
-const FILE_CANDIDATES = [
-  'Seguimiento ARL - Rangel (2)',
-  'Seguimiento ARL - Rangel',
-  'ARL Rangel',
-  'Seguimiento Rangel'
-];
-const SHEETS = ['Positiva','Positiva Evento','Colmena','Colsanitas','CERRADOS'];
+/* ========== MSAL Inicialización ========== */
+const msalConfig = {
+  auth: {
+    clientId: CONFIG.clientId,
+    redirectUri: CONFIG.redirectUri,
+    navigateToLoginRequestUrl: true
+  }
+};
 
-const COL_CITAS = [
-  'FISIATRA',
-  'JUNTA MEDICA',
-  'VALORACION OCUPACIONAL',
-  'MEDICINA LABORAL',
-  'PSICOLOGIA',
-  'TERAPIA OCUPACIONAL',
-  'TERAPIA FISICA'
-];
-const COL_INASIS = [
-  'INASISTENCIA FISIATRA',
-  'INASISTENCIA JUNTA MEDICA',
-  'INASISTENCIA VALORACION OCUPACIONAL',
-  'INASISTENCIA MEDICINA LABORAL',
-  'INASISTENCIA PSICOLOGIA',
-  'INASISTENCIA TERAPIA OCUPACIONAL',
-  'INASISTENCIA TERAPIA FISICA'
-];
-const EVENTO_EXTRAS = [
-  'ELECTRODIAGNOSTICO',
-  'TERAPIA FISICA (Evento)',
-  'CARTA DE RECOMENDACIONES',
-  'PRUEBA DE TRABAJO',
-  'TERAPIA OCUPACIONAL (Evento)',
-  'PSICOLOGIA (Evento)',
-  'MEDICO DOLOR',
-  'BLOQUEO',
-  'NUTRICION'
-];
-const BASE_HEADERS = [
-  'SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','MAYOR A 56 AÑOS SI O NO','AUDITOR',
-  'CLASIFICACION SEVERIDAD','CITA INICIAL','JUNTA MEDICA','INASISTENCIA JUNTA MEDICA','FISIATRA','INASISTENCIA FISIATRA',
-  'VALORACION OCUPACIONAL','INASISTENCIA VALORACION OCUPACIONAL','MEDICINA LABORAL','INASISTENCIA MEDICINA LABORAL',
-  'PSICOLOGIA','INASISTENCIA PSICOLOGIA','TERAPIA OCUPACIONAL','INASISTENCIA TERAPIA OCUPACIONAL','TERAPIA FISICA','INASISTENCIA TERAPIA FISICA',
-  'ALTA INMEDIATA','ESTADO DE LA MATRICULA','FECHA CIERRE','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES',
-  'OBSERVACION','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS','OBSERVACION FACTURACION',
-  'Fecha Último Seguimiento','Hoy','Días sin seguimiento','OBSERVACION (final)'
-];
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+let account = null;
+let accessToken = null;
 
+/* ========== STATE ========== */
 const STATE = {
-  token:null, me:null,
-  file:{id:null,name:null},
-  sheet:'Positiva',
-  headers:[],
-  rows:[],
-  filtered:[],
-  auditorOpts:[],
-  sem:null, // 'verde'|'naranja'|'rojo'|null
-  auditor:'',
-  buscar:'',
-  desde:null, hasta:null,
-  edit:{ index:-1, data:{} }
+  fileId: null,
+  fileName: 'Seguimiento ARL - Rangel.xlsx',
+  workbookId: null,
+  sheets: [],
+  currentSheet: 'Positiva',
+  headers: [],
+  rows: [], // array de objetos
+  filteredRows: [],
+  semaforoFilter: 'todos',
+  auditorFilter: '',
+  dateFrom: null,
+  dateTo: null,
+  searchText: ''
 };
 
-/* =========================
-   HELPERS
-   ========================= */
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-function toast(msg,type='info'){ const d=document.createElement('div'); d.className=`alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3 shadow`; d.style.zIndex=2500; d.textContent=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2600); }
-function showLoad(t='Procesando...'){ $('#ovText').textContent=t; $('#overlay').style.display='flex'; }
-function hideLoad(){ $('#overlay').style.display='none'; }
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-function toISO(d){ if(!d) return ''; const dt=(d instanceof Date)?d:new Date(d); const y=dt.getFullYear(), m=String(dt.getMonth()+1).padStart(2,'0'), da=String(dt.getDate()).padStart(2,'0'); return `${y}-${m}-${da}`; }
-function parseExcelDate(v){ if(v==null||v==='') return null; if(typeof v==='number'){ const base=new Date(Date.UTC(1899,11,30)); return new Date(base.getTime()+v*86400000); } const dt=new Date(v); return isNaN(dt)? null: dt; }
-function diffDaysBog(from, to=new Date()){ if(!from) return ''; const a=new Date(from), b=new Date(to); a.setHours(0,0,0,0); b.setHours(0,0,0,0); return Math.floor((b-a)/86400000); }
-function colLetter(i){ let s=''; i++; while(i>0){ const m=(i-1)%26; s=String.fromCharCode(65+m)+s; i=Math.floor((i-1)/26);} return s; }
-function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function isYes(v){ return String(v||'').trim().toUpperCase()==='SI'; }
+/* ========== UI helpers ========== */
+const $ = id => document.getElementById(id);
+function showLoading() { $('loadingOverlay').style.display = 'flex'; }
+function hideLoading() { $('loadingOverlay').style.display = 'none'; }
+function logStatus(msg){ const el = $('loginStatus'); if(el) el.innerText = 'Estado: ' + msg; }
 
-/* Normalización: duplicados “CEDULA”, última OBSERVACION -> OBSERVACION (final), variantes de “SEGUIMIENTO … TIEMPOR” */
-function normalizeHeaders(hs){
-  const out=[]; let ced=0; let obs=-1;
-  hs.forEach((h,i)=>{
-    let x=String(h||'').trim();
-    if(x.toUpperCase()==='CEDULA'){ ced++; if(ced>1) x='CEDULA (dup)'; }
-    if(x.toUpperCase().startsWith('SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMP')) x='SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS';
-    if(x.toUpperCase()==='OBSERVACION') obs=i;
-    out.push(x);
-  });
-  if(obs>=0) out[obs]='OBSERVACION (final)';
-  return out;
-}
-function expectedHeadersFor(sheet){
-  const h=[...BASE_HEADERS];
-  if(sheet==='Positiva Evento'){ EVENTO_EXTRAS.forEach(c=>{ if(!h.includes(c)) h.push(c); }); }
-  return h;
-}
-function mergeHeaders(existing, target){
-  const out=[];
-  target.forEach(t=>{ out.push(existing.includes(t)? t : t); });
-  existing.forEach(e=>{ if(!out.includes(e)) out.push(e); });
-  return out;
+/* ========== AUTH ========== */
+async function signIn() {
+  try {
+    const loginResponse = await msalInstance.loginPopup({ scopes: CONFIG.scopes });
+    account = loginResponse.account;
+    logStatus('Autenticado como ' + account.username);
+    $('btnSignIn').style.display = 'none';
+    $('btnSignOut').style.display = 'inline-block';
+    await acquireToken();
+    await inicializarSistema();
+    document.getElementById('loginScreen').style.display = 'none';
+  } catch (err) {
+    console.error(err);
+    logStatus('Error al iniciar sesión: ' + (err.message || err));
+  }
 }
 
-/* =========================
-   AUTH / GRAPH
-   ========================= */
-function authUrl(){
-  const p=new URLSearchParams({
-    client_id:CONFIG.clientId, response_type:'token', redirect_uri:CONFIG.redirectUri,
-    scope:CONFIG.scopes, response_mode:'fragment', state:Math.random().toString(36).slice(2)
-  });
-  return `${CONFIG.authUrl}?${p.toString()}`;
+async function acquireToken() {
+  try {
+    const result = await msalInstance.acquireTokenSilent({
+      scopes: CONFIG.scopes,
+      account: msalInstance.getAllAccounts()[0]
+    });
+    accessToken = result.accessToken;
+    return accessToken;
+  } catch (err) {
+    // Fallback a popup
+    const result = await msalInstance.acquireTokenPopup({ scopes: CONFIG.scopes });
+    accessToken = result.accessToken;
+    return accessToken;
+  }
 }
-function parseHashToken(){
-  if(location.hash.includes('access_token=')){ const h=new URLSearchParams(location.hash.slice(1)); return h.get('access_token'); }
+
+function signOut() {
+  const current = msalInstance.getAllAccounts()[0];
+  if (current) {
+    msalInstance.logoutPopup({ account: current });
+  }
+  account = null;
+  accessToken = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  $('btnSignIn').style.display = 'inline-block';
+  $('btnSignOut').style.display = 'none';
+  logStatus('Sesión cerrada');
+}
+
+/* ========== GRAPH helpers ========== */
+async function graphFetch(path, options = {}) {
+  if (!accessToken) await acquireToken();
+  const headers = options.headers || {};
+  headers['Authorization'] = 'Bearer ' + accessToken;
+  headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+  options.headers = headers;
+  const url = path.startsWith('https://') ? path : ('https://graph.microsoft.com/v1.0' + path);
+  const resp = await fetch(url, options);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error('Graph API error: ' + resp.status + ' ' + text);
+  }
+  return resp.json().catch(()=>null);
+}
+
+/* ========== INICIALIZACIÓN del sistema ========== */
+async function inicializarSistema() {
+  try {
+    showLoading();
+    // 1) Obtener info de usuario
+    const me = await graphFetch('/me');
+    logStatus('Autenticado: ' + (me.displayName || me.userPrincipalName));
+
+    // 2) Buscar archivo en raíz OneDrive
+    const file = await buscarArchivoOneDrive(STATE.fileName);
+    if (!file) {
+      logStatus('Archivo no encontrado en OneDrive raíz: ' + STATE.fileName);
+      hideLoading();
+      $('fileInfo').innerText = 'Archivo no encontrado: ' + STATE.fileName;
+      return;
+    }
+    STATE.fileId = file.id;
+    $('fileInfo').innerText = `Archivo: ${STATE.fileName}`;
+
+    // 3) Obtener hojas
+    await cargarHojas();
+    // 4) Cargar datos de hoja default
+    await cargarDatosHoja(STATE.currentSheet);
+    hideLoading();
+  } catch (err) {
+    hideLoading();
+    console.error(err);
+    logStatus('Error inicializando: ' + (err.message || err));
+  }
+}
+
+async function buscarArchivoOneDrive(fileName) {
+  // Buscamos en la raíz por nombre exacto
+  const q = encodeURIComponent(`name eq '${fileName}'`);
+  // Graph: /me/drive/root/children?$filter=name eq '...'
+  const res = await graphFetch(`/me/drive/root/children?$filter=${q}`);
+  if (res && res.value && res.value.length) return res.value[0];
+  // fallback: search endpoint
+  const search = await graphFetch(`/me/drive/root/search(q='${encodeURIComponent(fileName)}')`);
+  if (search && search.value && search.value.length) return search.value[0];
   return null;
 }
-async function gfetch(path,{method='GET',body,headers={}}={}){
-  const res=await fetch(`${CONFIG.graph}${path}`,{
-    method, headers:{'Authorization':`Bearer ${STATE.token}`,'Content-Type':'application/json',...headers},
-    body: body? JSON.stringify(body): undefined
-  });
-  if(!res.ok){ const t=await res.text().catch(()=> ''); throw new Error(`${method} ${path} → ${res.status}: ${t}`); }
-  if(res.status===204) return null;
-  return res.json();
-}
-const gGET=(p)=>gfetch(p,{method:'GET'});
-const gPOST=(p,b)=>gfetch(p,{method:'POST',body:b});
-const gPATCH=(p,b)=>gfetch(p,{method:'PATCH',body:b});
 
-/* =========================
-   WORKBOOK / SHEETS / HEADERS
-   ========================= */
-async function ensureWorkbook(){
-  $('#fileBadge').textContent='Buscando archivo...';
-  for(const cand of FILE_CANDIDATES){
-    try{
-      const r=await gGET(`/me/drive/root/search(q='${encodeURIComponent(cand)}')`);
-      const item=(r.value||[]).find(f=> (f.name||'').toLowerCase().includes(cand.toLowerCase()) && (f.file?.mimeType?.includes('spreadsheet')||f.name.endsWith('.xlsx')));
-      if(item){ STATE.file.id=item.id; STATE.file.name=item.name; $('#fileBadge').textContent=`Archivo: ${item.name}`; return; }
-    }catch(_){}
+/* ========== HOJAS Y DATOS ========== */
+async function cargarHojas() {
+  const path = `/me/drive/items/${STATE.fileId}/workbook/worksheets`;
+  const res = await graphFetch(path);
+  STATE.sheets = (res && res.value) ? res.value.map(s => s.name) : [];
+  // fill sidebar
+  const listEl = $('aseguradoresList');
+  listEl.innerHTML = '';
+  const defaultSheets = ['Positiva','Colmena','Colsanitas'];
+  defaultSheets.forEach(name=>{
+    const li = document.createElement('li');
+    li.innerText = name;
+    li.style.listStyle = 'none';
+    li.onclick = () => { STATE.currentSheet = name; cargarDatosHoja(name); };
+    if(STATE.currentSheet===name) li.style.fontWeight='700';
+    listEl.appendChild(li);
+  });
+  // add any other sheets
+  STATE.sheets.forEach(name=>{
+    if (!defaultSheets.includes(name)) {
+      const li = document.createElement('li');
+      li.innerText = name;
+      li.style.listStyle='none';
+      li.onclick = () => { STATE.currentSheet = name; cargarDatosHoja(name); };
+      listEl.appendChild(li);
+    }
+  });
+}
+
+function formatDateFromExcel(excelVal) {
+  // Graph returns Excel dates as strings if cells are strings; we may handle ISO or dd/MM/yyyy
+  if (!excelVal) return '';
+  // If already in dd/MM/yyyy format, return as is
+  if (typeof excelVal === 'string' && /^\d{2}\/\d{2}\/\d{4}$/.test(excelVal)) return excelVal;
+  // If ISO:
+  if (typeof excelVal === 'string' && /^\d{4}-\d{2}-\d{2}/.test(excelVal)) return excelVal.split('T')[0].split('-').reverse().join('/');
+  return String(excelVal);
+}
+
+async function cargarDatosHoja(sheetName) {
+  try {
+    showLoading();
+    STATE.currentSheet = sheetName;
+    $('dashboardHojaActual').innerText = sheetName;
+    // Get usedRange values
+    const usedRange = await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(sheetName)}')/usedRange(valuesOnly=true)`);
+    if (!usedRange || !usedRange.values || usedRange.values.length===0) {
+      STATE.headers = [];
+      STATE.rows = [];
+      renderTable();
+      hideLoading();
+      return;
+    }
+    const values = usedRange.values;
+    const headers = values[0].map(h=>String(h||'').trim());
+    STATE.headers = headers;
+    const rows = [];
+    for (let i=1;i<values.length;i++){
+      const rowArr = values[i];
+      const obj = {};
+      headers.forEach((h,idx)=>{
+        let v = rowArr[idx];
+        obj[h] = v;
+      });
+      // preserve original index
+      obj.__rowIndex = i-1; // index relative to rows array (0-based)
+      rows.push(obj);
+    }
+    STATE.rows = rows;
+    STATE.filteredRows = rows.slice();
+    // render
+    renderTable();
+    calcularEstadisticas();
+    hideLoading();
+  } catch (err) {
+    hideLoading();
+    console.error(err);
+    alert('Error cargando hoja: ' + (err.message||err));
   }
-  if(!confirm('No se encontró el libro. ¿Deseas crearlo automáticamente?')) throw new Error('Archivo no encontrado.');
-  const created=await createEmptyWorkbook('Seguimiento ARL - Rangel (2).xlsx');
-  STATE.file.id=created.id; STATE.file.name=created.name;
-  $('#fileBadge').textContent=`Archivo: ${created.name}`;
-  await ensureSheetsAndHeaders();
 }
-async function createEmptyWorkbook(name){
-  const url=`/me/drive/root:/${encodeURIComponent(name)}:/content`;
-  const blob=new Blob([''],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-  const res=await fetch(`${CONFIG.graph}${url}`,{method:'PUT',headers:{'Authorization':`Bearer ${STATE.token}`},body:blob});
-  if(!res.ok) throw new Error('No fue posible crear el libro.');
-  return res.json();
-}
-async function ensureSheetsAndHeaders(){
-  const ws=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets`);
-  const names=(ws.value||[]).map(x=>x.name);
-  for(const s of SHEETS){ if(!names.includes(s)){ await gPOST(`/me/drive/items/${STATE.file.id}/workbook/worksheets/add`,{name:s}); await sleep(250);} }
-  for(const s of SHEETS){
-    const target=expectedHeadersFor(s);
-    await ensureHeaders(s,target);
-    await styleHeaderStrip(s,target); // coloriza: base azul, inasistencias rojo
+
+/* ========== RENDER TABLA ========= */
+function renderTable() {
+  // headers
+  const thead = $('tablaHead');
+  const tbody = $('tablaBody');
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  if (!STATE.headers || STATE.headers.length===0) {
+    thead.innerHTML = '<tr><th>Sin datos</th></tr>';
+    return;
   }
+  const trh = document.createElement('tr');
+  // Actions column
+  const thActions = document.createElement('th'); thActions.innerText='Acciones'; trh.appendChild(thActions);
+  STATE.headers.forEach(h=>{
+    const th = document.createElement('th');
+    th.innerText = h;
+    trh.appendChild(th);
+  });
+  thead.appendChild(trh);
+
+  // rows (filtered)
+  const rowsToRender = applyAllFilters(STATE.rows);
+  STATE.filteredRows = rowsToRender;
+  rowsToRender.forEach((r, idx)=>{
+    const tr = document.createElement('tr');
+    // actions
+    const tdAct = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.className='btn btn-edit-row';
+    btn.innerText='✏️';
+    btn.onclick = (ev)=>{ ev.stopPropagation(); abrirModalEditar(r.__rowIndex); };
+    tdAct.appendChild(btn);
+    tr.appendChild(tdAct);
+    // iterate columns
+    STATE.headers.forEach(h=>{
+      const td = document.createElement('td');
+      let txt = r[h];
+      if (txt===undefined || txt===null) txt = '';
+      // format date-like strings
+      if (typeof txt === 'string' && /^\d{4}-\d{2}-\d{2}/.test(txt)) {
+        txt = txt.split('T')[0].split('-').reverse().join('/');
+      }
+      td.innerText = txt;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
 }
-async function ensureHeaders(sheetName, headers){
-  const used=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-  let existing=[];
-  if(used?.values?.length>0){ existing = normalizeHeaders((used.values[0]||[]).map(v=>String(v||'').trim())); }
-  const merged = mergeHeaders(existing, headers);
-  if(merged.length===0){ merged = headers.slice(); }
-  const last=colLetter(merged.length-1);
-  await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/range(address='A1:${last}1')`,{values:[merged]});
+
+/* ========== FILTROS y SEMAFORO ========== */
+function aplicarFiltros() {
+  STATE.searchText = $('searchFree').value.trim().toLowerCase();
+  STATE.dateFrom = $('fechaDesde').value || null;
+  STATE.dateTo = $('fechaHasta').value || null;
+  renderTable();
 }
-async function styleHeaderStrip(sheet, headers){
-  try{
-    const last=colLetter(headers.length-1);
-    // Estilo general azul
-    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='A1:${last}1')/format/fill`,{color:'#001f3f'});
-    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='A1:${last}1')/format/font`,{color:'#ffffff',bold:true});
-    // Resaltar INASISTENCIAS en rojo (#d9534f)
-    for(let i=0;i<headers.length;i++){
-      const h=headers[i];
-      if(h.toUpperCase().startsWith('INASISTENCIA ')){
-        const col=colLetter(i);
-        await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='${col}1:${col}1')/format/fill`,{color:'#d9534f'}).catch(()=>{});
+
+function limpiarFiltros() {
+  $('searchFree').value = '';
+  $('fechaDesde').value = '';
+  $('fechaHasta').value = '';
+  STATE.searchText = '';
+  STATE.dateFrom = null;
+  STATE.dateTo = null;
+  STATE.semaforoFilter = 'todos';
+  renderTable();
+}
+
+function filtrarPorSemaforo(color) {
+  STATE.semaforoFilter = color;
+  renderTable();
+}
+
+function applyAllFilters(rows) {
+  let out = rows.slice();
+  // searchFree: check any cell contains substring
+  if (STATE.searchText) {
+    out = out.filter(r=>{
+      return STATE.headers.some(h=>{
+        const v = (r[h]||'').toString().toLowerCase();
+        return v.includes(STATE.searchText);
+      });
+    });
+  }
+  // date filter: we compare "FECHA DE ASIGNACION A LA IPS" if exists
+  if (STATE.dateFrom || STATE.dateTo) {
+    const from = STATE.dateFrom ? new Date(STATE.dateFrom) : null;
+    const to = STATE.dateTo ? new Date(STATE.dateTo) : null;
+    out = out.filter(r=>{
+      const val = r['FECHA DE ASIGNACION A LA IPS'] || r['Fecha de asignacion a la IPS'] || r['FECHA DE ASIGNACION'] || '';
+      if (!val) return false;
+      let d = null;
+      if (typeof val === 'string' && /^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        const parts = val.split('/'); d = new Date(Number(parts[2]), Number(parts[1])-1, Number(parts[0]));
+      } else if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val)) {
+        d = new Date(val);
+      } else return false;
+      if (from && d < from) return false;
+      if (to && d > to) return false;
+      return true;
+    });
+  }
+  // semaforo filter: uses 'Días sin seguimiento' or 'Dias sin seguimiento' or compute from Fecha Último Seguimiento
+  out = out.filter(r=>{
+    let dias = null;
+    if (r['Días sin seguimiento']!=undefined && r['Días sin seguimiento']!=='') dias = Number(r['Días sin seguimiento']);
+    else if (r['Días sin seguimiento ']!=undefined) dias = Number(r['Días sin seguimiento ']);
+    else {
+      // compute
+      const last = r['Fecha Último Seguimiento'] || r['Fecha Ultimo Seguimiento'] || r['Fecha Último Seguimiento '] || r['Fecha Último Seguimiento'];
+      if (last) {
+        let d = null;
+        if (typeof last === 'string' && /^\d{2}\/\d{2}\/\d{4}$/.test(last)) {
+          const p=last.split('/'); d=new Date(Number(p[2]),Number(p[1])-1,Number(p[0]));
+        } else if (typeof last==='string' && /^\d{4}-\d{2}-\d{2}/.test(last)) d=new Date(last);
+        if (d) {
+          const hoy = new Date(); hoy.setHours(0,0,0,0);
+          d.setHours(0,0,0,0);
+          dias = Math.floor((hoy.getTime()-d.getTime())/(1000*60*60*24));
+        }
       }
     }
-  }catch(_){}
-}
-
-/* =========================
-   CARGA / RENDER
-   ========================= */
-async function loadSheet(name){
-  STATE.sheet=name; $('#sheetBadge').textContent=`Hoja: ${name}`;
-  if(DEMO_MODE){ const d=demoData(name); STATE.headers=d.headers; STATE.rows=d.rows; postLoad(); return; }
-  await ensureSheetsAndHeaders();
-  const used=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(name)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-  const vals = used?.values||[];
-  if(vals.length===0){ STATE.headers=expectedHeadersFor(name); STATE.rows=[]; postLoad(); return; }
-  const raw=normalizeHeaders((vals[0]||[]).map(v=>String(v||'').trim()));
-  STATE.headers=raw;
-  const rows=vals.slice(1).map(r=>{
-    const o={}; raw.forEach((h,i)=> o[h]=r[i] ?? ''); return o;
-  }).map(row=>{
-    const fseg=parseExcelDate(row['Fecha Último Seguimiento']);
-    const hoy = row['Hoy']? parseExcelDate(row['Hoy']) : new Date();
-    return {...row, 'Hoy': toISO(hoy), 'Días sin seguimiento': fseg? diffDaysBog(fseg, hoy): (row['Días sin seguimiento']||'')};
-  });
-  STATE.rows=rows;
-  postLoad();
-}
-function postLoad(){
-  renderSheets();
-  buildTiles();
-  buildAuditors();
-  applyFilters();
-  renderTable();
-  updateKpis();
-  updateSemaforoCounts();
-}
-function renderSheets(){
-  const cont=$('#listSheets');
-  cont.innerHTML = SHEETS.map(s=> (s==='CERRADOS'? `
-    <hr class="border-secondary-subtle my-2">
-    <button class="btn-aseg ${STATE.sheet===s?'active':''}" onclick="switchSheet('${s}')">
-      <span><i class="bi bi-archive me-1"></i> ${s}</span><i class="bi bi-chevron-right"></i>
-    </button>` : `
-    <button class="btn-aseg ${STATE.sheet===s?'active':''}" onclick="switchSheet('${s}')">
-      <span><i class="bi bi-folder2-open me-1"></i> ${s}</span><i class="bi bi-chevron-right"></i>
-    </button>`)).join('');
-  $('#btnAdd').disabled = (STATE.sheet==='CERRADOS');
-}
-async function switchSheet(s){ await loadSheet(s); }
-
-/* Auditor */
-function buildAuditors(){
-  const set=new Set();
-  STATE.rows.forEach(r=>{ const a=String(r['AUDITOR']||'').trim(); if(a) set.add(a); });
-  const opts=['',...Array.from(set).sort((a,b)=>a.localeCompare(b,'es'))];
-  const sel=$('#selAuditor');
-  sel.innerHTML = opts.map(v=> `<option value="${esc(v)}">${v? esc(v): '— Todos —'}</option>`).join('');
-}
-
-/* Tiles citas e inasistencias */
-function buildTiles(){
-  $('#tilesCitas').innerHTML = COL_CITAS.map(c=> (
-    `<div class="tile"><div class="h">${esc(c)}</div><div class="n" id="tc_${hash(c)}">0</div></div>`
-  )).join('');
-  $('#tilesInasistencias').innerHTML = COL_INASIS.map(c=> (
-    `<div class="tile"><div class="h">${esc(c)}</div><div class="n" id="ti_${hash(c)}">0</div></div>`
-  )).join('');
-}
-function hash(s){ return s.replace(/\W+/g,'_'); }
-
-/* Filtros */
-function applyFilters(){
-  const q=STATE.buscar.toLowerCase();
-  const aud=STATE.auditor.toLowerCase();
-  const df = STATE.desde? new Date(STATE.desde): null;
-  const dt = STATE.hasta? new Date(STATE.hasta): null;
-
-  STATE.filtered = STATE.rows.filter(r=>{
-    // búsqueda libre
-    const blob = [
-      r['NOMBRE'], r['CEDULA'], r['SINIESTRO'],
-      r['OBSERVACION'], r['OBSERVACION (final)']
-    ].map(x=>String(x||'').toLowerCase()).join(' ');
-    if(q && !blob.includes(q)) return false;
-
-    // auditor
-    const a = String(r['AUDITOR']||'').toLowerCase();
-    if(aud && !a.includes(aud)) return false;
-
-    // rango por fecha de asignación
-    const fa = parseExcelDate(r['FECHA DE ASIGNACION A LA IPS']);
-    if(df && fa && fa < df) return false;
-    if(dt && fa && fa > dt) return false;
-
-    // semáforo
-    const d = Number(r['Días sin seguimiento']||0);
-    if(STATE.sem==='verde'   && !(d<=5)) return false;
-    if(STATE.sem==='naranja' && !(d>=6 && d<=12)) return false;
-    if(STATE.sem==='rojo'    && !(d>=13)) return false;
-
+    if (STATE.semaforoFilter==='todos') return true;
+    if (dias===null || isNaN(dias)) return false;
+    if (STATE.semaforoFilter==='verde') return dias <=5;
+    if (STATE.semaforoFilter==='naranja') return dias>=6 && dias<=12;
+    if (STATE.semaforoFilter==='rojo') return dias>=13;
     return true;
   });
-
-  // Actualiza tiles
-  const countsC = {};
-  COL_CITAS.forEach(c=> countsC[c]=0);
-  STATE.filtered.forEach(r=>{
-    COL_CITAS.forEach(c=>{
-      if(r[c]) countsC[c]++
-    });
-  });
-  COL_CITAS.forEach(c=> { const el = $(`#tc_${hash(c)}`); if(el) el.textContent = countsC[c]; });
-
-  const countsI = {};
-  COL_INASIS.forEach(c=> countsI[c]=0);
-  STATE.filtered.forEach(r=>{
-    COL_INASIS.forEach(c=>{
-      if(isYes(r[c]) || String(r[c]||'').trim().toUpperCase()==='NO ASISTE') countsI[c]++;
-    });
-  });
-  COL_INASIS.forEach(c=> { const el = $(`#ti_${hash(c)}`); if(el) el.textContent = countsI[c]; });
-}
-function updateKpis(){
-  $('#kpiActivos').textContent = String(STATE.filtered.length);
-
-  const setCed = new Set(), setSin = new Set();
-  STATE.filtered.forEach(r=>{
-    if(r['CEDULA']) setCed.add(String(r['CEDULA']).trim());
-    if(r['SINIESTRO']) setSin.add(String(r['SINIESTRO']).trim());
-  });
-  $('#kpiPacientes').textContent = String(setCed.size);
-  $('#kpiSiniestros').textContent = String(setSin.size);
-
-  let m=0,f=0,o=0;
-  STATE.filtered.forEach(r=>{
-    const g=String(r['GENERO']||'').toLowerCase();
-    if(g.startsWith('masc')) m++; else if(g.startsWith('fem')) f++; else o++;
-  });
-  $('#kpiMasculino').textContent=String(m);
-  $('#kpiFemenino').textContent=String(f);
-  $('#kpiOtro').textContent=String(o);
-}
-function updateSemaforoCounts(){
-  let v=0,n=0,r=0;
-  STATE.filtered.forEach(x=>{
-    const d=Number(x['Días sin seguimiento']||0);
-    if(d<=5) v++; else if(d<=12) n++; else r++;
-  });
-  $('#nVerde').textContent=v;
-  $('#nNaranja').textContent=n;
-  $('#nRojo').textContent=r;
-}
-function renderTable(){
-  const H = STATE.headers.filter(h=> h!=='CEDULA (dup)');
-  const thead = `<th class="text-nowrap">Acciones</th>` + H.map(h=> `<th class="text-nowrap">${esc(h)}</th>`).join('');
-  const rows = STATE.filtered.map((r,idx)=>{
-    const tds = H.map(h=>{
-      const v=r[h];
-      const asDate = parseExcelDate(v);
-      return `<td>${esc(asDate? toISO(asDate): v)}</td>`;
-    }).join('');
-    return `<tr>
-      <td class="text-nowrap">
-        <button class="action-btn" onclick="openEdit(${idx})" title="Editar"><i class="bi bi-pencil-square"></i></button>
-      </td>${tds}</tr>`;
-  }).join('');
-  $('#tbl').innerHTML = `
-    <div class="table-responsive">
-      <table class="table table-hover table-sm align-middle">
-        <thead><tr>${thead}</tr></thead>
-        <tbody>${rows || `<tr><td colspan="${H.length+1}" class="text-center text-muted">Sin datos</td></tr>`}</tbody>
-      </table>
-    </div>`;
+  return out;
 }
 
-/* =========================
-   AGREGAR / EDITAR / CERRAR
-   ========================= */
-const modal = new bootstrap.Modal('#mdlEdit');
+/* ========== ESTADÍSTICAS ========== */
+function calcularEstadisticas() {
+  const total = STATE.rows.length;
+  const uniqueCedulas = new Set(STATE.rows.map(r=> (r['CEDULA']||'').toString().trim())).size;
+  const siniestros = new Set(STATE.rows.map(r=> (r['SINIESTRO']||'').toString().trim())).size;
+  $('stat-poblacion-total').innerText = total;
+  $('stat-pacientes-unicos').innerText = uniqueCedulas;
+  $('stat-siniestros').innerText = siniestros;
 
-function buildForms(row={}){
-  const H = STATE.headers.filter(h=>h!=='CEDULA (dup)');
-  const camposPaciente = ['SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','MAYOR A 56 AÑOS SI O NO','AUDITOR','CLASIFICACION SEVERIDAD'];
-  const camposSeguim = H.filter(h=> !camposPaciente.includes(h));
-
-  $('#formPaciente').innerHTML = camposPaciente.map(h=> inputFor(h,row)).join('');
-  $('#formSeguimiento').innerHTML = camposSeguim.map(h=> inputFor(h,row)).join('');
-  // set chkEvento (solo visible si hoja actual es Positiva)
-  $('#chkEvento').checked = false;
-  $('#chkEvento').closest('.form-check').style.display = (STATE.sheet==='Positiva')? '' : 'none';
-}
-function inputFor(h,row){
-  const v=row[h] ?? '';
-  const isDate = /(fecha|hoy|cita|junta|fisiatra|valoracion|medicina|psicologia|terapia)/i.test(h) || ['Fecha Último Seguimiento','FECHA DE ASIGNACION A LA IPS','FECHA CIERRE','Hoy'].includes(h);
-  const isArea = /observacion/i.test(h);
-  const isNum  = ['SINIESTRO','# MATRICULA','CEDULA','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES','Días sin seguimiento'].includes(h);
-  const ro     = ['Hoy','Días sin seguimiento'].includes(h);
-  let ctrl='';
-  if(isDate){
-    ctrl=`<input type="date" class="form-control" id="f_${hash(h)}" value="${esc(toISO(parseExcelDate(v)))}" ${ro?'readonly':''}>`;
-  }else if(isArea){
-    ctrl=`<textarea rows="2" class="form-control" id="f_${hash(h)}" ${ro?'readonly':''}>${esc(v)}</textarea>`;
-  }else if(h==='GENERO'){
-    ctrl=`<select class="form-select" id="f_${hash(h)}">
-      <option value="">— Seleccione —</option>
-      <option ${v==='Masculino'?'selected':''}>Masculino</option>
-      <option ${v==='Femenino'?'selected':''}>Femenino</option>
-      <option ${v==='Otro'?'selected':''}>Otro</option>
-    </select>`;
-  }else if(h==='MAYOR A 56 AÑOS SI O NO'){
-    ctrl=`<select class="form-select" id="f_${hash(h)}">
-      <option value="">— Seleccione —</option>
-      <option ${String(v).toUpperCase()==='SI'?'selected':''}>SI</option>
-      <option ${String(v).toUpperCase()==='NO'?'selected':''}>NO</option>
-    </select>`;
-  }else if(h==='CLASIFICACION SEVERIDAD'){
-    const ops = ['AT Caso Muy Leve','AT Caso Leve','AT Caso Moderado','AT Caso Grave','AT Caso Muy Grave','AT Caso Severo','Enfermedad Laboral','Sin asignación de cita'];
-    ctrl=`<select class="form-select" id="f_${hash(h)}">
-      <option value="">— Seleccione —</option>
-      ${ops.map(o=> `<option ${o===v?'selected':''}>${o}</option>`).join('')}
-    </select>`;
-  }else if(isNum){
-    ctrl=`<input type="number" class="form-control" id="f_${hash(h)}" value="${esc(v)}" ${ro?'readonly':''}>`;
-  }else{
-    ctrl=`<input type="text" class="form-control" id="f_${hash(h)}" value="${esc(v)}" ${ro?'readonly':''}>`;
-  }
-  return `<div class="col-12 col-md-6">
-    <label class="form-label">${esc(h)}</label>
-    ${ctrl}
-  </div>`;
-}
-function openAdd(){
-  STATE.edit={index:-1,data:{}};
-  $('#mdlTitle').textContent='Agregar Usuario';
-  buildForms({});
-  $('#tipoCierre').value='';
-  modal.show();
-}
-function openEdit(filteredIdx){
-  const obj=STATE.filtered[filteredIdx];
-  const real=STATE.rows.indexOf(obj);
-  STATE.edit={index:real,data:{...obj}};
-  $('#mdlTitle').textContent=`Editar Usuario (fila ${real+2})`;
-  buildForms(obj);
-  $('#tipoCierre').value='';
-  modal.show();
-}
-async function guardar(){
-  const H = STATE.headers.filter(h=> h!=='CEDULA (dup)');
-  const data={};
-  H.forEach(h=>{
-    const el=$(`#f_${hash(h)}`); if(!el) return;
-    data[h] = (el.type==='date' && el.value)? el.value : el.value;
-  });
-  // Recalcular "Hoy" y "Días sin seguimiento"
-  const today = new Date(); today.setHours(0,0,0,0);
-  data['Hoy'] = toISO(today);
-  const fseg = data['Fecha Último Seguimiento']? new Date(data['Fecha Último Seguimiento']) : null;
-  data['Días sin seguimiento'] = fseg? diffDaysBog(fseg, today): '';
-
-  // ¿Positiva Evento?
-  const toEvento = ($('#chkEvento').checked && STATE.sheet==='Positiva');
-
-  if(DEMO_MODE){
-    if(STATE.edit.index<0){ STATE.rows.push(data); }
-    else{ STATE.rows[STATE.edit.index]=data; }
-    if(toEvento){ /* mover virtualmente */ }
-    applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
-    toast('Guardado (DEMO).','success'); modal.hide(); return;
-  }
-
-  showLoad('Guardando en Excel...');
-  try{
-    // Asegurar headers actualizados
-    await ensureHeaders(STATE.sheet, expectedHeadersFor(STATE.sheet));
-
-    // Lectura de usedRange para calcular última fila
-    const used = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-    const headers = STATE.headers;
-    const lastCol = colLetter(headers.length-1);
-
-    if(STATE.edit.index<0){
-      // Alta (append en hoja actual o “Positiva Evento” si aplica)
-      const destSheet = toEvento? 'Positiva Evento' : STATE.sheet;
-      await ensureHeaders(destSheet, expectedHeadersFor(destSheet));
-      const usedDest = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(destSheet)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-      const hdrsDest = normalizeHeaders((usedDest?.values?.[0]||[]).map(v=>String(v||'').trim()));
-      const lastDest = colLetter(hdrsDest.length-1);
-      const nextRow = (usedDest?.values?.length || 1) + 1;
-      const ordered = hdrsDest.map(h=> data[h] ?? '');
-      await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(destSheet)}')/range(address='A${nextRow}:${lastDest}${nextRow}')`,{values:[ordered]});
-      toast(`Usuario agregado a ${destSheet}.`,'success');
-    }else{
-      // Actualización en fila real
-      const real = STATE.edit.index + 2;
-      const ordered = headers.map(h=> data[h] ?? '');
-      await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')`,{values:[ordered]});
-      toast('Actualizado correctamente.','success');
+  // semaforo counts
+  let verde=0,naranja=0,rojo=0;
+  STATE.rows.forEach(r=>{
+    let dias = r['Días sin seguimiento'] || r['DÍAS SIN SEGUIMIENTO'] || '';
+    if (dias==='') {
+      // compute from Fecha Último Seguimiento
+      const last = r['Fecha Último Seguimiento'] || r['Fecha Ultimo Seguimiento'] || '';
+      if (last) {
+        let d=null;
+        if (typeof last==='string' && /^\d{2}\/\d{2}\/\d{4}$/.test(last)) {
+          const p=last.split('/'); d=new Date(Number(p[2]),Number(p[1])-1,Number(p[0]));
+        } else if (typeof last==='string' && /^\d{4}-\d{2}-\d{2}/.test(last)) d=new Date(last);
+        if (d) {
+          const hoy = new Date(); hoy.setHours(0,0,0,0); d.setHours(0,0,0,0);
+          dias = Math.floor((hoy.getTime()-d.getTime())/(1000*60*60*24));
+        } else dias = NaN;
+      } else dias = NaN;
+    } else dias = Number(dias);
+    if (!isNaN(dias)) {
+      if (dias<=5) verde++;
+      else if (dias>=6 && dias<=12) naranja++;
+      else if (dias>=13) rojo++;
     }
-    modal.hide();
-    await loadSheet(STATE.sheet);
-  }catch(e){ console.error(e); toast('Error al guardar: '+e.message,'danger'); }
-  finally{ hideLoad(); }
-}
-async function cerrarCaso(){
-  const motivo = $('#tipoCierre').value;
-  if(!motivo){ toast('Debes seleccionar Tipo de Cierre.','warning'); return; }
-  if(STATE.edit.index<0){ toast('Primero guarda el registro.','warning'); return; }
-  if(!confirm(`¿Cerrar el caso?\nMotivo: ${motivo}`)) return;
-
-  if(DEMO_MODE){ toast('Caso cerrado (DEMO).','success'); modal.hide(); return; }
-
-  showLoad('Cerrando caso...');
-  try{
-    // Asegura CERRADOS
-    await ensureHeaders('CERRADOS', [...STATE.headers,'TIPO DE CIERRE','HOJA ORIGEN','FECHA DE CIERRE DEL CASO']);
-    const headers = STATE.headers;
-    const real = STATE.edit.index + 2;
-    const lastCol = colLetter(headers.length-1);
-    const rget = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')`);
-    const fila = (rget?.values?.[0]||[]);
-    const newRow = fila.concat([motivo, STATE.sheet, toISO(new Date())]);
-
-    const usedC = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('CERRADOS')/usedRange(valuesOnly=true)`).catch(()=>null);
-    const hdrC = (usedC?.values?.[0]||[]);
-    const lastC = colLetter(hdrC.length-1);
-    const next = (usedC?.values?.length || 1) + 1;
-    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('CERRADOS')/range(address='A${next}:${lastC}${next}')`,{values:[newRow]});
-
-    // Delete fila origen
-    await gPOST(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')/delete`,{shift:'Up'});
-
-    toast('Caso movido a CERRADOS.','success');
-    modal.hide();
-    await loadSheet(STATE.sheet);
-  }catch(e){ console.error(e); toast('Error al cerrar caso: '+e.message,'danger'); }
-  finally{ hideLoad(); }
+  });
+  $('conteo-verde').innerText = verde;
+  $('conteo-naranja').innerText = naranja;
+  $('conteo-rojo').innerText = rojo;
 }
 
-/* =========================
-   DEMO DATA (opcional)
-   ========================= */
-function demoData(sheet){
-  const headers = expectedHeadersFor(sheet);
-  const today = toISO(new Date());
-  const rows = [
-    {'SINIESTRO':'498349289','# MATRICULA':'44814341','CEDULA':'1014235486','NOMBRЕ':'','NOMBRE':'ANDRES ESTEBAN SANCHEZ SANCHEZ','FECHA DE ASIGNACION A LA IPS':'2025-03-12','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'SI','AUDITOR':'FABIAN MACIAS','CLASIFICACION SEVERIDAD':'AT Caso Muy Leve','CITA INICIAL':'2025-10-14','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-31','INASISTENCIA FISIATRA':'NO','VALORACION OCUPACIONAL':'2025-10-22','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO','PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'','INASISTENCIA TERAPIA FISICA':'NO','ALTA INMEDIATA':'','ESTADO DE LA MATRICULA':'','FECHA CIERRE':'','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES':'','OBSERVACION':'PENDIENTE FISIATRIA','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS':'','OBSERVACION FACTURACION':'SE FACTURA 60%','Fecha Último Seguimiento':'2025-10-14','Hoy':today,'Días sin seguimiento':diffDaysBog('2025-10-14',today),'OBSERVACION (final)':''},
-    {'SINIESTRO':'498359726','# MATRICULA':'45228101','CEDULA':'96351808','NOMBRE':'PEDRO IGNACIO MARTIN MORENO','FECHA DE ASIGNACION A LA IPS':'2025-04-16','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'NO','AUDITOR':'YANETH OBREGON','CLASIFICACION SEVERIDAD':'AT Caso Moderado','CITA INICIAL':'','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-15','INASISTENCIA FISIATRA':'NO','VALORACION OCUPACIONAL':'2025-10-14','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO','PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'','INASISTENCIA TERAPIA FISICA':'NO','OBSERVACION':'Formal 02/10','Fecha Último Seguimiento':'2025-08-01','Hoy':today,'Días sin seguimiento':diffDaysBog('2025-08-01',today),'OBSERVACION (final)':''}
-  ];
-  return {headers,rows};
+/* ========== MODAL EDITAR ========== */
+let currentEditing = { sheet:null, rowIndex:null, originalRowObj:null };
+
+function abrirModalEditar(rowIndex) {
+  // rowIndex es el index relativo (0-based) en STATE.rows (que corresponde a fila Excel - header)
+  const rowObj = STATE.rows[rowIndex];
+  if (!rowObj) { alert('Fila no encontrada'); return; }
+  currentEditing = { sheet: STATE.currentSheet, rowIndex: rowIndex, originalRowObj: JSON.parse(JSON.stringify(rowObj)) };
+  // construir campos en modal
+  const container = $('editarFields');
+  container.innerHTML = '';
+  STATE.headers.forEach(h=>{
+    const colDiv = document.createElement('div'); colDiv.className='col-md-3 mb-2';
+    const label = document.createElement('label'); label.className='form-label'; label.innerText = h;
+    let input;
+    // heurística para tipos: fechas, textarea, select si SI/NO
+    const val = rowObj[h] || '';
+    if (/FECHA|Fecha|CITA/.test(h) || /^\d{4}-\d{2}-\d{2}/.test(val) || /^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+      input = document.createElement('input'); input.type='date'; input.className='form-control form-control-sm';
+      // convert value to yyyy-mm-dd
+      if (val) {
+        let dd = '';
+        if (typeof val === 'string' && /^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+          const p=val.split('/'); dd = `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+        } else if (typeof val==='string' && /^\d{4}-\d{2}-\d{2}/.test(val)) {
+          dd = val.split('T')[0];
+        }
+        input.value = dd;
+      }
+    } else if (/INASISTENCIA|INASISTENCIA /.test(h) || /SI O NO|SI O NO|MAYOR/.test(h) || (val==='' || typeof val==='string') && (val.toString().length<6 && /^(SI|NO|S|N)$/i.test(val))) {
+      input = document.createElement('select'); input.className='form-select form-select-sm';
+      ['','SI','NO'].forEach(opt=>{
+        const o = document.createElement('option'); o.value = opt; o.innerText = opt; if(String(val).toUpperCase()===String(opt).toUpperCase()) o.selected=true;
+        input.appendChild(o);
+      });
+    } else if (/OBSERVACION|OBSERVACIONES|OBSERVACIÓN/.test(h)) {
+      input = document.createElement('textarea'); input.className='form-control'; input.style.height='60px';
+      input.value = val;
+    } else {
+      input = document.createElement('input'); input.type='text'; input.className='form-control form-control-sm';
+      input.value = val;
+    }
+    input.id = 'edit__' + h.replace(/[^a-zA-Z0-9]/g,'__');
+    colDiv.appendChild(label); colDiv.appendChild(input);
+    container.appendChild(colDiv);
+  });
+  // show modal
+  const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'), {keyboard:true});
+  modal.show();
 }
 
-/* =========================
-   EVENTOS UI
-   ========================= */
-$('#btnLogin').addEventListener('click', ()=>{
-  if(DEMO_MODE){ toast('DEMO activo: usa el botón DEMO.','warning'); return; }
-  location.href = authUrl();
-});
-$('#btnDemo').addEventListener('click', ()=>{ DEMO_MODE=true; startApp(); });
-$('#btnLogout').addEventListener('click', ()=>{ STATE.token=null; location.href=CONFIG.redirectUri; });
+async function handleActualizarUsuario() {
+  try {
+    showLoading();
+    const form = document.getElementById('formEditarUsuario');
+    // build data object according to headers
+    const dataObj = {};
+    STATE.headers.forEach(h=>{
+      const id = 'edit__' + h.replace(/[^a-zA-Z0-9]/g,'__');
+      const el = document.getElementById(id);
+      if (!el) return;
+      let val = el.value;
+      // if date input, convert to yyyy-mm-dd
+      if (el.type === 'date' && val) { /* keep yyyy-mm-dd */ }
+      dataObj[h] = val;
+    });
+    // recompute Hoy and Dias sin seguimiento
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    dataObj['Hoy'] = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+    // Fecha Último Seguimiento preferido header:
+    const fechaUlt = dataObj['Fecha Último Seguimiento'] || dataObj['Fecha Ultimo Seguimiento'] || '';
+    let dias = '';
+    if (fechaUlt) {
+      const parts = fechaUlt.split('-'); // yyyy-mm-dd
+      const d = new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2]));
+      const diff = Math.floor((hoy.getTime()-d.getTime())/(1000*60*60*24));
+      dias = diff;
+    }
+    dataObj['Días sin seguimiento'] = dias;
 
-$('#btnAdd').addEventListener('click', openAdd);
-$('#btnReload').addEventListener('click', ()=> switchSheet(STATE.sheet));
-$('#btnGuardar').addEventListener('click', guardar);
-$('#btnCerrarCaso').addEventListener('click', cerrarCaso);
+    // Prepare row values array in header order
+    const valores = STATE.headers.map(h => {
+      let v = dataObj[h] || '';
+      // if date in yyyy-mm-dd, convert to yyyy-mm-dd string (Graph accepts strings)
+      if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
+        return v; // Graph will accept ISO-ish
+      }
+      return v;
+    });
 
-$('#txtSearch').addEventListener('input', e=>{ STATE.buscar=e.target.value||''; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
-$('#selAuditor').addEventListener('change', e=>{ STATE.auditor=e.target.value||''; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
-$('#fDesde').addEventListener('change', e=>{ STATE.desde=e.target.value||null; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
-$('#fHasta').addEventListener('change', e=>{ STATE.hasta=e.target.value||null; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
-$('#btnClear').addEventListener('click', ()=>{
-  $('#txtSearch').value=''; $('#selAuditor').value=''; $('#fDesde').value=''; $('#fHasta').value='';
-  STATE.buscar=''; STATE.auditor=''; STATE.desde=null; STATE.hasta=null; STATE.sem=null;
-  $$('.chip').forEach(c=> c.classList.remove('active'));
-  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
-});
-$('#chipVerde').addEventListener('click', ()=> toggleSem('verde'));
-$('#chipNaranja').addEventListener('click', ()=> toggleSem('naranja'));
-$('#chipRojo').addEventListener('click', ()=> toggleSem('rojo'));
-$('#btnVerTodos, #btnVerTodasCitas').addEventListener('click', ()=>{
-  STATE.sem=null; $$('.chip').forEach(c=> c.classList.remove('active'));
-  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
-});
-function toggleSem(c){
-  STATE.sem = (STATE.sem===c)? null: c;
-  $$('.chip').forEach(el=> el.classList.toggle('active', el.dataset.sem===STATE.sem));
-  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
-}
-
-/* =========================
-   INICIO
-   ========================= */
-async function startApp(){
-  // Si venimos del redirect, captura token
-  const tok=parseHashToken();
-  if(tok){ STATE.token=tok; history.replaceState({},document.title,location.pathname+location.search); }
-
-  if(DEMO_MODE){
-    $('#userName').textContent='DEMO';
-    $('#login').style.display='none'; $('#app').style.display='flex';
-    await loadSheet('Positiva'); return;
+    // Compute Excel row number: headers on row 1, so excelRow = currentEditing.rowIndex + 2
+    const excelRow = currentEditing.rowIndex + 2;
+    const lastColLetter = columnNumberToName(valores.length);
+    const rangeAddress = `'${STATE.currentSheet}'!A${excelRow}:${lastColLetter}${excelRow}`;
+    // Write values via Graph: range(address)/values
+    await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(STATE.currentSheet)}')/range(address='${encodeURIComponent(rangeAddress)}')`, {
+      method: 'PATCH',
+      body: JSON.stringify({ values: [valores] })
+    });
+    // refresh local
+    await cargarDatosHoja(STATE.currentSheet);
+    hideLoading();
+    bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+    alert('Actualizado correctamente');
+  } catch (err) {
+    hideLoading();
+    console.error(err);
+    alert('Error actualizando: ' + (err.message||err));
   }
-
-  if(!STATE.token) return; // esperar a login
-  try{
-    showLoad('Conectando con Microsoft Graph...');
-    const me=await gGET('/me'); STATE.me=me;
-    $('#userName').textContent = me.displayName || me.userPrincipalName || '(usuario)';
-    $('#login').style.display='none'; $('#app').style.display='flex';
-    await ensureWorkbook();
-    await loadSheet('Positiva');
-  }catch(e){ console.error(e); toast('Error de inicio: '+e.message,'danger'); }
-  finally{ hideLoad(); }
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  // Mostrar botones de hojas
-  renderSheets();
-  startApp();
-});
+/* ========== AGREGAR USUARIO ========== */
+async function handleAgregarUsuario() {
+  try {
+    showLoading();
+    const form = document.getElementById('formAgregarUsuario');
+    const fd = new FormData(form);
+    const hoja = fd.get('hoja') || 'Positiva';
+    // build row with headers: if sheet exists, get headers, else create sheet from default headers
+    // get headers of destination sheet
+    let headersToUse = STATE.headers;
+    // if user changed sheet, load its headers
+    if (hoja !== STATE.currentSheet) {
+      const usedRange = await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(hoja)}')/usedRange(valuesOnly=true)`)
+        .catch(()=>null);
+      if (usedRange && usedRange.values && usedRange.values.length>0) headersToUse = usedRange.values[0].map(h=>String(h||'').trim());
+    }
+
+    // If no headers found, create a minimal header set
+    if (!headersToUse || headersToUse.length===0) {
+      headersToUse = ['SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','AUDITOR','CLASIFICACION SEVERIDAD','CITA INICIAL','Hoy','Días sin seguimiento'];
+    }
+
+    // map fd to values array
+    const valores = headersToUse.map(h => {
+      const v = fd.get(h) || '';
+      if (v instanceof File) return '';
+      return v;
+    });
+
+    // detect where to append row: find last row number by reading usedRange
+    const usedRange = await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(hoja)}')/usedRange`);
+    let lastRow = 1;
+    if (usedRange && usedRange.address) {
+      // address like 'Positiva'!A1:Z123
+      const addr = usedRange.address;
+      const m = addr.match(/:.*?([A-Z]+)(\d+)$/);
+      if (m && m[2]) lastRow = Number(m[2]);
+    } else {
+      lastRow = 1;
+    }
+    const appendRow = lastRow + 1;
+    const lastCol = columnNumberToName(headersToUse.length);
+    const rangeAddress = `'${hoja}'!A${appendRow}:${lastCol}${appendRow}`;
+    // ensure sheet exists: if Graph call fails, create sheet
+    try {
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(hoja)}')`);
+    } catch(e) {
+      // create worksheet
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets`, {
+        method: 'POST',
+        body: JSON.stringify({ name: hoja })
+      });
+      // write headers
+      const headerRange = `'${hoja}'!A1:${columnNumberToName(headersToUse.length)}1`;
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(hoja)}')/range(address='${encodeURIComponent(headerRange)}')`, {
+        method: 'PATCH',
+        body: JSON.stringify({ values: [headersToUse] })
+      });
+    }
+
+    // compute Hoy and Dias sin seguimiento if last seguimiento provided
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const valHoy = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+    // if headers contain 'Hoy' or 'Días sin seguimiento', put values
+    const idxHoy = headersToUse.findIndex(h=>h.toLowerCase().includes('hoy'));
+    const idxDias = headersToUse.findIndex(h=>h.toLowerCase().includes('días sin seguimiento')||h.toLowerCase().includes('dias sin seguimiento'));
+    if (idxHoy>=0) valores[idxHoy] = valHoy;
+    if (idxDias>=0) {
+      // compute from Fecha Último Seguimiento if available
+      const fIdx = headersToUse.findIndex(h=>h.toLowerCase().includes('fecha último seguimiento')||h.toLowerCase().includes('fecha ultimo seguimiento'));
+      let dias = '';
+      if (fIdx>=0 && valores[fIdx]) {
+        const fv = valores[fIdx];
+        if (/^\d{4}-\d{2}-\d{2}/.test(fv)) {
+          const p=fv.split('-'); const d=new Date(Number(p[0]),Number(p[1])-1,Number(p[2])); const diff=Math.floor((hoy.getTime()-d.getTime())/(1000*60*60*24)); dias=diff;
+        }
+      }
+      valores[idxDias]=dias;
+    }
+
+    // write row
+    await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(hoja)}')/range(address='${encodeURIComponent(rangeAddress)}')`, {
+      method: 'PATCH',
+      body: JSON.stringify({ values: [valores] })
+    });
+
+    // refresh
+    if (hoja === STATE.currentSheet) await cargarDatosHoja(hoja);
+    else await cargarHojas();
+    hideLoading();
+    bootstrap.Modal.getInstance(document.getElementById('modalAgregarUsuario')).hide();
+    alert('Usuario agregado correctamente');
+  } catch (err) {
+    hideLoading();
+    console.error(err);
+    alert('Error al agregar usuario: ' + (err.message||err));
+  }
+}
+
+/* ========== CERRAR CASO ========== */
+async function handleCerrarCaso() {
+  try {
+    const tipo = document.getElementById('tipoCierreSelect').value;
+    if (!tipo) { alert('Selecciona tipo de cierre'); return; }
+    showLoading();
+    const rowIndex = currentEditing.rowIndex;
+    const rowObj = STATE.rows[rowIndex];
+    if (!rowObj) { hideLoading(); alert('Fila no encontrada'); return; }
+    // get full row values in header order
+    const valores = STATE.headers.map(h => rowObj[h] || '');
+    // ensure CERRADOS sheet exists
+    try {
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('CERRADOS')`);
+    } catch (e) {
+      // create
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets`, {
+        method: 'POST',
+        body: JSON.stringify({ name: 'CERRADOS' })
+      });
+      // write headers + extras
+      const headersNew = STATE.headers.concat(['TIPO DE CIERRE','HOJA ORIGEN','FECHA CIERRE']);
+      const headerRange = `'CERRADOS'!A1:${columnNumberToName(headersNew.length)}1`;
+      await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('CERRADOS')/range(address='${encodeURIComponent(headerRange)}')`, {
+        method:'PATCH', body: JSON.stringify({ values: [headersNew] })
+      });
+    }
+    // append to CERRADOS: find next row
+    const usedRange = await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('CERRADOS')/usedRange`);
+    let lastRow = 1;
+    if (usedRange && usedRange.address) {
+      const m=usedRange.address.match(/:.*?([A-Z]+)(\d+)$/);
+      if (m && m[2]) lastRow = Number(m[2]);
+    }
+    const appendRow = lastRow + 1;
+    const headersCerrados = STATE.headers.concat(['TIPO DE CIERRE','HOJA ORIGEN','FECHA CIERRE']);
+    const valoresCerrados = valores.concat([tipo, STATE.currentSheet, (new Date()).toISOString().split('T')[0]]);
+    const lastCol = columnNumberToName(headersCerrados.length);
+    const rangeAddress = `'CERRADOS'!A${appendRow}:${lastCol}${appendRow}`;
+    await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('CERRADOS')/range(address='${encodeURIComponent(rangeAddress)}')`, {
+      method:'PATCH', body: JSON.stringify({ values: [valoresCerrados] })
+    });
+    // now "delete" original row by overwriting with empty strings
+    const empties = STATE.headers.map(()=>'');
+    const excelRow = rowIndex + 2;
+    const lastColOrig = columnNumberToName(STATE.headers.length);
+    const rangeOrig = `'${STATE.currentSheet}'!A${excelRow}:${lastColOrig}${excelRow}`;
+    await graphFetch(`/me/drive/items/${STATE.fileId}/workbook/worksheets('${encodeURIComponent(STATE.currentSheet)}')/range(address='${encodeURIComponent(rangeOrig)}')`, {
+      method:'PATCH', body: JSON.stringify({ values: [empties] })
+    });
+    // refresh
+    await cargarDatosHoja(STATE.currentSheet);
+    hideLoading();
+    bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+    alert('Caso cerrado y movido a CERRADOS');
+  } catch (err) {
+    hideLoading();
+    console.error(err);
+    alert('Error cerrando caso: ' + (err.message||err));
+  }
+}
+
+/* ========== UTILIDADES ========== */
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  if (sb.style.left === '-180px') { sb.style.left='0'; document.getElementById('content').style.marginLeft='180px'; }
+  else { sb.style.left='-180px'; document.getElementById('content').style.marginLeft='0'; }
+}
+function toggleDashboard(){
+  const d = document.getElementById('dashboardPanel');
+  d.style.display = (d.style.display === 'none' ? 'block' : 'none');
+}
+
+/* Convert number to excel column name: 1->A, 27->AA */
+function columnNumberToName(num) {
+  let s = '';
+  while (num > 0) {
+    const mod = (num - 1) % 26;
+    s = String.fromCharCode(65 + mod) + s;
+    num = Math.floor((num - mod) / 26);
+  }
+  return s || 'A';
+}
+
+/* ========== EVENT BINDINGS ========== */
+document.getElementById('btnSignIn').addEventListener('click', signIn);
+document.getElementById('btnSignOut').addEventListener('click', signOut);
+document.getElementById('searchFree').addEventListener('keydown', (e)=>{ if(e.key==='Enter') aplicarFiltros(); });
+
+/* Try silent sign-in if already logged */
+(async function trySilent() {
+  try {
+    const accs = msalInstance.getAllAccounts();
+    if (accs && accs.length>0) {
+      account = accs[0];
+      await acquireToken();
+      document.getElementById('loginScreen').style.display = 'none';
+      $('btnSignIn').style.display='none';
+      $('btnSignOut').style.display='inline-block';
+      await inicializarSistema();
+    }
+  } catch(e){ console.warn('Silent sign-in failed', e); }
+})();
 </script>
 </body>
 </html>
