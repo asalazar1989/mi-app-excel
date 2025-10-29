@@ -86,34 +86,10 @@
         .seccion-titulo { color: #001f3f; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #007bff; }
         
         /* BOTONES ESPECIALES SIDEBAR */
-        .btn-evento {
-    background: #17a2b8;
-    color: white;
-    font-size: 0.7rem;
-    padding: 0.35rem 0.4rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 0.5rem;
-    transition: all 0.2s ease;
-}
-
-.btn-evento:hover {
-    background: #138496;
-    transform: scale(1.02);
-}
-
-.auditor-select {
-    width: 100%;
-    font-size: 0.75rem;
-    padding: 0.3rem;
-    border-radius: 4px;
-    background: white;
-    color: #001f3f;
-    border: 1px solid #c0c0c0;
-    margin-top: 0.5rem;
-}
+        .btn-evento { background: #17a2b8; color: white; font-size: 0.7rem; padding: 0.35rem 0.4rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: all 0.2s ease; }
+        .btn-evento:hover { background: #138496; transform: scale(1.02); }
+        
+        .auditor-select { width: 100%; font-size: 0.75rem; padding: 0.3rem; border-radius: 4px; background: white; color: #001f3f; border: 1px solid #c0c0c0; margin-top: 0.5rem; }
     </style>
 </head>
 <body>
@@ -333,7 +309,6 @@
             </div>
         </main>
     </div>
-
     <!-- Modal Agregar Usuario -->
     <div class="modal fade" id="modalAgregarUsuario" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -430,12 +405,12 @@
         let excelFileId = null;
         
         const STATE = {
-    hoja: '',
-    headers: [],
-    rows: [],
-    filtros: {},
-    auditorSeleccionado: ''  // ← AGREGAR ESTA LÍNEA
-};
+            hoja: '',
+            headers: [],
+            rows: [],
+            filtros: {},
+            auditorSeleccionado: ''
+        };
 
         // ====================================
         // AUTENTICACIÓN
@@ -457,6 +432,7 @@
             STATE.rows = [];
             STATE.headers = [];
             STATE.filtros = {};
+            STATE.auditorSeleccionado = '';
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('mainSystem').classList.remove('show');
             showMessage('info', '👋 Sesión cerrada correctamente');
@@ -556,102 +532,101 @@
         }
 
         // ====================================
-        // ✨ FUNCIÓN 4: PACIENTES POR EVENTO
+        // FUNCIÓN: PACIENTES POR EVENTO
         // ====================================
         async function verPacientesEvento() {
-    const nombreHoja = 'Positiva Evento';
-    showLoading(`Cargando ${nombreHoja}...`);
-    
-    try {
-        await cargarDatosHoja(nombreHoja);
-        showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
-    } catch (error) {
-        hideLoading();
-        showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
-    }
-}
+            const nombreHoja = 'Positiva Evento';
+            showLoading(`Cargando ${nombreHoja}...`);
+            
+            try {
+                await cargarDatosHoja(nombreHoja);
+                showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
+            } catch (error) {
+                hideLoading();
+                showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
+            }
+        }
 
         function cargarAseguradores() {
-    const aseguradores = ['Positiva', 'Colmena', 'Colsanitas'];
-    const list = document.getElementById('aseguradoresList');
-    list.innerHTML = '';
-    
-    aseguradores.forEach(asegurador => {
-        const li = document.createElement('li');
-        li.textContent = asegurador;
-        li.onclick = () => seleccionarHoja(asegurador, li);
-        list.appendChild(li);
-        
-        // ✨ AGREGAR BOTONES ESPECIALES PARA POSITIVA
-        if (asegurador === 'Positiva') {
-            // Botón: Pacientes por Evento
-            const btnEvento = document.createElement('button');
-            btnEvento.className = 'btn-evento';
-            btnEvento.innerHTML = '📋 Pacientes por Evento';
-            btnEvento.onclick = (e) => {
-                e.stopPropagation();
-                verPacientesEvento();
-            };
-            li.appendChild(btnEvento);
+            const aseguradores = ['Positiva', 'Colmena', 'Colsanitas'];
+            const list = document.getElementById('aseguradoresList');
+            list.innerHTML = '';
             
-            // Botón: Volver a Positiva Normal
-            const btnVolver = document.createElement('button');
-            btnVolver.className = 'btn-evento';
-            btnVolver.style.background = '#6c757d';
-            btnVolver.style.display = 'none';
-            btnVolver.id = 'btnVolverPositiva';
-            btnVolver.innerHTML = '↩️ Volver a Positiva';
-            btnVolver.onclick = (e) => {
-                e.stopPropagation();
-                seleccionarHoja('Positiva', li);
-                btnVolver.style.display = 'none';
-                btnEvento.style.display = 'block';
-            };
-            li.appendChild(btnVolver);
+            aseguradores.forEach(asegurador => {
+                const li = document.createElement('li');
+                li.textContent = asegurador;
+                li.onclick = () => seleccionarHoja(asegurador, li);
+                list.appendChild(li);
+                
+                // AGREGAR BOTONES ESPECIALES PARA POSITIVA
+                if (asegurador === 'Positiva') {
+                    // Botón: Pacientes por Evento
+                    const btnEvento = document.createElement('button');
+                    btnEvento.className = 'btn-evento';
+                    btnEvento.innerHTML = '📋 Pacientes por Evento';
+                    btnEvento.onclick = (e) => {
+                        e.stopPropagation();
+                        verPacientesEvento();
+                    };
+                    li.appendChild(btnEvento);
+                    // Botón: Volver a Positiva Normal
+                    const btnVolver = document.createElement('button');
+                    btnVolver.className = 'btn-evento';
+                    btnVolver.style.background = '#6c757d';
+                    btnVolver.style.display = 'none';
+                    btnVolver.id = 'btnVolverPositiva';
+                    btnVolver.innerHTML = '↩️ Volver a Positiva';
+                    btnVolver.onclick = (e) => {
+                        e.stopPropagation();
+                        seleccionarHoja('Positiva', li);
+                        btnVolver.style.display = 'none';
+                        btnEvento.style.display = 'block';
+                    };
+                    li.appendChild(btnVolver);
+                }
+                
+                // FILTRO POR AUDITOR
+                const selectAuditor = document.createElement('select');
+                selectAuditor.className = 'auditor-select';
+                selectAuditor.id = `auditorSelect-${asegurador}`;
+                selectAuditor.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+                selectAuditor.style.display = 'none';
+                selectAuditor.onchange = (e) => {
+                    e.stopPropagation();
+                    filtrarPorAuditor(e.target.value);
+                };
+                li.appendChild(selectAuditor);
+            });
+            
+            if (list.firstChild) {
+                seleccionarHoja(aseguradores[0], list.firstChild);
+            }
         }
-        
-        // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
-        const selectAuditor = document.createElement('select');
-        selectAuditor.className = 'auditor-select';
-        selectAuditor.id = `auditorSelect-${asegurador}`;
-        selectAuditor.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
-        selectAuditor.style.display = 'none';
-        selectAuditor.onchange = (e) => {
-            e.stopPropagation();
-            filtrarPorAuditor(e.target.value);
-        };
-        li.appendChild(selectAuditor);
-    });
-    
-    if (list.firstChild) {
-        seleccionarHoja(aseguradores[0], list.firstChild);
-    }
-}
 
         // ====================================
         // MANEJO DE HOJAS
         // ====================================
-       async function seleccionarHoja(nombreHoja, liElement) {
-    STATE.hoja = nombreHoja;
-    [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
-    liElement.classList.add('active');
-    
-    // ✨ NUEVO: Mostrar/ocultar botón "Volver a Positiva"
-    const btnVolver = document.getElementById('btnVolverPositiva');
-    if (btnVolver) {
-        if (nombreHoja === 'Positiva Evento') {
-            btnVolver.style.display = 'block';
-            const btnEvento = liElement.querySelector('.btn-evento');
-            if (btnEvento && btnEvento.textContent.includes('Evento')) {
-                btnEvento.style.display = 'none';
+        async function seleccionarHoja(nombreHoja, liElement) {
+            STATE.hoja = nombreHoja;
+            [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
+            liElement.classList.add('active');
+            
+            // Mostrar/ocultar botón "Volver a Positiva"
+            const btnVolver = document.getElementById('btnVolverPositiva');
+            if (btnVolver) {
+                if (nombreHoja === 'Positiva Evento') {
+                    btnVolver.style.display = 'block';
+                    const btnEvento = liElement.querySelector('.btn-evento');
+                    if (btnEvento && btnEvento.textContent.includes('Evento')) {
+                        btnEvento.style.display = 'none';
+                    }
+                } else {
+                    btnVolver.style.display = 'none';
+                }
             }
-        } else {
-            btnVolver.style.display = 'none';
+            
+            await cargarDatosHoja(nombreHoja);
         }
-    }
-    
-    await cargarDatosHoja(nombreHoja);
-}
 
         async function cargarDatosHoja(nombreHoja) {
             showLoading(`Cargando datos de ${nombreHoja}...`);
@@ -694,16 +669,15 @@
                     return obj;
                 });
 
-                // ✨ CARGAR AUDITORES EN SELECT
-                // ✨ CARGAR AUDITORES EN SELECT
-    cargarAuditoresEnSelect(nombreHoja);
+                // CARGAR AUDITORES EN SELECT
+                cargarAuditoresEnSelect(nombreHoja);
 
-    renderTable();
-    actualizarSemaforo();
-    actualizarSemaforoCitas();
-    calcularEstadisticasDashboard();
-    hideLoading();
-    showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
+                renderTable();
+                actualizarSemaforo();
+                actualizarSemaforoCitas();
+                calcularEstadisticasDashboard();
+                hideLoading();
+                showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
                 
                 const semaforoCitas = document.getElementById('semaforoCitas');
                 if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas' || nombreHoja === 'Positiva Evento') {
@@ -720,45 +694,45 @@
         }
 
         // ====================================
-        // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
+        // FILTRO POR AUDITOR
         // ====================================
         function cargarAuditoresEnSelect(nombreHoja) {
-    const select = document.getElementById(`auditorSelect-${nombreHoja}`);
-    if (!select) return;
-    
-    select.style.display = 'block';
-    select.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
-    
-    const auditores = Array.from(new Set(
-        STATE.rows.map(r => r['AUDITOR']).filter(a => a && String(a).trim() !== '')
-    )).sort();
-    
-    auditores.forEach(a => {
-        const opt = document.createElement('option');
-        opt.value = a;
-        opt.textContent = a;
-        select.appendChild(opt);
-    });
-    
-    console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
-}
+            const select = document.getElementById(`auditorSelect-${nombreHoja}`);
+            if (!select) return;
+            
+            select.style.display = 'block';
+            select.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+            
+            const auditores = Array.from(new Set(
+                STATE.rows.map(r => r['AUDITOR']).filter(a => a && String(a).trim() !== '')
+            )).sort();
+            
+            auditores.forEach(a => {
+                const opt = document.createElement('option');
+                opt.value = a;
+                opt.textContent = a;
+                select.appendChild(opt);
+            });
+            
+            console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
+        }
 
         function filtrarPorAuditor(auditor) {
-    STATE.auditorSeleccionado = auditor.trim().toLowerCase();
-    renderTable();
-    actualizarSemaforo();
-    actualizarSemaforoCitas();
-    calcularEstadisticasDashboard();
-    
-    if (auditor) {
-        showMessage('info', `🔍 Filtrando por auditor: ${auditor}`);
-    } else {
-        showMessage('info', '🔄 Filtro de auditor removido');
-    }
-}
+            STATE.auditorSeleccionado = auditor.trim().toLowerCase();
+            renderTable();
+            actualizarSemaforo();
+            actualizarSemaforoCitas();
+            calcularEstadisticasDashboard();
+            
+            if (auditor) {
+                showMessage('info', `🔍 Filtrando por auditor: ${auditor}`);
+            } else {
+                showMessage('info', '🔄 Filtro de auditor removido');
+            }
+        }
 
         // ====================================
-        // ✨ FUNCIÓN 1: AGREGAR USUARIOS (ESCRITURA REAL)
+        // AGREGAR USUARIOS (ESCRITURA REAL)
         // ====================================
         async function agregarUsuarioExcel(nombreHoja, datos) {
             showLoading('Guardando usuario en Excel...');
@@ -850,7 +824,7 @@
         }
 
         // ====================================
-        // ✨ FUNCIÓN 2: ACTUALIZAR USUARIOS (ESCRITURA REAL)
+        // ACTUALIZAR USUARIOS (ESCRITURA REAL)
         // ====================================
         async function actualizarUsuarioExcel(nombreHoja, rowIndex, datosActualizados) {
             showLoading('Actualizando usuario en Excel...');
@@ -864,7 +838,6 @@
                 
                 const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHoja.toLowerCase());
                 if (!hojaExacta) throw new Error(`Hoja "${nombreHoja}" no encontrada`);
-                
                 const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/usedRange`;
                 const usedRangeResponse = await fetch(usedRangeUrl, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
@@ -935,7 +908,7 @@
         }
 
         // ====================================
-        // ✨ FUNCIÓN 3: CERRAR CASOS (MOVER A CERRADOS)
+        // CERRAR CASOS (MOVER A CERRADOS)
         // ====================================
         async function cerrarCasoExcel(hojaOrigen, rowIndex, tipoCierre) {
             showLoading('Cerrando caso y moviendo a CERRADOS...');
@@ -1047,64 +1020,89 @@
         // ====================================
         // RENDERIZADO DE TABLA
         // ====================================
-       function renderTable() {
-    const th = document.getElementById('tablaHead');
-    th.innerHTML = '';
-    const trHead = document.createElement('tr');
-    
-    const thAcciones = document.createElement('th');
-    thAcciones.textContent = 'Acciones';
-    thAcciones.style.width = '80px';
-    trHead.appendChild(thAcciones);
-    
-    STATE.headers.forEach(h => {
-        const thEl = document.createElement('th');
-        thEl.textContent = h;
-        trHead.appendChild(thEl);
-    });
-    th.appendChild(trHead);
-    
-    const tb = document.getElementById('tablaBody');
-    tb.innerHTML = '';
-    
-    if (STATE.rows.length === 0) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = STATE.headers.length + 1;
-        td.style.cssText = 'text-align:center; padding:40px; color:#999;';
-        td.innerHTML = '📭 No hay datos para mostrar';
-        tr.appendChild(td);
-        tb.appendChild(tr);
-        return;
-    }
-    
-    STATE.rows.forEach((r, idx) => {
-        let mostrar = aplicarFiltrosAFila(r);
-        if (!mostrar) return;
-        
-        const tr = document.createElement('tr');
-        const tdAcciones = document.createElement('td');
-        tdAcciones.style.textAlign = 'center';
-        const btnEdit = document.createElement('button');
-        btnEdit.className = 'btn-edit-row';
-        btnEdit.innerHTML = '🔄';
-        btnEdit.onclick = () => abrirModalEditar(idx);
-        tdAcciones.appendChild(btnEdit);
-        tr.appendChild(tdAcciones);
-        
-        STATE.headers.forEach(h => {
-            const td = document.createElement('td');
-            td.textContent = r[h] || '';
-            tr.appendChild(td);
-        });
-        tb.appendChild(tr);
-    });
-}
+        function aplicarFiltrosAFila(r) {
+            let mostrar = true;
+            
+            // Filtro por Auditor
+            if (STATE.auditorSeleccionado) {
+                const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
+                if (!auditorRow.includes(STATE.auditorSeleccionado)) {
+                    mostrar = false;
+                }
+            }
+            
+            Object.keys(STATE.filtros).forEach(k => {
+                if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
+                const f = STATE.filtros[k] || '';
+                if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
+            });
+            
+            const free = STATE.filtros['__free__'] || '';
+            if (free) {
+                const any = STATE.headers.some(h => (String(r[h] || '')).toLowerCase().includes(free));
+                if (!any) mostrar = false;
+            }
+            
+            if (STATE.filtros['__semaforo__']) {
+                const dias = obtenerDiasDeFila(r);
+                if (isNaN(dias)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
+            }
+            
+            if (STATE.filtros['__cita_vacia__']) {
+                const campoCita = STATE.filtros['__cita_vacia__'];
+                const valor = String(r[campoCita] || '').trim();
+                const estaVacio = (valor === '' || valor === '-- Vacío --' || !valor);
+                if (!estaVacio) mostrar = false;
+            }
+            
+            if (STATE.filtros['__inasistencia__']) {
+                const campoCita = STATE.filtros['__inasistencia__'];
+                const columnaInasistencia = `INASISTENCIA ${campoCita}`;
+                const valor = String(r[columnaInasistencia] || '').trim().toUpperCase();
+                const tieneInasistencia = (valor === 'SI' || valor === 'SÍ');
+                if (!tieneInasistencia) mostrar = false;
+            }
+            
+            return mostrar;
+        }
+
+        function renderTable() {
+            const th = document.getElementById('tablaHead');
+            th.innerHTML = '';
+            const trHead = document.createElement('tr');
+            
+            const thAcciones = document.createElement('th');
+            thAcciones.textContent = 'Acciones';
+            thAcciones.style.width = '80px';
+            trHead.appendChild(thAcciones);
+            
+            STATE.headers.forEach(h => {
+                const thEl = document.createElement('th');
+                thEl.textContent = h;
+                trHead.appendChild(thEl);
+            });
+            th.appendChild(trHead);
+            
+            const tb = document.getElementById('tablaBody');
+            tb.innerHTML = '';
+            
+            if (STATE.rows.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = STATE.headers.length + 1;
+                td.style.cssText = 'text-align:center; padding:40px; color:#999;';
+                td.innerHTML = '📭 No hay datos para mostrar';
+                tr.appendChild(td);
+                tb.appendChild(tr);
+                return;
+            }
             
             STATE.rows.forEach((r, idx) => {
                 let mostrar = aplicarFiltrosAFila(r);
                 if (!mostrar) return;
-                
                 const tr = document.createElement('tr');
                 const tdAcciones = document.createElement('td');
                 tdAcciones.style.textAlign = 'center';
@@ -1124,106 +1122,85 @@
             });
         }
 
-        function aplicarFiltrosAFila(r) {
-    let mostrar = true;
-    
-    // Filtro por Auditor
-    if (STATE.auditorSeleccionado) {
-        const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
-        if (!auditorRow.includes(STATE.auditorSeleccionado)) {
-            mostrar = false;
-        }
-    }
-    
-    Object.keys(STATE.filtros).forEach(k => {
-        if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
-        const f = STATE.filtros[k] || '';
-        if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
-    });
-    
-    const free = STATE.filtros['__free__'] || '';
-    if (free) {
-        const any = STATE.headers.some(h => (String(r[h] || '')).toLowerCase().includes(free));
-        if (!any) mostrar = false;
-    }
-    
-    if (STATE.filtros['__semaforo__']) {
-        const dias = obtenerDiasDeFila(r);
-        if (isNaN(dias)) mostrar = false;
-        if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
-        if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
-        if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
-    }
-    
-    if (STATE.filtros['__cita_vacia__']) {
-        const campoCita = STATE.filtros['__cita_vacia__'];
-        const valor = String(r[campoCita] || '').trim();
-        const estaVacio = (valor === '' || valor === '-- Vacío --' || !valor);
-        if (!estaVacio) mostrar = false;
-    }
-    
-    if (STATE.filtros['__inasistencia__']) {
-        const campoCita = STATE.filtros['__inasistencia__'];
-        const columnaInasistencia = `INASISTENCIA ${campoCita}`;
-        const valor = String(r[columnaInasistencia] || '').trim().toUpperCase();
-        const tieneInasistencia = (valor === 'SI' || valor === 'SÍ');
-        if (!tieneInasistencia) mostrar = false;
-    }
-    
-    return mostrar;
-}
-
         // ====================================
         // FILTROS Y SEMÁFOROS
         // ====================================
         function aplicarFiltros() {
+            const inputs = document.querySelectorAll("#filtrosContainer input");
+            STATE.filtros = {};
+            inputs.forEach(inp => {
+                const key = inp.dataset.colName;
+                if (key) {
+                    STATE.filtros[key] = inp.value.trim().toLowerCase();
+                }
+            });
+            
             STATE.filtros['__free__'] = document.getElementById('searchFree').value.trim().toLowerCase();
+            
             const fechaDesde = document.getElementById('fechaDesde').value;
             const fechaHasta = document.getElementById('fechaHasta').value;
-            if (fechaDesde) STATE.filtros['__fecha_desde__'] = fechaDesde;
-            if (fechaHasta) STATE.filtros['__fecha_hasta__'] = fechaHasta;
+            
+            if (fechaDesde || fechaHasta) {
+                STATE.filtros['__fecha_desde__'] = fechaDesde;
+                STATE.filtros['__fecha_hasta__'] = fechaHasta;
+            }
+            
+            const liActivo = document.querySelector("#aseguradoresList li.active");
+            const auditorSelect = liActivo ? liActivo.querySelector('select') : null;
+            if (auditorSelect) {
+                STATE.filtros['AUDITOR'] = auditorSelect.value.trim().toLowerCase();
+            }
+            renderTable();
+        }
+
+        function limpiarFiltros() {
+            STATE.filtros = {};
+            STATE.auditorSeleccionado = '';
+            document.getElementById('searchFree').value = '';
+            document.getElementById('fechaDesde').value = '';
+            document.getElementById('fechaHasta').value = '';
+            
+            // Limpiar select de auditor
+            const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
+            if (selectAuditor) selectAuditor.value = '';
+            
             renderTable();
             actualizarSemaforo();
             actualizarSemaforoCitas();
         }
 
-        function limpiarFiltros() {
-    STATE.filtros = {};
-    STATE.auditorSeleccionado = '';
-    document.getElementById('searchFree').value = '';
-    document.getElementById('fechaDesde').value = '';
-    document.getElementById('fechaHasta').value = '';
-    
-    // Limpiar select de auditor
-    const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
-    if (selectAuditor) selectAuditor.value = '';
-    
-    renderTable();
-    actualizarSemaforo();
-    actualizarSemaforoCitas();
-}
-
         function filtrarPorSemaforo(color) {
-    if (color === 'todos') {
-        delete STATE.filtros['__semaforo__'];
-    } else {
-        delete STATE.filtros['__cita_vacia__'];
-        delete STATE.filtros['__inasistencia__'];
-        STATE.filtros['__semaforo__'] = color;
-    }
-    renderTable();
-}
+            if (color === 'todos') {
+                delete STATE.filtros['__semaforo__'];
+            } else {
+                delete STATE.filtros['__cita_vacia__'];
+                delete STATE.filtros['__inasistencia__'];
+                STATE.filtros['__semaforo__'] = color;
+            }
+            renderTable();
+        }
+
+        function filtrarPorCitaVacia(tipoCita) {
+            if (tipoCita === 'todos') {
+                delete STATE.filtros['__cita_vacia__'];
+            } else {
+                delete STATE.filtros['__semaforo__'];
+                delete STATE.filtros['__inasistencia__'];
+                STATE.filtros['__cita_vacia__'] = tipoCita;
+            }
+            renderTable();
+        }
 
         function filtrarPorInasistencia(tipoCita) {
-    if (tipoCita === 'todos') {
-        delete STATE.filtros['__inasistencia__'];
-    } else {
-        delete STATE.filtros['__semaforo__'];
-        delete STATE.filtros['__cita_vacia__'];
-        STATE.filtros['__inasistencia__'] = tipoCita;
-    }
-    renderTable();
-}
+            if (tipoCita === 'todos') {
+                delete STATE.filtros['__inasistencia__'];
+            } else {
+                delete STATE.filtros['__semaforo__'];
+                delete STATE.filtros['__cita_vacia__'];
+                STATE.filtros['__inasistencia__'] = tipoCita;
+            }
+            renderTable();
+        }
 
         function obtenerDiasDeFila(r) {
             const clave = 'Días sin seguimiento';
@@ -1234,89 +1211,93 @@
             return NaN;
         }
 
-       function actualizarSemaforo() {
-    let verde = 0, naranja = 0, rojo = 0;
-    STATE.rows.forEach(r => {
-        let mostrar = aplicarFiltrosAFila(r);
-        if (!mostrar) return;
-        const dias = obtenerDiasDeFila(r);
-        if (isNaN(dias)) return;
-        if (dias <= 5) verde++;
-        else if (dias <= 12) naranja++;
-        else rojo++;
-    });
-    document.getElementById('conteo-verde').innerText = verde;
-    document.getElementById('conteo-naranja').innerText = naranja;
-    document.getElementById('conteo-rojo').innerText = rojo;
-}
+        function actualizarSemaforo() {
+            let verde = 0, naranja = 0, rojo = 0;
+            STATE.rows.forEach(r => {
+                let mostrar = aplicarFiltrosAFila(r);
+                if (!mostrar) return;
+                const dias = obtenerDiasDeFila(r);
+                if (isNaN(dias)) return;
+                if (dias <= 5) verde++;
+                else if (dias <= 12) naranja++;
+                else rojo++;
+            });
+            document.getElementById('conteo-verde').innerText = verde;
+            document.getElementById('conteo-naranja').innerText = naranja;
+            document.getElementById('conteo-rojo').innerText = rojo;
+        }
 
         function actualizarSemaforoCitas() {
-    const contadores = {
-        'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-        'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-    };
-    
-    const inasistencias = {
-        'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-        'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-    };
-    
-    STATE.rows.forEach(r => {
-        let mostrar = aplicarFiltrosAFila(r);
-        if (!mostrar) return;
-        
-        Object.keys(contadores).forEach(campo => {
-            const valor = String(r[campo] || '').trim();
-            if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
+            if (STATE.hoja !== 'Positiva' && STATE.hoja !== 'Colmena' && STATE.hoja !== 'Colsanitas' && STATE.hoja !== 'Positiva Evento') {
+                return;
+            }
             
-            const columnaInasistencia = `INASISTENCIA ${campo}`;
-            const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
-            if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
-        });
-    });
-    
-    document.getElementById('conteo-fisiatra').innerText = contadores['FISIATRA'];
-    document.getElementById('conteo-junta').innerText = contadores['JUNTA MEDICA'];
-    document.getElementById('conteo-valoracion').innerText = contadores['VALORACION OCUPACIONAL'];
-    document.getElementById('conteo-medicina-laboral').innerText = contadores['MEDICINA LABORAL'];
-    document.getElementById('conteo-psicologia').innerText = contadores['PSICOLOGIA'];
-    document.getElementById('conteo-terapia-ocupacional').innerText = contadores['TERAPIA OCUPACIONAL'];
-    document.getElementById('conteo-terapia-fisica').innerText = contadores['TERAPIA FISICA'];
-    
-    document.getElementById('inasistencia-fisiatra').innerText = inasistencias['FISIATRA'];
-    document.getElementById('inasistencia-junta').innerText = inasistencias['JUNTA MEDICA'];
-    document.getElementById('inasistencia-valoracion').innerText = inasistencias['VALORACION OCUPACIONAL'];
-    document.getElementById('inasistencia-medicina-laboral').innerText = inasistencias['MEDICINA LABORAL'];
-    document.getElementById('inasistencia-psicologia').innerText = inasistencias['PSICOLOGIA'];
-    document.getElementById('inasistencia-terapia-ocupacional').innerText = inasistencias['TERAPIA OCUPACIONAL'];
-    document.getElementById('inasistencia-terapia-fisica').innerText = inasistencias['TERAPIA FISICA'];
-}
+            const contadores = {
+                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
+            };
+            
+            const inasistencias = {
+                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
+            };
+            
+            STATE.rows.forEach(r => {
+                let mostrar = aplicarFiltrosAFila(r);
+                if (!mostrar) return;
+                
+                Object.keys(contadores).forEach(campo => {
+                    const valor = String(r[campo] || '').trim();
+                    if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
+                    
+                    const columnaInasistencia = `INASISTENCIA ${campo}`;
+                    const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
+                    if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
+                });
+            });
+            
+            document.getElementById('conteo-fisiatra').innerText = contadores['FISIATRA'];
+            document.getElementById('conteo-junta').innerText = contadores['JUNTA MEDICA'];
+            document.getElementById('conteo-valoracion').innerText = contadores['VALORACION OCUPACIONAL'];
+            document.getElementById('conteo-medicina-laboral').innerText = contadores['MEDICINA LABORAL'];
+            document.getElementById('conteo-psicologia').innerText = contadores['PSICOLOGIA'];
+            document.getElementById('conteo-terapia-ocupacional').innerText = contadores['TERAPIA OCUPACIONAL'];
+            document.getElementById('conteo-terapia-fisica').innerText = contadores['TERAPIA FISICA'];
+            
+            document.getElementById('inasistencia-fisiatra').innerText = inasistencias['FISIATRA'];
+            document.getElementById('inasistencia-junta').innerText = inasistencias['JUNTA MEDICA'];
+            document.getElementById('inasistencia-valoracion').innerText = inasistencias['VALORACION OCUPACIONAL'];
+            document.getElementById('inasistencia-medicina-laboral').innerText = inasistencias['MEDICINA LABORAL'];
+            document.getElementById('inasistencia-psicologia').innerText = inasistencias['PSICOLOGIA'];
+            document.getElementById('inasistencia-terapia-ocupacional').innerText = inasistencias['TERAPIA OCUPACIONAL'];
+            document.getElementById('inasistencia-terapia-fisica').innerText = inasistencias['TERAPIA FISICA'];
+        }
 
         // ====================================
         // DASHBOARD
         // ====================================
         function calcularEstadisticasDashboard() {
-    document.getElementById('dashboardPanel').style.display = 'block';
-    document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
-    
-    const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
-    const poblacionTotal = filasVisibles.length;
-    document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
-    
-    const cedulasUnicas = new Set();
-    filasVisibles.forEach(r => {
-        const cedula = r['CEDULA'];
-        if (cedula) cedulasUnicas.add(String(cedula).trim());
-    });
-    document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
-    
-    const siniestrosUnicos = new Set();
-    filasVisibles.forEach(r => {
-        const siniestro = r['SINIESTRO'];
-        if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
-    });
-    document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
-}
+            document.getElementById('dashboardPanel').style.display = 'block';
+            document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
+            
+            const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
+            const poblacionTotal = filasVisibles.length;
+            document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
+            
+            const cedulasUnicas = new Set();
+            filasVisibles.forEach(r => {
+                const cedula = r['CEDULA'];
+                if (cedula) cedulasUnicas.add(String(cedula).trim());
+            });
+            document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
+            
+            const siniestrosUnicos = new Set();
+            filasVisibles.forEach(r => {
+                const siniestro = r['SINIESTRO'];
+                if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
+            });
+            document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
+        }
 
         function toggleDashboard() {
             const panel = document.getElementById('dashboardPanel');
@@ -1433,7 +1414,6 @@
             }
             
             if (!confirm(`¿Está seguro de cerrar este caso?\n\nMotivo: ${tipoCierre}`)) return;
-            
             try {
                 const resultado = await cerrarCasoExcel(STATE.hoja, rowIndex, tipoCierre);
                 
