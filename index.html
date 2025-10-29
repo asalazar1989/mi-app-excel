@@ -90,6 +90,138 @@
         .btn-evento:hover { background: #138496; transform: scale(1.02); }
         
         .auditor-select { width: 100%; font-size: 0.75rem; padding: 0.3rem; border-radius: 4px; background: white; color: #001f3f; border: 1px solid #c0c0c0; margin-top: 0.5rem; }
+        /* ========================================
+   ESTILOS PARA MODAL EDITAR USUARIO
+======================================== */
+
+.seccion-form {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+}
+
+.seccion-titulo {
+    color: #001f3f;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #001f3f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seccion-titulo i {
+    font-size: 1.2rem;
+}
+
+.seccion-form .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.seccion-form .form-control,
+.seccion-form .form-select {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+.seccion-form .form-control:focus,
+.seccion-form .form-select:focus {
+    border-color: #001f3f;
+    box-shadow: 0 0 0 0.2rem rgba(0, 31, 63, 0.15);
+}
+
+.seccion-form .form-control-sm {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.seccion-form textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Estilos para campos readonly */
+.seccion-form .form-control[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Espaciado entre columnas */
+.seccion-form .row.g-2 {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+}
+
+.seccion-form .row.g-2 > * {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+/* Modal footer personalizado */
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 2px solid #dee2e6;
+    padding: 1rem;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal-footer .form-select {
+    flex: 0 0 auto;
+}
+
+.modal-footer .btn {
+    min-width: 100px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .seccion-form {
+        padding: 15px;
+    }
+    
+    .seccion-titulo {
+        font-size: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .form-select,
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* Animación suave al abrir modal */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+/* Mejora visual para el header del modal */
+.modal-header {
+    border-bottom: none;
+    padding: 1.25rem;
+}
+
+.modal-header .modal-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
     </style>
 </head>
 <body>
@@ -1566,56 +1698,155 @@
             }
         });
 
-        document.getElementById('btnActualizarUsuario').addEventListener('click', async function() {
-            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
-            
-            const form = document.getElementById('formEditarUsuario');
-            const inputs = form.querySelectorAll('input[name], textarea[name], select[name]');
-            const datosActualizados = {};
-            
-            inputs.forEach(input => {
-                if (input.name) {
-                    datosActualizados[input.name] = input.value;
-                }
-            });
-            
-            try {
-                await actualizarUsuarioExcel(STATE.hoja, rowIndex, datosActualizados);
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
-                modal.hide();
-                
-                await cargarDatosHoja(STATE.hoja);
-                showMessage('success', '✅ Usuario actualizado correctamente');
-            } catch (error) {
-                showMessage('error', 'Error al actualizar: ' + error.message);
-            }
+        document.getElementById('btnActualizarUsuario').addEventListener('click', function() {
+    const rowIndex = parseInt(document.getElementById('editRowIndex').value);
+    const usuario = usuarios[rowIndex];
+    
+    // Lista de todos los campos editables
+    const todosLosCampos = [
+        'nombre', 'documento', 'municipio', 'tipo_ingreso',
+        'institucion_remitente', 'fecha_ingreso', 'eps', 'regimen',
+        'etnia', 'escolaridad', 'ocupacion', 'estado_civil',
+        'religion', 'genero', 'orientacion_sexual', 'edad',
+        'estrato', 'tiene_hijos', 'embarazo', 'gestacion_semanas',
+        'lactancia', 'telefono', 'correo',
+        'estado', 'fase_cambio', 'sustancia_principal', 'policonsumo',
+        'diagnostico_dual', 'fecha_ingreso_fase', 'dias_fase',
+        'fecha_egreso', 'tipo_egreso', 'profesional_asignado',
+        'historico_fases', 'observaciones_seguimiento'
+    ];
+    
+    // Detectar si cambió la fase
+    const faseAnterior = usuario.fase_cambio;
+    const faseNueva = document.getElementById('edit_fase_cambio').value;
+    
+    // Actualizar todos los campos
+    todosLosCampos.forEach(campo => {
+        const elemento = document.getElementById(`edit_${campo}`);
+        if (elemento) {
+            usuario[campo] = elemento.value;
+        }
+    });
+    
+    // Si cambió la fase, actualizar historial
+    if (faseAnterior && faseNueva && faseAnterior !== faseNueva) {
+        const fechaCambio = new Date().toLocaleDateString('es-CO');
+        const nuevaEntrada = `${fechaCambio}: ${faseAnterior} → ${faseNueva}`;
+        
+        if (usuario.historico_fases) {
+            usuario.historico_fases += `\n${nuevaEntrada}`;
+        } else {
+            usuario.historico_fases = nuevaEntrada;
+        }
+        
+        // Actualizar fecha de ingreso a la nueva fase
+        usuario.fecha_ingreso_fase = new Date().toISOString().split('T')[0];
+        usuario.dias_fase = '0';
+    }
+    
+    // Recalcular días en fase si existe fecha de ingreso
+    if (usuario.fecha_ingreso_fase) {
+        const fechaIngreso = new Date(usuario.fecha_ingreso_fase);
+        const hoy = new Date();
+        const diferencia = Math.floor((hoy - fechaIngreso) / (1000 * 60 * 60 * 24));
+        usuario.dias_fase = diferencia.toString();
+    }
+    
+    // Guardar en localStorage
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    
+    // Cerrar modal
+    bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+    
+    // Recargar tabla
+    cargarDatos();
+    
+    // Mensaje de éxito
+    Swal.fire({
+        icon: 'success',
+        title: 'Actualizado',
+        text: 'Usuario actualizado correctamente',
+        timer: 1500,
+        showConfirmButton: false
+    });
+});
         });
 
-        document.getElementById('btnCerrarCaso').addEventListener('click', async function() {
-            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
-            const tipoCierre = document.getElementById('selectTipoCierre').value;
-            
-            if (!tipoCierre) {
-                showMessage('error', '⚠️ Debe seleccionar un Tipo de Cierre');
-                return;
-            }
-            
-            if (!confirm(`¿Está seguro de cerrar este caso?\n\nMotivo: ${tipoCierre}`)) return;
-            try {
-                const resultado = await cerrarCasoExcel(STATE.hoja, rowIndex, tipoCierre);
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
-                modal.hide();
-                
-                document.getElementById('selectTipoCierre').value = '';
-                
-                await cargarDatosHoja(STATE.hoja);
-                showMessage('success', `✅ Caso cerrado exitosamente\n\nMotivo: ${resultado.tipoCierre}`);
-            } catch (error) {
-                showMessage('error', 'Error al cerrar caso: ' + error.message);
-            }
+    document.getElementById('btnCerrarCaso').addEventListener('click', function() {
+    const tipoCierre = document.getElementById('selectTipoCierre').value;
+    
+    // Validar que se seleccionó un tipo de cierre
+    if (!tipoCierre) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atención',
+            text: 'Debe seleccionar un tipo de cierre',
+            confirmButtonColor: '#001f3f'
         });
+        return;
+    }
+    
+    // Confirmar cierre de caso
+    Swal.fire({
+        title: '¿Cerrar caso?',
+        text: `Se cerrará el caso con: ${tipoCierre}`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#001f3f',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, cerrar caso',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
+            const usuario = usuarios[rowIndex];
+            
+            // Actualizar campos del usuario
+            usuario.estado = 'Inactivo';
+            usuario.tipo_egreso = tipoCierre;
+            usuario.fecha_egreso = new Date().toISOString().split('T')[0];
+            
+            // Agregar al historial de fases
+            const fechaCierre = new Date().toLocaleDateString('es-CO');
+            const entradaCierre = `${fechaCierre}: CASO CERRADO - ${tipoCierre}`;
+            
+            if (usuario.historico_fases) {
+                usuario.historico_fases += `\n${entradaCierre}`;
+            } else {
+                usuario.historico_fases = entradaCierre;
+            }
+            
+            // Agregar observación de cierre
+            const observacionCierre = `CASO CERRADO - ${tipoCierre} - Fecha: ${fechaCierre}`;
+            if (usuario.observaciones_seguimiento) {
+                usuario.observaciones_seguimiento += `\n${observacionCierre}`;
+            } else {
+                usuario.observaciones_seguimiento = observacionCierre;
+            }
+            
+            // Guardar en localStorage
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            
+            // Cerrar modal
+            bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+            
+            // Recargar tabla
+            cargarDatos();
+            
+            // Mensaje de éxito
+            Swal.fire({
+                icon: 'success',
+                title: 'Caso cerrado',
+                text: `El caso se cerró correctamente como: ${tipoCierre}`,
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            // Resetear el select
+            document.getElementById('selectTipoCierre').value = '';
+        }
+    });
+});
 
         // ====================================
         // UI HELPERS
