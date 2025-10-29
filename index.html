@@ -753,11 +753,12 @@
         const CONFIG = {
             clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267',
             redirectUri: 'https://asalazar1989.github.io/mi-app-excel/',
-            fileId: '112226a3-2237-4dda-9876-ac94de7238e8'
+            fileName: 'Seguimiento ARL - Rangel.xlsx' // Buscaremos por nombre
         };
 
         let accessToken = null;
         let userData = null;
+        let excelFileId = null; // Se obtendrá dinámicamente
         
         const STATE = {
             hoja: '',
@@ -812,6 +813,7 @@
             showLoading('Inicializando sistema...');
             try {
                 await obtenerInfoUsuario();
+                await buscarArchivoExcel();
                 cargarAseguradores();
                 hideLoading();
             } catch (error) {
@@ -827,6 +829,62 @@
             if (!response.ok) throw new Error('Error al obtener información del usuario');
             userData = await response.json();
             showMessage('success', `✅ Bienvenido ${userData.displayName}!`);
+        }
+
+        async function buscarArchivoExcel() {
+            console.log('🔍 Buscando archivo:', CONFIG.fileName);
+            
+            try {
+                // Buscar el archivo en OneDrive
+                const searchUrl = `https://graph.microsoft.com/v1.0/me/drive/root/search(q='${encodeURIComponent(CONFIG.fileName)}')`;
+                console.log('📡 URL búsqueda:', searchUrl);
+                
+                const response = await fetch(searchUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error al buscar archivo: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('📁 Archivos encontrados:', data.value.length);
+                
+                if (data.value.length === 0) {
+                    throw new Error(`No se encontró el archivo "${CONFIG.fileName}" en tu OneDrive.\n\nAsegúrate de que:\n1. El archivo existe\n2. Está en tu OneDrive\n3. El nombre es exacto: "${CONFIG.fileName}"`);
+                }
+                
+                // Buscar el archivo exacto (por nombre completo)
+                const archivoExacto = data.value.find(file => 
+                    file.name.toLowerCase() === CONFIG.fileName.toLowerCase()
+                );
+                
+                if (!archivoExacto) {
+                    // Si no se encuentra exacto, tomar el primero que contenga "ARL"
+                    const archivoARL = data.value.find(file => 
+                        file.name.toLowerCase().includes('arl') && 
+                        file.name.toLowerCase().includes('rangel')
+                    );
+                    
+                    if (archivoARL) {
+                        excelFileId = archivoARL.id;
+                        console.log('✅ Archivo encontrado (similar):', archivoARL.name);
+                        console.log('📁 File ID:', excelFileId);
+                        showMessage('info', `Usando archivo: ${archivoARL.name}`);
+                    } else {
+                        throw new Error(`Archivo no encontrado. Archivos disponibles:\n${data.value.map(f => f.name).join('\n')}`);
+                    }
+                } else {
+                    excelFileId = archivoExacto.id;
+                    console.log('✅ Archivo encontrado:', archivoExacto.name);
+                    console.log('📁 File ID:', excelFileId);
+                    showMessage('success', `✅ Conectado a: ${archivoExacto.name}`);
+                }
+                
+            } catch (error) {
+                console.error('❌ Error al buscar archivo:', error);
+                throw error;
+            }
         }
 
         function cargarAseguradores() {
@@ -860,12 +918,18 @@
         async function cargarDatosHoja(nombreHoja) {
             showLoading(`Cargando datos de ${nombreHoja}...`);
             console.log('🔍 Iniciando carga de hoja:', nombreHoja);
-            console.log('📁 File ID:', CONFIG.fileId);
+            console.log('📁 File ID:', excelFileId);
             console.log('🔑 Token presente:', !!accessToken);
+            
+            if (!excelFileId) {
+                hideLoading();
+                showMessage('error', 'No se ha encontrado el archivo Excel. Intenta recargar la página.');
+                return;
+            }
             
             try {
                 // PASO 1: Obtener información del workbook
-                const workbookUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${CONFIG.fileId}/workbook/worksheets`;
+                const workbookUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
                 console.log('📡 URL Worksheets:', workbookUrl);
                 
                 const worksheetsResponse = await fetch(workbookUrl, {
@@ -897,7 +961,7 @@
                 console.log('✅ Hoja encontrada:', nombreHojaExacto);
                 
                 // PASO 2: Obtener el rango usado de la hoja
-                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${CONFIG.fileId}/workbook/worksheets/${encodeURIComponent(nombreHojaExacto)}/usedRange`;
+                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(nombreHojaExacto)}/usedRange`;
                 console.log('📡 URL UsedRange:', usedRangeUrl);
                 
                 const response = await fetch(usedRangeUrl, {
