@@ -3,447 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión ARL - Rangel | Sistema Integrado</title>
+    <title>Gestión ARL - Rangel | Sistema COMPLETO ✅</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* === PANTALLA DE LOGIN === */
-        .login-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            padding: 30px;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .login-logo {
-            width: 80px;
-            height: 80px;
-            background: #667eea;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 40px;
-            margin: 0 auto 20px;
-        }
-
-        .btn-login {
-            background: #667eea;
-            color: white;
-            font-size: 16px;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .btn-login:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* === SISTEMA PRINCIPAL === */
-        .main-system {
-            display: none;
-            height: 100vh;
-            background: #f0f2f5;
-        }
-
-        .main-system.show {
-            display: flex;
-        }
-
-        /* === SIDEBAR === */
-        #sidebar {
-            width: 180px;
-            background: #001f3f;
-            color: white;
-            padding: 0.5rem;
-            padding-top: 2.5rem;
-            overflow-y: auto;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            z-index: 100;
-            transition: left 0.3s ease;
-        }
-
-        #sidebar.collapsed {
-            left: -180px;
-        }
-
-        #btnToggleSidebar {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            z-index: 1000;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-
-        #btnToggleSidebar:hover {
-            background: rgba(255,255,255,0.25);
-        }
-
-        #btnToggleSidebarFixed {
-            display: none;
-            position: fixed;
-            left: 5px;
-            top: 10px;
-            z-index: 1001;
-            background: #001f3f;
-            color: white;
-            border: 2px solid white;
-            border-radius: 8px;
-            padding: 0.4rem 0.5rem;
-            cursor: pointer;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            font-size: 1rem;
-        }
-
-        #sidebar h5 {
-            color: #c0c0c0;
-            margin-bottom: 0.4rem;
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.3rem 0;
-            line-height: 1.2;
-        }
-
-        #sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #sidebar li {
-            padding: 0.4rem 0.5rem;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-bottom: 2px;
-            position: relative;
-            font-size: 0.8rem;
-            transition: all 0.2s ease;
-        }
-
-        #sidebar li:hover, #sidebar li.active {
-            background: #c0c0c0;
-            color: #001f3f;
-            font-weight: bold;
-        }
-
-        /* === CONTENIDO PRINCIPAL === */
-        #content {
-            margin-left: 180px;
-            padding: 1rem;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        #content.expanded {
-            margin-left: 0;
-        }
-
-        /* === SEMÁFOROS === */
-        .semaforo-container {
-            background: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.25rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 0.5rem;
-            flex-shrink: 0;
-        }
-
-        .semaforo {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            flex-wrap: wrap;
-            flex-shrink: 0;
-        }
-
-        .indicador {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            background: #f9f9f9;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-            font-size: 0.85rem;
-        }
-
-        .indicador:hover {
-            transform: scale(1.03);
-        }
-
-        .bolita {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100vh; overflow: hidden; }
+        
+        /* LOGIN SCREEN */
+        .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
+        .login-card { background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 30px; max-width: 500px; text-align: center; }
+        .login-logo { width: 80px; height: 80px; background: #667eea; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; margin: 0 auto 20px; }
+        .btn-login { background: #667eea; color: white; font-size: 16px; padding: 15px 30px; border: none; border-radius: 6px; cursor: pointer; transition: all 0.3s; width: 100%; margin-top: 20px; }
+        .btn-login:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        
+        /* MAIN SYSTEM */
+        .main-system { display: none; height: 100vh; background: #f0f2f5; }
+        .main-system.show { display: flex; }
+        
+        /* SIDEBAR */
+        #sidebar { width: 180px; background: #001f3f; color: white; padding: 0.5rem; padding-top: 2.5rem; overflow-y: auto; position: fixed; left: 0; top: 0; height: 100vh; z-index: 100; transition: left 0.3s ease; }
+        #sidebar.collapsed { left: -180px; }
+        #btnToggleSidebar { position: absolute; right: 5px; top: 5px; z-index: 1000; background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 0.3rem 0.5rem; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; }
+        #btnToggleSidebar:hover { background: rgba(255,255,255,0.25); }
+        #btnToggleSidebarFixed { display: none; position: fixed; left: 5px; top: 10px; z-index: 1001; background: #001f3f; color: white; border: 2px solid white; border-radius: 8px; padding: 0.4rem 0.5rem; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.3); font-size: 1rem; }
+        #sidebar h5 { color: #c0c0c0; margin-bottom: 0.4rem; text-align: center; font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0; line-height: 1.2; }
+        #sidebar ul { list-style: none; padding: 0; margin: 0; }
+        #sidebar li { padding: 0.4rem 0.5rem; cursor: pointer; border-radius: 4px; margin-bottom: 2px; position: relative; font-size: 0.8rem; transition: all 0.2s ease; }
+        #sidebar li:hover, #sidebar li.active { background: #c0c0c0; color: #001f3f; font-weight: bold; }
+        
+        /* CONTENIDO */
+        #content { margin-left: 180px; padding: 1rem; overflow: auto; display: flex; flex-direction: column; height: 100vh; transition: margin-left 0.3s ease; }
+        #content.expanded { margin-left: 0; }
+        
+        /* SEMÁFOROS */
+        .semaforo-container { background: white; padding: 0.5rem 0.75rem; border-radius: 0.25rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 0.5rem; flex-shrink: 0; }
+        .semaforo { display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; flex-shrink: 0; }
+        .indicador { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 20px; background: #f9f9f9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.2s ease; font-size: 0.85rem; }
+        .indicador:hover { transform: scale(1.03); }
+        .bolita { width: 14px; height: 14px; border-radius: 50%; }
         .verde { background: green; }
         .naranja { background: orange; }
         .rojo { background: red; }
-
-        .indicador-cita {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.75rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-
-        .indicador-cita:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        /* === TABLA === */
-        .table-wrapper {
-            flex-grow: 1;
-            overflow: auto;
-            position: relative;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th, td {
-            padding: 6px 8px;
-            border: 1px solid #ddd;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        th {
-            background: #001f3f;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        td {
-            font-size: 0.85rem;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        tr:hover {
-            background: #d9e6f2;
-            cursor: pointer;
-        }
-
-        .btn-edit-row {
-            padding: 0.2rem 0.4rem;
-            font-size: 0.7rem;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-edit-row:hover {
-            background: #0056b3;
-            transform: scale(1.05);
-        }
-
-        /* === DASHBOARD === */
-        .dashboard-container {
-            background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            height: 100%;
-            min-height: 85px;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .stat-icon {
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            flex-shrink: 0;
-        }
-
+        .indicador-cita { display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; }
+        .indicador-cita:hover { transform: scale(1.05); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        
+        /* TABLA */
+        .table-wrapper { flex-grow: 1; overflow: auto; position: relative; border: 1px solid #ddd; border-radius: 8px; background: white; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 6px 8px; border: 1px solid #ddd; text-align: left; white-space: nowrap; }
+        th { background: #001f3f; color: white; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; font-weight: 600; }
+        td { font-size: 0.85rem; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        tr:hover { background: #d9e6f2; cursor: pointer; }
+        .btn-edit-row { padding: 0.2rem 0.4rem; font-size: 0.7rem; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; transition: all 0.2s ease; }
+        .btn-edit-row:hover { background: #0056b3; transform: scale(1.05); }
+        
+        /* DASHBOARD */
+        .dashboard-container { background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); flex-shrink: 0; }
+        .stat-card { background: white; border-radius: 10px; padding: 1rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%; min-height: 85px; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .stat-icon { font-size: 2rem; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
         .stat-primary .stat-icon { background: #e3f2fd; color: #1976d2; }
         .stat-success .stat-icon { background: #e8f5e9; color: #2e7d32; }
         .stat-warning .stat-icon { background: #fff3e0; color: #f57c00; }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-overlay.show {
-            display: flex;
-        }
-
-        .loading-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .filter-panel {
-            margin-bottom: 0.75rem;
-            background: white;
-            padding: 0.75rem;
-            border-radius: 0.25rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            flex-shrink: 0;
-        }
-
-        /* === MODALES === */
-        #modalEditarUsuario .modal-body {
-            padding: 0.75rem 1rem;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        #modalEditarUsuario .form-label {
-            font-size: 0.7rem;
-            margin-bottom: 0.15rem;
-            font-weight: 600;
-            color: #2c3e50;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        #modalEditarUsuario .form-control,
-        #modalEditarUsuario .form-select,
-        #modalEditarUsuario textarea {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.4rem;
-            height: 28px;
-            border-radius: 4px;
-            border: 1px solid #cbd5e0;
-        }
-
-        #modalEditarUsuario textarea {
-            height: 50px !important;
-            resize: vertical;
-            min-height: 50px;
-        }
-
-        .seccion-form {
-            background: white;
-            padding: 0.65rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-            margin-bottom: 0.6rem;
-        }
-
-        .seccion-titulo {
-            color: #001f3f;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.3rem;
-            border-bottom: 2px solid #007bff;
-        }
+        
+        /* LOADING */
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .loading-overlay.show { display: flex; }
+        .loading-content { background: white; padding: 2rem; border-radius: 10px; text-align: center; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .filter-panel { margin-bottom: 0.75rem; background: white; padding: 0.75rem; border-radius: 0.25rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
+        
+        /* MODALES */
+        #modalEditarUsuario .modal-body { padding: 0.75rem 1rem; max-height: 70vh; overflow-y: auto; }
+        #modalEditarUsuario .form-label { font-size: 0.7rem; margin-bottom: 0.15rem; font-weight: 600; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.3px; }
+        #modalEditarUsuario .form-control, #modalEditarUsuario .form-select, #modalEditarUsuario textarea { font-size: 0.75rem; padding: 0.25rem 0.4rem; height: 28px; border-radius: 4px; border: 1px solid #cbd5e0; }
+        #modalEditarUsuario textarea { height: 50px !important; resize: vertical; min-height: 50px; }
+        .seccion-form { background: white; padding: 0.65rem; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 0.6rem; }
+        .seccion-titulo { color: #001f3f; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #007bff; }
+        
+        /* BOTONES ESPECIALES SIDEBAR */
+        .btn-evento { background: #17a2b8; color: white; font-size: 0.7rem; padding: 0.35rem 0.4rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: all 0.2s ease; }
+        .btn-evento:hover { background: #138496; transform: scale(1.02); }
+        
+        .auditor-select { width: 100%; font-size: 0.75rem; padding: 0.3rem; border-radius: 4px; background: white; color: #001f3f; border: 1px solid #c0c0c0; margin-top: 0.5rem; }
     </style>
 </head>
 <body>
@@ -452,10 +98,10 @@
         <div class="login-card">
             <div class="login-logo">🏥</div>
             <h1>Gestión ARL - Rangel</h1>
-            <p class="subtitle">Sistema Integrado de Seguimiento</p>
+            <p class="subtitle">Sistema Integrado Completo ✅</p>
             <div style="background: #d1ecf1; border: 2px solid #17a2b8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #0c5460; margin-bottom: 10px;">✅ Sistema Configurado</h3>
-                <p style="margin-bottom: 10px;">Conectado a Excel Online</p>
+                <h3 style="color: #0c5460; margin-bottom: 10px;">✅ Sistema Listo</h3>
+                <p style="margin-bottom: 10px;">Todas las funcionalidades implementadas</p>
             </div>
             <button class="btn-login" onclick="iniciarSesion()">
                 🔐 Iniciar Sesión con Microsoft
@@ -757,13 +403,14 @@
 
         let accessToken = null;
         let userData = null;
-        let excelFileId = null; // Se obtendrá dinámicamente buscando por "ARL Rangel"
+        let excelFileId = null;
         
         const STATE = {
             hoja: '',
             headers: [],
             rows: [],
-            filtros: {}
+            filtros: {},
+            auditorSeleccionado: ''
         };
 
         // ====================================
@@ -831,66 +478,31 @@
         }
 
         async function buscarArchivoExcel() {
-            console.log('🔍 Buscando archivo Excel ARL en tu OneDrive...');
-            
             try {
                 let archivosEncontrados = [];
                 
-                // ESTRATEGIA 1: Buscar en la carpeta raíz
-                console.log('📂 Buscando en carpeta raíz...');
                 try {
                     const rootUrl = `https://graph.microsoft.com/v1.0/me/drive/root/children`;
                     const rootResponse = await fetch(rootUrl, {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     });
-                    
                     if (rootResponse.ok) {
                         const rootData = await rootResponse.json();
                         archivosEncontrados = archivosEncontrados.concat(rootData.value);
-                        console.log('📁 Archivos en raíz:', rootData.value.length);
                     }
-                } catch (e) {
-                    console.log('⚠️ No se pudo listar raíz:', e.message);
-                }
+                } catch (e) {}
                 
-                // ESTRATEGIA 2: Buscar en la carpeta Documents
-                console.log('📂 Buscando en carpeta Documents...');
                 try {
                     const docsUrl = `https://graph.microsoft.com/v1.0/me/drive/special/documents/children`;
                     const docsResponse = await fetch(docsUrl, {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     });
-                    
                     if (docsResponse.ok) {
                         const docsData = await docsResponse.json();
                         archivosEncontrados = archivosEncontrados.concat(docsData.value);
-                        console.log('📁 Archivos en Documents:', docsData.value.length);
                     }
-                } catch (e) {
-                    console.log('⚠️ No se pudo listar Documents:', e.message);
-                }
+                } catch (e) {}
                 
-                // ESTRATEGIA 3: Listar todos los archivos recientes
-                console.log('📂 Buscando en archivos recientes...');
-                try {
-                    const recentUrl = `https://graph.microsoft.com/v1.0/me/drive/recent`;
-                    const recentResponse = await fetch(recentUrl, {
-                        headers: { 'Authorization': `Bearer ${accessToken}` }
-                    });
-                    
-                    if (recentResponse.ok) {
-                        const recentData = await recentResponse.json();
-                        archivosEncontrados = archivosEncontrados.concat(recentData.value);
-                        console.log('📁 Archivos recientes:', recentData.value.length);
-                    }
-                } catch (e) {
-                    console.log('⚠️ No se pudo listar recientes:', e.message);
-                }
-                
-                console.log('📊 Total de archivos encontrados:', archivosEncontrados.length);
-                console.log('📋 Lista completa de archivos:', archivosEncontrados.map(f => f.name));
-                
-                // Eliminar duplicados por ID
                 const archivosUnicos = [];
                 const idsVistos = new Set();
                 archivosEncontrados.forEach(archivo => {
@@ -900,46 +512,38 @@
                     }
                 });
                 
-                console.log('📊 Archivos únicos:', archivosUnicos.length);
-                
-                if (archivosUnicos.length === 0) {
-                    throw new Error('No se pudo acceder a ningún archivo en OneDrive.\n\nVerifica que:\n1. Has dado permisos correctos a la aplicación\n2. Tienes archivos en tu OneDrive');
-                }
-                
-                // Buscar archivos que contengan "ARL" y "Rangel"
                 const archivosARL = archivosUnicos.filter(file => {
                     const nombre = file.name.toLowerCase();
                     return (nombre.includes('arl') || nombre.includes('seguimiento')) && 
                            (nombre.includes('rangel') || nombre.includes('seguimiento'));
                 });
                 
-                console.log('📊 Archivos ARL encontrados:', archivosARL.length);
-                console.log('📋 Archivos ARL:', archivosARL.map(f => f.name));
-                
                 if (archivosARL.length === 0) {
-                    // Mostrar todos los archivos Excel disponibles
-                    const archivosExcel = archivosUnicos.filter(f => 
-                        f.name.toLowerCase().endsWith('.xlsx') || 
-                        f.name.toLowerCase().endsWith('.xlsm') ||
-                        f.name.toLowerCase().endsWith('.xls')
-                    );
-                    
-                    throw new Error(`No se encontró archivo con "ARL" o "Rangel".\n\nArchivos Excel disponibles:\n${archivosExcel.map(f => `- ${f.name}`).join('\n')}`);
+                    throw new Error('No se encontró archivo con "ARL" o "Rangel".');
                 }
                 
-                // Tomar el primer archivo ARL
                 const archivoARL = archivosARL[0];
                 excelFileId = archivoARL.id;
-                
-                console.log('✅ Archivo seleccionado:', archivoARL.name);
-                console.log('📁 File ID:', excelFileId);
-                console.log('📄 Ruta:', archivoARL.webUrl);
-                
                 showMessage('success', `✅ Conectado a: ${archivoARL.name}`);
                 
             } catch (error) {
-                console.error('❌ Error al buscar archivo:', error);
                 throw error;
+            }
+        }
+
+        // ====================================
+        // ✨ FUNCIÓN 4: PACIENTES POR EVENTO
+        // ====================================
+        async function verPacientesEvento() {
+            const nombreHoja = 'Positiva Evento';
+            showLoading(`Cargando ${nombreHoja}...`);
+            
+            try {
+                await cargarDatosHoja(nombreHoja);
+                showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
+            } catch (error) {
+                hideLoading();
+                showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
             }
         }
 
@@ -953,6 +557,46 @@
                 li.textContent = asegurador;
                 li.onclick = () => seleccionarHoja(asegurador, li);
                 list.appendChild(li);
+                
+                // ✨ AGREGAR BOTONES ESPECIALES PARA POSITIVA
+                if (asegurador === 'Positiva') {
+                    // Botón: Pacientes por Evento
+                    const btnEvento = document.createElement('button');
+                    btnEvento.className = 'btn-evento';
+                    btnEvento.innerHTML = '📋 Pacientes por Evento';
+                    btnEvento.onclick = (e) => {
+                        e.stopPropagation();
+                        verPacientesEvento();
+                    };
+                    li.appendChild(btnEvento);
+                    
+                    // Botón: Volver a Positiva Normal
+                    const btnVolver = document.createElement('button');
+                    btnVolver.className = 'btn-evento';
+                    btnVolver.style.background = '#6c757d';
+                    btnVolver.style.display = 'none';
+                    btnVolver.id = 'btnVolverPositiva';
+                    btnVolver.innerHTML = '↩️ Volver a Positiva';
+                    btnVolver.onclick = (e) => {
+                        e.stopPropagation();
+                        seleccionarHoja('Positiva', li);
+                        btnVolver.style.display = 'none';
+                        btnEvento.style.display = 'block';
+                    };
+                    li.appendChild(btnVolver);
+                }
+                
+                // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
+                const selectAuditor = document.createElement('select');
+                selectAuditor.className = 'auditor-select';
+                selectAuditor.id = `auditorSelect-${asegurador}`;
+                selectAuditor.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+                selectAuditor.style.display = 'none';
+                selectAuditor.onchange = (e) => {
+                    e.stopPropagation();
+                    filtrarPorAuditor(e.target.value);
+                };
+                li.appendChild(selectAuditor);
             });
             
             if (list.firstChild) {
@@ -968,90 +612,55 @@
             [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
             liElement.classList.add('active');
             
+            // Mostrar/ocultar botón "Volver a Positiva"
+            const btnVolver = document.getElementById('btnVolverPositiva');
+            if (btnVolver) {
+                if (nombreHoja === 'Positiva Evento') {
+                    btnVolver.style.display = 'block';
+                    const btnEvento = liElement.querySelector('.btn-evento');
+                    if (btnEvento && btnEvento.textContent.includes('Evento')) {
+                        btnEvento.style.display = 'none';
+                    }
+                } else {
+                    btnVolver.style.display = 'none';
+                }
+            }
+            
             await cargarDatosHoja(nombreHoja);
         }
 
         async function cargarDatosHoja(nombreHoja) {
             showLoading(`Cargando datos de ${nombreHoja}...`);
-            console.log('🔍 Iniciando carga de hoja:', nombreHoja);
-            console.log('📁 File ID:', excelFileId);
-            console.log('🔑 Token presente:', !!accessToken);
-            
-            if (!excelFileId) {
-                hideLoading();
-                showMessage('error', 'No se ha encontrado el archivo Excel. Intenta recargar la página.');
-                return;
-            }
             
             try {
-                // PASO 1: Obtener información del workbook
                 const workbookUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
-                console.log('📡 URL Worksheets:', workbookUrl);
-                
                 const worksheetsResponse = await fetch(workbookUrl, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
                 });
                 
-                if (!worksheetsResponse.ok) {
-                    const errorText = await worksheetsResponse.text();
-                    console.error('❌ Error worksheets:', worksheetsResponse.status, errorText);
-                    throw new Error(`Error al obtener hojas: ${worksheetsResponse.status} - ${errorText}`);
-                }
+                if (!worksheetsResponse.ok) throw new Error(`Error al obtener hojas: ${worksheetsResponse.status}`);
                 
                 const worksheetsData = await worksheetsResponse.json();
-                console.log('📋 Hojas disponibles:', worksheetsData.value.map(s => s.name));
+                const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHoja.toLowerCase());
                 
-                // Buscar la hoja exacta (case-insensitive)
-                const hojaExacta = worksheetsData.value.find(s => 
-                    s.name.toLowerCase() === nombreHoja.toLowerCase()
-                );
-                
-                if (!hojaExacta) {
-                    throw new Error(`Hoja "${nombreHoja}" no encontrada. Hojas disponibles: ${worksheetsData.value.map(s => s.name).join(', ')}`);
-                }
+                if (!hojaExacta) throw new Error(`Hoja "${nombreHoja}" no encontrada`);
                 
                 const nombreHojaExacto = hojaExacta.name;
-                console.log('✅ Hoja encontrada:', nombreHojaExacto);
                 
-                // PASO 2: Obtener el rango usado de la hoja
                 const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(nombreHojaExacto)}/usedRange`;
-                console.log('📡 URL UsedRange:', usedRangeUrl);
-                
                 const response = await fetch(usedRangeUrl, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('❌ Error usedRange:', response.status, errorText);
-                    throw new Error(`Error al leer datos: ${response.status} - ${errorText}`);
-                }
+                if (!response.ok) throw new Error(`Error al leer datos: ${response.status}`);
 
                 const data = await response.json();
-                console.log('📊 Datos recibidos:', {
-                    filas: data.values.length,
-                    columnas: data.values[0]?.length,
-                    primeraFila: data.values[0]
-                });
                 
-                if (!data.values || data.values.length === 0) {
-                    throw new Error('La hoja está vacía');
-                }
+                if (!data.values || data.values.length === 0) throw new Error('La hoja está vacía');
                 
                 STATE.headers = data.values[0];
-                console.log('📋 Headers:', STATE.headers);
                 
-                const rows = data.values.slice(1).filter(row => 
-                    row.some(cell => cell !== null && cell !== '')
-                );
-                
-                console.log('📊 Filas filtradas:', rows.length);
+                const rows = data.values.slice(1).filter(row => row.some(cell => cell !== null && cell !== ''));
                 
                 STATE.rows = rows.map(row => {
                     const obj = {};
@@ -1061,8 +670,8 @@
                     return obj;
                 });
 
-                console.log('✅ Datos procesados:', STATE.rows.length, 'registros');
-                console.log('👁️ Primer registro:', STATE.rows[0]);
+                // ✨ CARGAR AUDITORES EN SELECT
+                cargarAuditoresEnSelect(nombreHoja);
 
                 renderTable();
                 actualizarSemaforo();
@@ -1072,7 +681,7 @@
                 showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
                 
                 const semaforoCitas = document.getElementById('semaforoCitas');
-                if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas') {
+                if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas' || nombreHoja === 'Positiva Evento') {
                     semaforoCitas.style.display = 'block';
                 } else {
                     semaforoCitas.style.display = 'none';
@@ -1080,9 +689,333 @@
                 
             } catch (error) {
                 hideLoading();
-                console.error('❌ ERROR COMPLETO:', error);
-                alert(`❌ Error al cargar datos:\n\n${error.message}\n\nRevisa la consola (F12) para más detalles.`);
+                console.error('❌ ERROR:', error);
                 showMessage('error', `Error: ${error.message}`);
+            }
+        }
+
+        // ====================================
+        // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
+        // ====================================
+        function cargarAuditoresEnSelect(nombreHoja) {
+            const select = document.getElementById(`auditorSelect-${nombreHoja}`);
+            if (!select) return;
+            
+            select.style.display = 'block';
+            select.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+            
+            const auditores = Array.from(new Set(
+                STATE.rows.map(r => r['AUDITOR']).filter(a => a && String(a).trim() !== '')
+            )).sort();
+            
+            auditores.forEach(a => {
+                const opt = document.createElement('option');
+                opt.value = a;
+                opt.textContent = a;
+                select.appendChild(opt);
+            });
+            
+            console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
+        }
+
+        function filtrarPorAuditor(auditor) {
+            STATE.auditorSeleccionado = auditor.trim().toLowerCase();
+            renderTable();
+            actualizarSemaforo();
+            actualizarSemaforoCitas();
+            calcularEstadisticasDashboard();
+            
+            if (auditor) {
+                showMessage('info', `🔍 Filtrando por auditor: ${auditor}`);
+            } else {
+                showMessage('info', '🔄 Filtro de auditor removido');
+            }
+        }
+
+        // ====================================
+        // ✨ FUNCIÓN 1: AGREGAR USUARIOS (ESCRITURA REAL)
+        // ====================================
+        async function agregarUsuarioExcel(nombreHoja, datos) {
+            showLoading('Guardando usuario en Excel...');
+            
+            try {
+                const esPacienteEvento = datos['PACIENTE_EVENTO'] === 'SI';
+                let nombreHojaDestino = nombreHoja;
+                
+                if (esPacienteEvento && nombreHoja === 'Positiva') {
+                    nombreHojaDestino = 'Positiva Evento';
+                }
+                
+                const worksheetsUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
+                const worksheetsResponse = await fetch(worksheetsUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const worksheetsData = await worksheetsResponse.json();
+                
+                const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHojaDestino.toLowerCase());
+                if (!hojaExacta) throw new Error(`Hoja "${nombreHojaDestino}" no encontrada`);
+                
+                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/usedRange`;
+                const usedRangeResponse = await fetch(usedRangeUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const usedRangeData = await usedRangeResponse.json();
+                
+                const headers = usedRangeData.values[0];
+                const ultimaFila = usedRangeData.rowCount + 1;
+                
+                // CALCULAR "Hoy" y "Días sin seguimiento"
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+                
+                let fechaUltimoSeguimiento = null;
+                const valorFecha = datos['Fecha Último Seguimiento'];
+                if (valorFecha) {
+                    if (typeof valorFecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(valorFecha)) {
+                        const partes = valorFecha.split("-");
+                        fechaUltimoSeguimiento = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+                    }
+                }
+                
+                let diasSinSeguimiento = '';
+                if (fechaUltimoSeguimiento) {
+                    fechaUltimoSeguimiento.setHours(0, 0, 0, 0);
+                    const diferenciaMilisegundos = hoy.getTime() - fechaUltimoSeguimiento.getTime();
+                    const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+                    diasSinSeguimiento = diferenciaDias;
+                }
+                
+                datos['Hoy'] = hoy.toISOString().split('T')[0];
+                datos['Días sin seguimiento'] = diasSinSeguimiento;
+                
+                const nuevaFila = headers.map(h => {
+                    let val = datos[h] || "";
+                    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                        return val;
+                    }
+                    return val;
+                });
+                
+                const ultimaColumna = String.fromCharCode(65 + headers.length - 1);
+                const rangeAddress = `A${ultimaFila}:${ultimaColumna}${ultimaFila}`;
+                
+                const writeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/range(address='${rangeAddress}')`;
+                
+                const writeResponse = await fetch(writeUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ values: [nuevaFila] })
+                });
+                
+                if (!writeResponse.ok) {
+                    const errorText = await writeResponse.text();
+                    throw new Error(`Error al escribir: ${writeResponse.status} - ${errorText}`);
+                }
+                
+                hideLoading();
+                return { exito: true, mensaje: "Usuario agregado correctamente", hojaDestino: nombreHojaDestino };
+                
+            } catch (error) {
+                hideLoading();
+                throw error;
+            }
+        }
+
+        // ====================================
+        // ✨ FUNCIÓN 2: ACTUALIZAR USUARIOS (ESCRITURA REAL)
+        // ====================================
+        async function actualizarUsuarioExcel(nombreHoja, rowIndex, datosActualizados) {
+            showLoading('Actualizando usuario en Excel...');
+            
+            try {
+                const worksheetsUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
+                const worksheetsResponse = await fetch(worksheetsUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const worksheetsData = await worksheetsResponse.json();
+                
+                const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHoja.toLowerCase());
+                if (!hojaExacta) throw new Error(`Hoja "${nombreHoja}" no encontrada`);
+                
+                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/usedRange`;
+                const usedRangeResponse = await fetch(usedRangeUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const usedRangeData = await usedRangeResponse.json();
+                
+                const headers = usedRangeData.values[0];
+                
+                // RECALCULAR "Hoy" y "Días sin seguimiento"
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+                
+                let fechaUltimoSeguimiento = null;
+                const valorFecha = datosActualizados['Fecha Último Seguimiento'];
+                if (valorFecha) {
+                    if (typeof valorFecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(valorFecha)) {
+                        const partes = valorFecha.split("-");
+                        fechaUltimoSeguimiento = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+                    }
+                }
+                
+                let diasSinSeguimiento = '';
+                if (fechaUltimoSeguimiento) {
+                    fechaUltimoSeguimiento.setHours(0, 0, 0, 0);
+                    const diferenciaMilisegundos = hoy.getTime() - fechaUltimoSeguimiento.getTime();
+                    const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+                    diasSinSeguimiento = diferenciaDias;
+                }
+                
+                datosActualizados['Hoy'] = hoy.toISOString().split('T')[0];
+                datosActualizados['Días sin seguimiento'] = diasSinSeguimiento;
+                
+                const filaActualizada = headers.map(h => {
+                    let val = datosActualizados[h] !== undefined ? datosActualizados[h] : '';
+                    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                        return val;
+                    }
+                    return val;
+                });
+                
+                const filaReal = rowIndex + 2;
+                const ultimaColumna = String.fromCharCode(65 + headers.length - 1);
+                const rangeAddress = `A${filaReal}:${ultimaColumna}${filaReal}`;
+                
+                const updateUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/range(address='${rangeAddress}')`;
+                
+                const updateResponse = await fetch(updateUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ values: [filaActualizada] })
+                });
+                
+                if (!updateResponse.ok) {
+                    const errorText = await updateResponse.text();
+                    throw new Error(`Error al actualizar: ${updateResponse.status} - ${errorText}`);
+                }
+                
+                hideLoading();
+                return { exito: true, mensaje: 'Actualizado correctamente', fila: filaReal };
+                
+            } catch (error) {
+                hideLoading();
+                throw error;
+            }
+        }
+
+        // ====================================
+        // ✨ FUNCIÓN 3: CERRAR CASOS (MOVER A CERRADOS)
+        // ====================================
+        async function cerrarCasoExcel(hojaOrigen, rowIndex, tipoCierre) {
+            showLoading('Cerrando caso y moviendo a CERRADOS...');
+            
+            try {
+                if (!tipoCierre || tipoCierre === '') throw new Error('Debe seleccionar un Tipo de Cierre');
+                
+                const worksheetsUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
+                const worksheetsResponse = await fetch(worksheetsUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const worksheetsData = await worksheetsResponse.json();
+                
+                const hojaOrigenExacta = worksheetsData.value.find(s => s.name.toLowerCase() === hojaOrigen.toLowerCase());
+                if (!hojaOrigenExacta) throw new Error(`Hoja origen "${hojaOrigen}" no encontrada`);
+                
+                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaOrigenExacta.name)}/usedRange`;
+                const usedRangeResponse = await fetch(usedRangeUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const usedRangeData = await usedRangeResponse.json();
+                
+                const headersOrigen = usedRangeData.values[0];
+                const filaReal = rowIndex + 2;
+                const datosFila = usedRangeData.values[filaReal - 1];
+                
+                if (!datosFila) throw new Error(`La fila ${filaReal} no existe`);
+                
+                // Verificar/crear hoja CERRADOS
+                let hojaCerrados = worksheetsData.value.find(s => s.name.toUpperCase() === 'CERRADOS');
+                
+                if (!hojaCerrados) {
+                    const createSheetUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
+                    const createResponse = await fetch(createSheetUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: 'CERRADOS' })
+                    });
+                    
+                    if (!createResponse.ok) throw new Error('Error al crear hoja CERRADOS');
+                    
+                    hojaCerrados = await createResponse.json();
+                    
+                    // Escribir headers con columnas extra
+                    const headersConExtras = [...headersOrigen, 'TIPO DE CIERRE', 'HOJA ORIGEN', 'FECHA DE CIERRE DEL CASO'];
+                    const headerRangeAddress = `A1:${String.fromCharCode(65 + headersConExtras.length - 1)}1`;
+                    
+                    const headerUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaCerrados.name)}/range(address='${headerRangeAddress}')`;
+                    await fetch(headerUrl, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ values: [headersConExtras] })
+                    });
+                }
+                
+                // Agregar fila con datos extra a CERRADOS
+                const fechaCierre = new Date().toISOString().split('T')[0];
+                const nuevaFilaCerrados = [...datosFila, tipoCierre, hojaOrigen, fechaCierre];
+                
+                // Obtener última fila de CERRADOS
+                const cerradosRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaCerrados.name)}/usedRange`;
+                const cerradosRangeResponse = await fetch(cerradosRangeUrl, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const cerradosRangeData = await cerradosRangeResponse.json();
+                
+                const ultimaFilaCerrados = cerradosRangeData.rowCount + 1;
+                const ultimaColumnaCerrados = String.fromCharCode(65 + nuevaFilaCerrados.length - 1);
+                const rangeCerradosAddress = `A${ultimaFilaCerrados}:${ultimaColumnaCerrados}${ultimaFilaCerrados}`;
+                
+                const writeCerradosUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaCerrados.name)}/range(address='${rangeCerradosAddress}')`;
+                
+                await fetch(writeCerradosUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ values: [nuevaFilaCerrados] })
+                });
+                
+                // ELIMINAR fila de hoja origen
+                const deleteUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaOrigenExacta.name)}/range(address='${filaReal}:${filaReal}')/delete`;
+                
+                await fetch(deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ shift: 'Up' })
+                });
+                
+                hideLoading();
+                return { exito: true, mensaje: `Caso cerrado desde ${hojaOrigen}`, hojaOrigen: hojaOrigen, tipoCierre: tipoCierre };
+                
+            } catch (error) {
+                hideLoading();
+                throw error;
             }
         }
 
@@ -1090,10 +1023,6 @@
         // RENDERIZADO DE TABLA
         // ====================================
         function renderTable() {
-            console.log('🎨 Renderizando tabla...');
-            console.log('📊 Headers:', STATE.headers.length);
-            console.log('📋 Rows:', STATE.rows.length);
-            
             const th = document.getElementById('tablaHead');
             th.innerHTML = '';
             const trHead = document.createElement('tr');
@@ -1117,21 +1046,16 @@
                 const tr = document.createElement('tr');
                 const td = document.createElement('td');
                 td.colSpan = STATE.headers.length + 1;
-                td.style.cssText = 'text-align:center; padding:40px; color:#999; font-size:1.1rem;';
-                td.innerHTML = '📭 No hay datos para mostrar<br><small style="font-size:0.85rem;">Intenta seleccionar otra hoja o revisa la conexión</small>';
+                td.style.cssText = 'text-align:center; padding:40px; color:#999;';
+                td.innerHTML = '📭 No hay datos para mostrar';
                 tr.appendChild(td);
                 tb.appendChild(tr);
-                console.log('⚠️ No hay filas para mostrar');
                 return;
             }
-            
-            let filasVisibles = 0;
             
             STATE.rows.forEach((r, idx) => {
                 let mostrar = aplicarFiltrosAFila(r);
                 if (!mostrar) return;
-                
-                filasVisibles++;
                 
                 const tr = document.createElement('tr');
                 const tdAcciones = document.createElement('td');
@@ -1150,22 +1074,18 @@
                 });
                 tb.appendChild(tr);
             });
-            
-            console.log('✅ Tabla renderizada:', filasVisibles, 'filas visibles');
-            
-            if (filasVisibles === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = STATE.headers.length + 1;
-                td.style.cssText = 'text-align:center; padding:40px; color:#999; font-size:1.1rem;';
-                td.innerHTML = '🔍 No se encontraron resultados con los filtros aplicados<br><small style="font-size:0.85rem;">Intenta limpiar los filtros</small>';
-                tr.appendChild(td);
-                tb.appendChild(tr);
-            }
         }
 
         function aplicarFiltrosAFila(r) {
             let mostrar = true;
+            
+            // Filtro por Auditor
+            if (STATE.auditorSeleccionado) {
+                const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
+                if (!auditorRow.includes(STATE.auditorSeleccionado)) {
+                    mostrar = false;
+                }
+            }
             
             Object.keys(STATE.filtros).forEach(k => {
                 if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
@@ -1221,9 +1141,15 @@
 
         function limpiarFiltros() {
             STATE.filtros = {};
+            STATE.auditorSeleccionado = '';
             document.getElementById('searchFree').value = '';
             document.getElementById('fechaDesde').value = '';
             document.getElementById('fechaHasta').value = '';
+            
+            // Limpiar select de auditor
+            const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
+            if (selectAuditor) selectAuditor.value = '';
+            
             renderTable();
             actualizarSemaforo();
             actualizarSemaforoCitas();
@@ -1289,23 +1215,13 @@
 
         function actualizarSemaforoCitas() {
             const contadores = {
-                'FISIATRA': 0,
-                'JUNTA MEDICA': 0,
-                'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0,
-                'PSICOLOGIA': 0,
-                'TERAPIA OCUPACIONAL': 0,
-                'TERAPIA FISICA': 0
+                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
             };
             
             const inasistencias = {
-                'FISIATRA': 0,
-                'JUNTA MEDICA': 0,
-                'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0,
-                'PSICOLOGIA': 0,
-                'TERAPIA OCUPACIONAL': 0,
-                'TERAPIA FISICA': 0
+                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
             };
             
             STATE.rows.forEach(r => {
@@ -1314,15 +1230,11 @@
                 
                 Object.keys(contadores).forEach(campo => {
                     const valor = String(r[campo] || '').trim();
-                    if (valor === '' || valor === '-- Vacío --' || !valor) {
-                        contadores[campo]++;
-                    }
+                    if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
                     
                     const columnaInasistencia = `INASISTENCIA ${campo}`;
                     const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
-                    if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') {
-                        inasistencias[campo]++;
-                    }
+                    if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
                 });
             });
             
@@ -1418,7 +1330,7 @@
         }
 
         // ====================================
-        // GUARDAR USUARIO
+        // EVENTOS DE BOTONES
         // ====================================
         document.getElementById('btnGuardarUsuario').addEventListener('click', async function() {
             const form = document.getElementById('formAgregarUsuario');
@@ -1431,75 +1343,71 @@
                 return;
             }
             
-            showLoading('Guardando usuario...');
+            const checkEvento = document.getElementById('checkPacienteEvento');
+            datos['PACIENTE_EVENTO'] = checkEvento && checkEvento.checked ? 'SI' : 'NO';
             
             try {
-                // Aquí iría la lógica para agregar a Excel
-                // Por ahora solo simulamos
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const resultado = await agregarUsuarioExcel(hoja, datos);
                 
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgregarUsuario'));
                 modal.hide();
                 form.reset();
                 
                 await cargarDatosHoja(STATE.hoja);
-                hideLoading();
-                showMessage('success', '✅ Usuario agregado correctamente');
+                showMessage('success', `✅ Usuario agregado correctamente a ${resultado.hojaDestino}`);
             } catch (error) {
-                hideLoading();
                 showMessage('error', 'Error al guardar: ' + error.message);
             }
         });
 
-        // ====================================
-        // ACTUALIZAR USUARIO
-        // ====================================
         document.getElementById('btnActualizarUsuario').addEventListener('click', async function() {
             const rowIndex = parseInt(document.getElementById('editRowIndex').value);
-            showLoading('Actualizando usuario...');
+            
+            const form = document.getElementById('formEditarUsuario');
+            const inputs = form.querySelectorAll('input[name], textarea[name], select[name]');
+            const datosActualizados = {};
+            
+            inputs.forEach(input => {
+                if (input.name) {
+                    datosActualizados[input.name] = input.value;
+                }
+            });
             
             try {
-                // Aquí iría la lógica para actualizar Excel
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await actualizarUsuarioExcel(STATE.hoja, rowIndex, datosActualizados);
                 
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
                 modal.hide();
                 
                 await cargarDatosHoja(STATE.hoja);
-                hideLoading();
                 showMessage('success', '✅ Usuario actualizado correctamente');
             } catch (error) {
-                hideLoading();
                 showMessage('error', 'Error al actualizar: ' + error.message);
             }
         });
 
-        // ====================================
-        // CERRAR CASO
-        // ====================================
         document.getElementById('btnCerrarCaso').addEventListener('click', async function() {
+            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
             const tipoCierre = document.getElementById('selectTipoCierre').value;
+            
             if (!tipoCierre) {
-                showMessage('error', 'Seleccione un tipo de cierre');
+                showMessage('error', '⚠️ Debe seleccionar un Tipo de Cierre');
                 return;
             }
             
-            if (!confirm('¿Está seguro de cerrar este caso?')) return;
-            
-            showLoading('Cerrando caso...');
+            if (!confirm(`¿Está seguro de cerrar este caso?\n\nMotivo: ${tipoCierre}`)) return;
             
             try {
-                // Aquí iría la lógica para mover a CERRADOS
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const resultado = await cerrarCasoExcel(STATE.hoja, rowIndex, tipoCierre);
                 
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
                 modal.hide();
                 
+                document.getElementById('selectTipoCierre').value = '';
+                
                 await cargarDatosHoja(STATE.hoja);
-                hideLoading();
-                showMessage('success', '✅ Caso cerrado correctamente');
+                showMessage('success', `✅ Caso cerrado exitosamente\n\nMotivo: ${resultado.tipoCierre}`);
             } catch (error) {
-                hideLoading();
                 showMessage('error', 'Error al cerrar caso: ' + error.message);
             }
         });
@@ -1534,7 +1442,6 @@
         function showMessage(type, message) {
             console.log(`[${type.toUpperCase()}] ${message}`);
             
-            // Crear contenedor de alertas si no existe
             let alertContainer = document.getElementById('alertContainer');
             if (!alertContainer) {
                 alertContainer = document.createElement('div');
@@ -1543,7 +1450,6 @@
                 document.body.appendChild(alertContainer);
             }
             
-            // Crear alerta
             const alert = document.createElement('div');
             alert.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
             alert.role = 'alert';
@@ -1555,7 +1461,6 @@
             
             alertContainer.appendChild(alert);
             
-            // Auto-cerrar después de 5 segundos
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 150);
