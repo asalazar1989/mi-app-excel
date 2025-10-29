@@ -3,222 +3,234 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Gestión ARL - Rangel · Microsoft Excel</title>
+  <title>Gestión ARL - Rangel · Excel Online</title>
 
-  <!-- Bootstrap 5 + Icons (requerido por el PROMPT) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrapcss/bootstrap.min.css
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@bootstrap-icons.css
-
-  <style>
-    :root{
-      --color-primario:#001f3f;
-      --color-secundario:#c0c0c0;
-      --gradiente: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      --ok:#2ecc71; --warn:#f1c40f; --err:#e74c3c;
+  <!-- Bootstrap 5 + Icons (únicas dependencias permitidas) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet--primary:#001f3f;
+      --gray:#c0c0c0;
+      --grad:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      --green:#2ecc71; --orange:#f39c12; --red:#e74c3c;
+      --bg:#f6f8fc;
+      --head:#f3f5f9;
     }
-    body{background:#f8f9fb}
-    .navbar-brand{font-weight:700; letter-spacing:.2px}
-    .login-screen{
-      min-height:100vh; display:flex; align-items:center; justify-content:center;
-      background:var(--gradiente); color:#fff; text-align:center; padding:2rem;
+    html,body{height:100%}
+    body{background:var(--bg)}
+    /* ===== Login ===== */
+    .login{min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--grad);}
+    .card-login{
+      width:min(860px,95vw); background:#0b1736; color:#fff; border-radius:16px; border:1px solid #ffffff1f;
+      box-shadow:0 30px 80px rgba(0,0,0,.45); padding:1.6rem 1.8rem;
     }
-    .login-card{
-      background:#0b1736cc; border:1px solid #ffffff22; border-radius:16px; padding:2rem 2.5rem; max-width:560px; width:100%;
-      box-shadow:0 20px 60px #00000045;
+    .card-login h1{font-size:1.65rem; margin:0}
+    .card-login .sub{opacity:.85}
+    .status{
+      background:#0f2146; border:1px solid #ffffff22; padding:.9rem 1rem; border-radius:12px; margin:1rem 0;
     }
-    .login-card h1{font-size:1.7rem; margin-bottom:.25rem}
-    .login-card .lead{opacity:.85}
-    .login-card .status{
-      background:#0e214a; border:1px solid #ffffff1a; padding:.75rem; border-radius:12px; margin:1rem 0; text-align:left;
-      font-size:.95rem
+    .btn-ms{background:#fff; color:#111; border:0; font-weight:700; border-radius:10px; padding:.8rem 1rem}
+    /* ===== Layout ===== */
+    .app{display:none; min-height:100vh}
+    aside#sidebar{width:290px; background:#0d1a38; color:#fff; padding:1rem; position:sticky; top:0}
+    .brand{font-weight:800; letter-spacing:.3px}
+    .btn-aseg{
+      width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+      background:#13244d; color:#fff; border:1px solid #ffffff16; border-radius:10px; padding:.6rem .8rem; margin-bottom:.55rem;
     }
-    .btn-ms{
-      background:#fff; color:#111; border:0; font-weight:600; padding:.8rem 1rem; border-radius:10px;
-      display:inline-flex; align-items:center; gap:.5rem
+    .btn-aseg.active{background:#1a3370; border-color:#ffffff38}
+    main#content{flex:1; padding:1rem 1.1rem 2.25rem}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.6rem}
+    .topbar .left{display:flex; gap:.5rem; flex-wrap:wrap}
+    .badge-chip{background:#eef2ff; color:#334; border-radius:999px; padding:.35rem .6rem; font-weight:700}
+    /* ===== Paneles ===== */
+    .panel{
+      background:#fff; border:1px solid #e8ebf2; border-radius:12px; padding:.85rem .95rem;
+      box-shadow:0 4px 18px rgba(0,0,0,.04); margin-bottom:.8rem;
     }
-    .btn-ms .bi{font-size:1.1rem}
-    /* Layout principal */
-    .main-system{display:none}
-    #sidebar{
-      width:260px; background:#0d1a38; min-height:100vh; color:#fff; padding:1rem; position:sticky; top:0;
+    .panel h6{font-weight:800; color:#334; margin:0 0 .6rem}
+    /* ===== Dashboard ===== */
+    .kpis{display:grid; grid-template-columns: repeat(6, minmax(150px,1fr)); gap:.55rem}
+    .kpi{background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.75rem .9rem; box-shadow:0 2px 10px rgba(0,0,0,.04)}
+    .kpi .t{font-size:.8rem; color:#6b7280}
+    .kpi .v{font-size:1.35rem; font-weight:900}
+    /* ===== Semáforo ===== */
+    .semaforo{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap}
+    .chip{
+      display:flex; align-items:center; gap:.45rem; background:#fff; border:1px solid #e5e7eb; border-radius:999px; padding:.42rem .6rem; cursor:pointer; user-select:none; font-weight:800
     }
-    #sidebar h6{opacity:.8; font-weight:600; margin:.25rem 0 1rem}
-    .asegurador-btn{
-      width:100%; text-align:left; margin-bottom:.5rem; background:#12224a; color:#fff;
-      border:1px solid #ffffff14; border-radius:10px; padding:.65rem .75rem; display:flex; align-items:center; justify-content:space-between;
-    }
-    .asegurador-btn.active{background:#173060; border-color:#ffffff33}
-    #content{flex:1; padding:1.25rem 1.25rem 3rem}
-    .topbar{display:flex; gap:1rem; align-items:center; justify-content:space-between; margin-bottom:1rem}
-    .topbar .left{display:flex; gap:.75rem; align-items:center}
-    .badge-chip{background:#eef2ff; color:#344; font-weight:600; border-radius:999px; padding:.35rem .6rem}
-    .dashboard{
-      display:grid; grid-template-columns: repeat(6, minmax(160px,1fr));
-      gap:12px; margin:.75rem 0 1.25rem;
-    }
-    .kpi{
-      background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.9rem 1rem;
-      box-shadow:0 2px 10px rgba(0,0,0,.04)
-    }
-    .kpi .title{font-size:.85rem; color:#6b7280; margin-bottom:.25rem}
-    .kpi .value{font-size:1.35rem; font-weight:800}
-    /* Semáforo */
-    .semaforo{display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem}
-    .circle{
-      display:flex; align-items:center; gap:.4rem; padding:.45rem .65rem; border-radius:999px; cursor:pointer; font-weight:700;
-      border:1px solid #e9ecf3; background:#fff; user-select:none;
-    }
-    .circle .dot{width:10px; height:10px; border-radius:50%}
-    .circle.green .dot{background:#2ecc71}
-    .circle.orange .dot{background:#f39c12}
-    .circle.red .dot{background:#e74c3c}
-    .circle.active{outline:2px solid #2563eb33; background:#eef2ff}
-    /* Filtros */
-    .filters{display:flex; gap:.5rem; align-items:end; flex-wrap:wrap; margin:.5rem 0 1rem}
+    .chip .dot{width:10px; height:10px; border-radius:50%}
+    .chip.green .dot{background:var(--green)}
+    .chip.orange .dot{background:var(--orange)}
+    .chip.red .dot{background:var(--red)}
+    .chip.active{outline:2px solid #2563eb33; background:#eef2ff}
+    /* ===== Filtros ===== */
+    .filters{display:flex; gap:.5rem; align-items:end; flex-wrap:wrap}
     .filters .form-label{font-size:.78rem; color:#6b7280}
-    /* Tabla */
-    .table-wrapper{
-      background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.75rem;
-      box-shadow:0 4px 16px rgba(0,0,0,.04); overflow:auto;
-    }
-    table thead th{position:sticky; top:0; background:#f3f5f9; z-index:2}
-    .table thead th{font-size:.82rem}
-    .table td, .table th{vertical-align:middle}
-    .action-btn{border:1px solid #e5e7eb; background:#fff; border-radius:8px; padding:.35rem .5rem}
-    /* Modal */
-    .modal-title .bi{margin-right:.5rem}
-    .fieldset{
-      border:1px dashed #e5e7eb; border-radius:10px; padding:.75rem; margin-bottom:.75rem; background:#fbfcff;
-    }
-    .fieldset legend{font-size:.85rem; font-weight:700}
-    /* Loading Overlay */
-    .loading-overlay{
-      position:fixed; inset:0; display:none; align-items:center; justify-content:center;
-      background:rgba(13,26,56,.55); z-index:1100; color:#fff; backdrop-filter: blur(2px);
-    }
-    .loading-card{
-      background:#0b1736; border:1px solid #ffffff22; border-radius:12px; padding:1rem 1.25rem; display:flex; gap:.75rem; align-items:center
-    }
-    .footer-note{font-size:.8rem; color:#6b7280; margin-top:.5rem}
-    .text-primary-strong{color:var(--color-primario)}
-    @media (max-width:1200px){ .dashboard{grid-template-columns: repeat(3,1fr);} }
-    @media (max-width:768px){ #sidebar{position:static; min-height:auto; width:100%} .main-layout{flex-direction:column} .dashboard{grid-template-columns: repeat(2,1fr);} }
+    .searchbox{max-width:260px}
+    /* ===== Tablas ===== */
+    .table-wrap{background:#fff; border:1px solid #e8ebf2; border-radius:12px; padding:.7rem; box-shadow:0 4px 16px rgba(0,0,0,.04); overflow:auto}
+    table thead th{position:sticky; top:0; background:var(--head); z-index:2; font-size:.82rem}
+    .action-btn{border:1px solid #e5e7eb; background:#fff; border-radius:8px; padding:.35rem .55rem}
+    /* ===== Mini-cards para Citas e Inasistencias ===== */
+    .tiles{display:grid; grid-template-columns: repeat(7, minmax(120px,1fr)); gap:.5rem}
+    .tile{background:#fff; border:1px solid #e9ecf3; border-radius:12px; padding:.6rem .75rem}
+    .tile .h{font-size:.78rem; color:#6b7280}
+    .tile .n{font-size:1.2rem; font-weight:900}
+    .titlebar{display:flex; align-items:center; justify-content:space-between}
+    /* ===== Modal ===== */
+    .fieldset{border:1px dashed #e5e7eb; border-radius:10px; padding:.75rem; background:#fbfcff; margin-bottom:.75rem}
+    .fieldset legend{font-size:.85rem; font-weight:800; margin:0 .4rem}
+    /* ===== Loading ===== */
+    .overlay{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(13,26,56,.55); z-index:1100; color:#fff; backdrop-filter: blur(2px)}
+    .overlay .box{background:#0b1736; border:1px solid #ffffff22; border-radius:12px; padding:1rem 1.25rem; display:flex; gap:.75rem; align-items:center}
+    @media (max-width:1200px){ .kpis{grid-template-columns: repeat(3,1fr)} .tiles{grid-template-columns:repeat(3,1fr)} }
+    @media (max-width:768px){ aside#sidebar{position:static; width:100%} .kpis{grid-template-columns: repeat(2,1fr)} .tiles{grid-template-columns:repeat(2,1fr)} }
   </style>
 </head>
 <body>
 
-<!-- ========== LOGIN SCREEN ========== -->
-<section class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <h1>Gestión ARL - Rangel</h1>
-    <div class="lead">Sistema Microsoft Excel Online</div>
+<!-- ===== LOGIN ===== -->
+<section class="login" id="login">
+  <div class="card-login">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h1>Gestión ARL - Rangel</h1>
+        <div class="sub">Sistema Microsoft Excel (UI idéntica · Funcional 100%)</div>
+      </div>
+      <div><span class="badge bg-light text-dark">v1.0</span></div>
+    </div>
 
     <div class="status mt-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <div><span class="badge bg-success me-2">✔</span><strong>Sistema listo</strong> · UI y flujos replicados</div>
-        <span class="badge-chip">v1.0</span>
-      </div>
-      <div class="mt-2 text-white-50">
-        Autenticación OAuth · Microsoft Graph · Excel Workbook · Dashboard · Semáforo · Filtros · Edición · Cierre de casos
+      <div class="d-flex align-items-center justify-content-between">
+        <div><span class="badge bg-success me-2">✔</span><strong>Sistema listo</strong> · Conectado con Graph (OAuth)</div>
+        <div class="small text-white-50">Requiere permiso: Files.ReadWrite.All</div>
       </div>
     </div>
 
-    <button id="btnLogin" class="btn btn-ms w-100" type="button">
-      <i class="bi bi-windows"></i> Iniciar sesión con Microsoft
-    </button>
-    <div class="footer-note">Usa DEMO si quieres navegar sin conexión a OneDrive.</div>
-
-    <div class="mt-3">
-      <button id="btnDemo" class="btn btn-outline-light btn-sm" type="button">
-        <i class="bi bi-play-circle"></i> Entrar en modo DEMO
+    <div class="d-flex gap-2">
+      <button id="btnLogin" class="btn btn-ms flex-fill" type="button">
+        <i class="bi bi-windows"></i> Iniciar sesión con Microsoft
+      </button>
+      <button id="btnDemo" class="btn btn-outline-light" type="button" title="Modo de prueba sin tocar OneDrive">
+        DEMO
       </button>
     </div>
   </div>
 </section>
 
-<!-- ========== MAIN SYSTEM ========== -->
-<div class="main-system" id="mainSystem">
-  <nav id="sidebar">
+<!-- ===== APLICACIÓN ===== -->
+<div class="app" id="app">
+  <aside id="sidebar">
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span class="navbar-brand">Gestión ARL</span>
+      <div class="brand">Gestión ARL</div>
       <button id="btnLogout" class="btn btn-sm btn-light"><i class="bi bi-box-arrow-right"></i> Salir</button>
     </div>
 
-    <h6>Hojas / Aseguradores</h6>
-    <div id="aseguradoresList">
-      <!-- Botones generados dinámicamente -->
-    </div>
+    <div class="small mb-2">Usuario: <span id="userName">—</span></div>
+    <hr class="border-secondary-subtle"/>
+
+    <h6 class="mb-2">Aseguradores</h6>
+    <div id="listSheets"></div>
 
     <hr class="border-secondary-subtle"/>
-    <div class="small">Usuario: <span id="userName">—</span></div>
-  </nav>
+    <div class="small"><span id="fileBadge">Archivo: —</span><br><span id="sheetBadge">Hoja: —</span></div>
+  </aside>
 
   <main id="content">
+    <!-- Topbar -->
     <div class="topbar">
       <div class="left">
-        <span class="badge-chip"><i class="bi bi-activity"></i> Dashboard</span>
+        <span class="badge-chip"><i class="bi bi-graph-up"></i> Dashboard Estadístico</span>
         <button id="btnAdd" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Agregar</button>
         <button id="btnReload" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> Recargar</button>
       </div>
-      <div>
-        <span class="badge bg-light text-dark me-1" id="fileBadge">Archivo: —</span>
-        <span class="badge bg-light text-dark" id="sheetBadge">Hoja: —</span>
-      </div>
+      <div class="right"></div>
     </div>
 
     <!-- KPIs -->
-    <div class="dashboard" id="dashboardPanel">
-      <div class="kpi"><div class="title">Casos Activos</div><div class="value" id="kpiActivos">0</div></div>
-      <div class="kpi"><div class="title">Pacientes Únicos</div><div class="value" id="kpiPacientes">0</div></div>
-      <div class="kpi"><div class="title">Siniestros Únicos</div><div class="value" id="kpiSiniestros">0</div></div>
-      <div class="kpi"><div class="title">Masculino</div><div class="value" id="kpiMasculino">0</div></div>
-      <div class="kpi"><div class="title">Femenino</div><div class="value" id="kpiFemenino">0</div></div>
-      <div class="kpi"><div class="title">Otro</div><div class="value" id="kpiOtro">0</div></div>
+    <div class="kpis mb-2">
+      <div class="kpi"><div class="t">Casos Activos</div><div class="v" id="kpiActivos">0</div></div>
+      <div class="kpi"><div class="t">Población Activa</div><div class="v" id="kpiPacientes">0</div></div>
+      <div class="kpi"><div class="t">Siniestros Totales</div><div class="v" id="kpiSiniestros">0</div></div>
+      <div class="kpi"><div class="t">Masculino</div><div class="v" id="kpiMasculino">0</div></div>
+      <div class="kpi"><div class="t">Femenino</div><div class="v" id="kpiFemenino">0</div></div>
+      <div class="kpi"><div class="t">Otro</div><div class="v" id="kpiOtro">0</div></div>
     </div>
 
     <!-- Semáforo -->
-    <div class="semaforo">
-      <div class="circle green" data-filter="verde" id="semVerde"><span class="dot"></span> 0 <small class="text-muted ms-1">(0–5)</small></div>
-      <div class="circle orange" data-filter="naranja" id="semNaranja"><span class="dot"></span> 0 <small class="text-muted ms-1">(6–12)</small></div>
-      <div class="circle red" data-filter="rojo" id="semRojo"><span class="dot"></span> 0 <small class="text-muted ms-1">(13+)</small></div>
-      <button class="btn btn-link btn-sm ms-1" id="btnVerTodos"><i class="bi bi-arrow-counterclockwise"></i> Ver todos</button>
+    <div class="panel">
+      <div class="titlebar">
+        <h6>📅 Seguimiento de Pacientes</h6>
+        <button id="btnVerTodos" class="btn btn-link btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Ver todos</button>
+      </div>
+      <div class="semaforo">
+        <div class="chip green"  data-sem="verde"   id="chipVerde"><span class="dot"></span> <span id="nVerde">0</span> <small class="text-muted ms-1">(0–5 días)</small></div>
+        <div class="chip orange" data-sem="naranja" id="chipNaranja"><span class="dot"></span> <span id="nNaranja">0</span> <small class="text-muted ms-1">(6–12 días)</small></div>
+        <div class="chip red"    data-sem="rojo"    id="chipRojo"><span class="dot"></span> <span id="nRojo">0</span> <small class="text-muted ms-1">(13+ días)</small></div>
+      </div>
     </div>
 
     <!-- Filtros -->
-    <div class="filters">
-      <div>
-        <label class="form-label">Auditor</label>
-        <select class="form-select form-select-sm" id="filtroAuditor">
-          <option value="">— Todos —</option>
-        </select>
+    <div class="panel">
+      <div class="titlebar">
+        <h6>🔎 Búsqueda y Filtros</h6>
       </div>
-      <div>
-        <label class="form-label">Desde (Ingreso a Rangel RHB)</label>
-        <input type="date" class="form-control form-control-sm" id="filtroDesde"/>
+      <div class="filters">
+        <div class="searchbox">
+          <label class="form-label">Búsqueda</label>
+          <input type="text" id="txtSearch" class="form-control form-control-sm" placeholder="Por nombre, cédula, siniestro, observación...">
+        </div>
+        <div>
+          <label class="form-label">Auditor</label>
+          <select id="selAuditor" class="form-select form-select-sm">
+            <option value="">— Todos —</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Desde (Ingreso a Rangel RHB)</label>
+          <input type="date" id="fDesde" class="form-control form-control-sm">
+        </div>
+        <div>
+          <label class="form-label">Hasta</label>
+          <input type="date" id="fHasta" class="form-control form-control-sm">
+        </div>
+        <button id="btnClear" class="btn btn-outline-secondary btn-sm ms-auto"><i class="bi bi-eraser"></i> Limpiar</button>
       </div>
-      <div>
-        <label class="form-label">Hasta</label>
-        <input type="date" class="form-control form-control-sm" id="filtroHasta"/>
+    </div>
+
+    <!-- Control de Citas -->
+    <div class="panel">
+      <div class="titlebar">
+        <h6>🏥 Control de Citas Médicas</h6>
+        <button id="btnVerTodasCitas" class="btn btn-link btn-sm"><i class="bi bi-arrow-repeat"></i> Ver todos</button>
       </div>
-      <div class="ms-auto">
-        <button class="btn btn-sm btn-outline-secondary" id="btnLimpiarFiltros"><i class="bi bi-eraser"></i> Limpiar</button>
+      <div class="tiles" id="tilesCitas">
+        <!-- 7 tiles de citas -->
+      </div>
+    </div>
+
+    <!-- Inasistencias -->
+    <div class="panel">
+      <div class="titlebar">
+        <h6>🚫 Inasistencias Registradas</h6>
+      </div>
+      <div class="tiles" id="tilesInasistencias">
+        <!-- 7 tiles de inasistencias -->
       </div>
     </div>
 
     <!-- Tabla -->
-    <div class="table-wrapper">
-      <div id="tableContainer"></div>
+    <div class="table-wrap">
+      <div id="tbl"></div>
     </div>
   </main>
 </div>
 
-<!-- ========== MODAL: AGREGAR / EDITAR ========== -->
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+<!-- ===== MODAL AGREGAR/EDITAR ===== -->
+<div class="modal fade" id="mdlEdit" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-pencil-square"></i> <span id="modalTitulo">Editar Usuario</span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <h5 class="modal-title"><i class="bi bi-pencil-square me-1"></i><span id="mdlTitle">Editar Usuario</span></h5>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="row g-3">
@@ -226,6 +238,10 @@
             <fieldset class="fieldset">
               <legend>🧑 Información del Paciente</legend>
               <div id="formPaciente" class="row g-2"></div>
+              <div class="form-check mt-1">
+                <input class="form-check-input" type="checkbox" id="chkEvento">
+                <label class="form-check-label" for="chkEvento">Paciente por Evento (mover a “Positiva Evento” al guardar si estás en Positiva)</label>
+              </div>
             </fieldset>
           </div>
           <div class="col-12 col-lg-6">
@@ -233,18 +249,10 @@
               <legend>📋 Seguimiento y Estado</legend>
               <div id="formSeguimiento" class="row g-2"></div>
             </fieldset>
-            <div class="alert alert-warning py-2 px-3">
-              <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-info-circle"></i>
-                <div>
-                  Para cerrar un caso, selecciona <strong>“Tipo de Cierre”</strong> (obligatorio) y luego <strong>Cerrar Caso</strong>.
-                </div>
-              </div>
-            </div>
-            <div class="row g-2">
+            <div class="row g-2 align-items-end">
               <div class="col-12 col-md-6">
-                <label class="form-label">Tipo de Cierre (requerido)</label>
-                <select class="form-select" id="tipoCierre">
+                <label class="form-label">* Tipo de Cierre (requerido para cerrar)</label>
+                <select id="tipoCierre" class="form-select">
                   <option value="">— Seleccione motivo de cierre —</option>
                   <option value="Cierre Caso Auditor">Cierre Caso Auditor</option>
                   <option value="Cierre Caso Desertor">Cierre Caso Desertor</option>
@@ -252,97 +260,70 @@
                   <option value="Cierre Caso Finalizó Ciclo">Cierre Caso Finalizó Ciclo</option>
                 </select>
               </div>
-              <div class="col d-flex align-items-end gap-2">
+              <div class="col d-flex gap-2">
                 <button class="btn btn-outline-danger" id="btnCerrarCaso"><i class="bi bi-x-octagon"></i> Cerrar Caso</button>
                 <button class="btn btn-primary ms-auto" id="btnGuardar"><i class="bi bi-save"></i> Actualizar</button>
               </div>
             </div>
+            <div class="form-text mt-2">Los cálculos usan zona horaria <b>America/Bogota</b>.</div>
           </div>
         </div>
-
-        <div class="footer-note">Campos de fecha usan zona horaria <strong>America/Bogota</strong> para el cálculo de “Días sin seguimiento”.</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ========== LOADING OVERLAY ========== -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-card">
-    <div class="spinner-border text-light" role="status" style="width:1.75rem;height:1.75rem"></div>
-    <div id="loadingText" class="ms-2">Procesando...</div>
+<!-- ===== LOADING ===== -->
+<div class="overlay" id="overlay">
+  <div class="box">
+    <div class="spinner-border text-light" role="status" style="width:1.5rem;height:1.5rem"></div>
+    <div id="ovText">Procesando...</div>
   </div>
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.jscript>
+https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js</script>
+
+<script>
 /* =========================
-   CONFIGURACIÓN / ESTADO
+   CONFIG / ESTADO
    ========================= */
 const CONFIG = {
-  // App Registration (confirmada por ti)
   clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267',
   redirectUri: 'https://asalazar1989.github.io/mi-app-excel/',
   scopes: 'User.Read Files.ReadWrite Files.ReadWrite.All',
   authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-  graphBase: 'https://graph.microsoft.com/v1.0'
+  graph: 'https://graph.microsoft.com/v1.0'
 };
+// Producción: conecta a OneDrive/Excel
+let DEMO_MODE = false; // <-- si quieres probar sin tocar datos, pon true
 
-// === IMPORTANTE ===
-// DEMO interno para pruebas sin tocar OneDrive/Excel
-let DEMO_MODE = true; // <-- CAMBIA A false PARA PRODUCCIÓN
-
-// Nombres candidatos del archivo Excel
 const FILE_CANDIDATES = [
   'Seguimiento ARL - Rangel (2)',
   'Seguimiento ARL - Rangel',
   'ARL Rangel',
   'Seguimiento Rangel'
 ];
+const SHEETS = ['Positiva','Positiva Evento','Colmena','Colsanitas','CERRADOS'];
 
-// Hojas esperadas
-const KNOWN_SHEETS = ['Positiva', 'Positiva Evento', 'Colmena', 'Colsanitas', 'CERRADOS'];
-
-// Encabezados base (únicos; sin duplicar CÉDULA y con OBSERVACION final renombrada)
-const BASE_HEADERS = [
-  'SINIESTRO',
-  '# MATRICULA',
-  'CEDULA',
-  'NOMBRE',
-  'FECHA DE ASIGNACION A LA IPS',
-  'GENERO',
-  'MAYOR A 56 AÑOS SI O NO',
-  'AUDITOR',
-  'CLASIFICACION SEVERIDAD',
-  'CITA INICIAL',
-  'JUNTA MEDICA',
-  'INASISTENCIA JUNTA MEDICA',
+const COL_CITAS = [
   'FISIATRA',
-  'INASISTENCIA FISIATRA',
+  'JUNTA MEDICA',
   'VALORACION OCUPACIONAL',
-  'INASISTENCIA VALORACION OCUPACIONAL',
   'MEDICINA LABORAL',
-  'INASISTENCIA MEDICINA LABORAL',
   'PSICOLOGIA',
-  'INASISTENCIA PSICOLOGIA',
   'TERAPIA OCUPACIONAL',
-  'INASISTENCIA TERAPIA OCUPACIONAL',
-  'TERAPIA FISICA',
-  'INASISTENCIA TERAPIA FISICA',
-  'ALTA INMEDIATA',
-  'ESTADO DE LA MATRICULA',
-  'FECHA CIERRE',
-  'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES',
-  'OBSERVACION',
-  'SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS',
-  'OBSERVACION FACTURACION',
-  'Fecha Último Seguimiento',
-  'Hoy',
-  'Días sin seguimiento',
-  'OBSERVACION (final)'
+  'TERAPIA FISICA'
 ];
-
-// Columnas extras específicas para "Positiva Evento"
+const COL_INASIS = [
+  'INASISTENCIA FISIATRA',
+  'INASISTENCIA JUNTA MEDICA',
+  'INASISTENCIA VALORACION OCUPACIONAL',
+  'INASISTENCIA MEDICINA LABORAL',
+  'INASISTENCIA PSICOLOGIA',
+  'INASISTENCIA TERAPIA OCUPACIONAL',
+  'INASISTENCIA TERAPIA FISICA'
+];
 const EVENTO_EXTRAS = [
   'ELECTRODIAGNOSTICO',
   'TERAPIA FISICA (Evento)',
@@ -354,771 +335,575 @@ const EVENTO_EXTRAS = [
   'BLOQUEO',
   'NUTRICION'
 ];
+const BASE_HEADERS = [
+  'SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','MAYOR A 56 AÑOS SI O NO','AUDITOR',
+  'CLASIFICACION SEVERIDAD','CITA INICIAL','JUNTA MEDICA','INASISTENCIA JUNTA MEDICA','FISIATRA','INASISTENCIA FISIATRA',
+  'VALORACION OCUPACIONAL','INASISTENCIA VALORACION OCUPACIONAL','MEDICINA LABORAL','INASISTENCIA MEDICINA LABORAL',
+  'PSICOLOGIA','INASISTENCIA PSICOLOGIA','TERAPIA OCUPACIONAL','INASISTENCIA TERAPIA OCUPACIONAL','TERAPIA FISICA','INASISTENCIA TERAPIA FISICA',
+  'ALTA INMEDIATA','ESTADO DE LA MATRICULA','FECHA CIERRE','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES',
+  'OBSERVACION','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS','OBSERVACION FACTURACION',
+  'Fecha Último Seguimiento','Hoy','Días sin seguimiento','OBSERVACION (final)'
+];
 
-// Estado global
 const STATE = {
-  accessToken: null,
-  user: null,
-  workbook: { id:null, name:null },
-  sheet: { name:null, id:null },
-  headers: [],
-  rows: [],
-  filteredRows: [],
-  auditorOptions: [],
-  semFilter: null, // 'verde' | 'naranja' | 'rojo' | null
-  auditorFilter: '',
-  dateFrom: null,
-  dateTo: null,
-  currentEdit: { rowIndex:-1, data:null } // índice basado en filas de datos (no Excel)
+  token:null, me:null,
+  file:{id:null,name:null},
+  sheet:'Positiva',
+  headers:[],
+  rows:[],
+  filtered:[],
+  auditorOpts:[],
+  sem:null, // 'verde'|'naranja'|'rojo'|null
+  auditor:'',
+  buscar:'',
+  desde:null, hasta:null,
+  edit:{ index:-1, data:{} }
 };
 
 /* =========================
-   UTILIDADES GENERALES
+   HELPERS
    ========================= */
-const $ = (sel)=>document.querySelector(sel);
-const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
-
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function toast(msg,type='info'){ const d=document.createElement('div'); d.className=`alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3 shadow`; d.style.zIndex=2500; d.textContent=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2600); }
+function showLoad(t='Procesando...'){ $('#ovText').textContent=t; $('#overlay').style.display='flex'; }
+function hideLoad(){ $('#overlay').style.display='none'; }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-function showLoading(msg='Procesando...'){ $("#loadingText").textContent=msg; $("#loadingOverlay").style.display='flex'; }
-function hideLoading(){ $("#loadingOverlay").style.display='none'; }
+function toISO(d){ if(!d) return ''; const dt=(d instanceof Date)?d:new Date(d); const y=dt.getFullYear(), m=String(dt.getMonth()+1).padStart(2,'0'), da=String(dt.getDate()).padStart(2,'0'); return `${y}-${m}-${da}`; }
+function parseExcelDate(v){ if(v==null||v==='') return null; if(typeof v==='number'){ const base=new Date(Date.UTC(1899,11,30)); return new Date(base.getTime()+v*86400000); } const dt=new Date(v); return isNaN(dt)? null: dt; }
+function diffDaysBog(from, to=new Date()){ if(!from) return ''; const a=new Date(from), b=new Date(to); a.setHours(0,0,0,0); b.setHours(0,0,0,0); return Math.floor((b-a)/86400000); }
+function colLetter(i){ let s=''; i++; while(i>0){ const m=(i-1)%26; s=String.fromCharCode(65+m)+s; i=Math.floor((i-1)/26);} return s; }
+function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function isYes(v){ return String(v||'').trim().toUpperCase()==='SI'; }
 
-function showToast(message, type='info'){
-  const el = document.createElement('div');
-  el.className = `alert alert-${type} shadow position-fixed top-0 start-50 translate-middle-x mt-3`;
-  el.style.zIndex = 2000;
-  el.textContent = message;
-  document.body.appendChild(el);
-  setTimeout(()=> el.remove(), 2600);
+/* Normalización: duplicados “CEDULA”, última OBSERVACION -> OBSERVACION (final), variantes de “SEGUIMIENTO … TIEMPOR” */
+function normalizeHeaders(hs){
+  const out=[]; let ced=0; let obs=-1;
+  hs.forEach((h,i)=>{
+    let x=String(h||'').trim();
+    if(x.toUpperCase()==='CEDULA'){ ced++; if(ced>1) x='CEDULA (dup)'; }
+    if(x.toUpperCase().startsWith('SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMP')) x='SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS';
+    if(x.toUpperCase()==='OBSERVACION') obs=i;
+    out.push(x);
+  });
+  if(obs>=0) out[obs]='OBSERVACION (final)';
+  return out;
 }
-
-function toLocalDateStr(d){
-  if(!d) return '';
-  try{
-    const dt = (d instanceof Date)? d : new Date(d);
-    const year = dt.getFullYear();
-    const month = String(dt.getMonth()+1).padStart(2,'0');
-    const day = String(dt.getDate()).padStart(2,'0');
-    return `${year}-${month}-${day}`; // ISO corto para <input type="date">
-  }catch(_){ return ''; }
+function expectedHeadersFor(sheet){
+  const h=[...BASE_HEADERS];
+  if(sheet==='Positiva Evento'){ EVENTO_EXTRAS.forEach(c=>{ if(!h.includes(c)) h.push(c); }); }
+  return h;
 }
-
-// Parse fechas de Excel (número de serie o ISO)
-function parseExcelDate(v){
-  if(v==null || v==='') return null;
-  // Excel serial date (en Windows base 1900)
-  if(typeof v==='number'){
-    const excelEpoch = new Date(Date.UTC(1899,11,30)); // Ajuste 1900-leap bug
-    const ms = v*24*60*60*1000;
-    return new Date(excelEpoch.getTime()+ms);
-  }
-  // Texto tipo "10/14/2025" o ISO
-  const tryDate = new Date(v);
-  return isNaN(tryDate)? null : tryDate;
-}
-
-// Diferencia de días (zona America/Bogota)
-function diffDaysBogota(from, to=new Date()){
-  if(!from) return '';
-  const bogota = (d)=>{
-    const dt = new Date(d);
-    // normaliza a medianoche local (Bogotá = -05:00, sin DST)
-    dt.setHours(0,0,0,0);
-    return dt;
-  }
-  const a = bogota(from), b = bogota(to);
-  const ms = b.getTime() - a.getTime();
-  return Math.floor(ms / (1000*60*60*24));
-}
-
-// Convierte un índice de columna (0-based) a letra Excel
-function colLetter(idx){
-  let s = '';
-  idx++;
-  while(idx>0){
-    const mod = (idx-1)%26;
-    s = String.fromCharCode(65+mod) + s;
-    idx = Math.floor((idx-1)/26);
-  }
-  return s;
+function mergeHeaders(existing, target){
+  const out=[];
+  target.forEach(t=>{ out.push(existing.includes(t)? t : t); });
+  existing.forEach(e=>{ if(!out.includes(e)) out.push(e); });
+  return out;
 }
 
 /* =========================
-   AUTH / GRAPH HELPERS
+   AUTH / GRAPH
    ========================= */
-function buildAuthUrl(){
-  const p = new URLSearchParams({
-    client_id: CONFIG.clientId,
-    response_type: 'token',
-    redirect_uri: CONFIG.redirectUri,
-    scope: CONFIG.scopes,
-    response_mode: 'fragment',
-    state: Math.random().toString(36).slice(2)
+function authUrl(){
+  const p=new URLSearchParams({
+    client_id:CONFIG.clientId, response_type:'token', redirect_uri:CONFIG.redirectUri,
+    scope:CONFIG.scopes, response_mode:'fragment', state:Math.random().toString(36).slice(2)
   });
   return `${CONFIG.authUrl}?${p.toString()}`;
 }
-
 function parseHashToken(){
-  // #access_token=...&token_type=Bearer&expires_in=...
-  if(window.location.hash && window.location.hash.includes('access_token=')){
-    const h = new URLSearchParams(window.location.hash.slice(1));
-    return h.get('access_token') || null;
-  }
+  if(location.hash.includes('access_token=')){ const h=new URLSearchParams(location.hash.slice(1)); return h.get('access_token'); }
   return null;
 }
-
-async function graphFetch(path, {method='GET', body, headers={}}={}){
-  if(!STATE.accessToken) throw new Error('Sin token de acceso');
-  const res = await fetch(`${CONFIG.graphBase}${path}`, {
-    method,
-    headers:{
-      'Authorization': `Bearer ${STATE.accessToken}`,
-      'Content-Type':'application/json',
-      ...headers
-    },
+async function gfetch(path,{method='GET',body,headers={}}={}){
+  const res=await fetch(`${CONFIG.graph}${path}`,{
+    method, headers:{'Authorization':`Bearer ${STATE.token}`,'Content-Type':'application/json',...headers},
     body: body? JSON.stringify(body): undefined
   });
-  if(!res.ok){
-    const txt = await res.text().catch(()=> '');
-    throw new Error(`Graph ${method} ${path} → ${res.status}: ${txt}`);
-  }
+  if(!res.ok){ const t=await res.text().catch(()=> ''); throw new Error(`${method} ${path} → ${res.status}: ${t}`); }
   if(res.status===204) return null;
   return res.json();
 }
-
-// Atajos
-const graphGET = (p)=>graphFetch(p,{method:'GET'});
-const graphPOST= (p,b)=>graphFetch(p,{method:'POST', body:b});
-const graphPATCH=(p,b)=>graphFetch(p,{method:'PATCH', body:b});
+const gGET=(p)=>gfetch(p,{method:'GET'});
+const gPOST=(p,b)=>gfetch(p,{method:'POST',body:b});
+const gPATCH=(p,b)=>gfetch(p,{method:'PATCH',body:b});
 
 /* =========================
-   DESCUBRIR / PREPARAR WORKBOOK
+   WORKBOOK / SHEETS / HEADERS
    ========================= */
 async function ensureWorkbook(){
-  // Buscar candidatos: root y carpeta Documentos
-  $("#fileBadge").textContent = 'Buscando archivo...';
-  // 1) Búsqueda por nombre (rápida)
-  for(const name of FILE_CANDIDATES){
-    const q = encodeURIComponent(name);
+  $('#fileBadge').textContent='Buscando archivo...';
+  for(const cand of FILE_CANDIDATES){
     try{
-      const r = await graphGET(`/me/drive/root/search(q='${q}')`);
-      const item = (r.value||[]).find(f=> (f.name||'').toLowerCase().includes(name.toLowerCase()) && (f.file?.mimeType?.includes('spreadsheet') || f.name.endsWith('.xlsx')));
-      if(item){
-        STATE.workbook.id = item.id;
-        STATE.workbook.name = item.name;
-        $("#fileBadge").textContent = `Archivo: ${item.name}`;
-        return;
-      }
-    }catch(e){ /* sigue siguiente */ }
+      const r=await gGET(`/me/drive/root/search(q='${encodeURIComponent(cand)}')`);
+      const item=(r.value||[]).find(f=> (f.name||'').toLowerCase().includes(cand.toLowerCase()) && (f.file?.mimeType?.includes('spreadsheet')||f.name.endsWith('.xlsx')));
+      if(item){ STATE.file.id=item.id; STATE.file.name=item.name; $('#fileBadge').textContent=`Archivo: ${item.name}`; return; }
+    }catch(_){}
   }
-  // 2) Si no encontró, ofrecer crear
-  const confirmCreate = confirm('No se encontró el archivo de Excel. ¿Deseas crearlo automáticamente con las hojas y encabezados estándar?');
-  if(!confirmCreate) throw new Error('Archivo no encontrado. Operación cancelada.');
-  // Crear en raíz
-  const create = await graphPUTBinaryEmptyWorkbook('Seguimiento ARL - Rangel (2).xlsx');
-  STATE.workbook.id = create.id; STATE.workbook.name = create.name;
-  $("#fileBadge").textContent = `Archivo: ${create.name}`;
-  // Preparar hojas + encabezados
+  if(!confirm('No se encontró el libro. ¿Deseas crearlo automáticamente?')) throw new Error('Archivo no encontrado.');
+  const created=await createEmptyWorkbook('Seguimiento ARL - Rangel (2).xlsx');
+  STATE.file.id=created.id; STATE.file.name=created.name;
+  $('#fileBadge').textContent=`Archivo: ${created.name}`;
   await ensureSheetsAndHeaders();
 }
-
-// Crea un workbook vacío subiendo un .xlsx pequeño (plantilla mínima)
-async function graphPUTBinaryEmptyWorkbook(name){
-  // Subida simple (crea archivo vacio y Excel lo convierte); luego agregamos hojas/headers
-  const url = `/me/drive/root:/${encodeURIComponent(name)}:/content`;
-  const blob = new Blob([''],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-  const res = await fetch(`${CONFIG.graphBase}${url}`, {
-    method:'PUT',
-    headers:{ 'Authorization': `Bearer ${STATE.accessToken}` },
-    body: blob
-  });
-  if(!res.ok) throw new Error('No fue posible crear el libro en OneDrive.');
+async function createEmptyWorkbook(name){
+  const url=`/me/drive/root:/${encodeURIComponent(name)}:/content`;
+  const blob=new Blob([''],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const res=await fetch(`${CONFIG.graph}${url}`,{method:'PUT',headers:{'Authorization':`Bearer ${STATE.token}`},body:blob});
+  if(!res.ok) throw new Error('No fue posible crear el libro.');
   return res.json();
 }
-
 async function ensureSheetsAndHeaders(){
-  // Obtiene/crea hojas KNOWN_SHEETS y asegura encabezados
-  const ws = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets`);
-  const existingNames = (ws.value||[]).map(s=> s.name);
-  // Crea faltantes
-  for(const name of KNOWN_SHEETS){
-    if(!existingNames.includes(name)){
-      await graphPOST(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets/add`, { name });
-      await sleep(300);
-    }
-  }
-  // Asegura encabezados de cada hoja (base + extras si “Positiva Evento”)
-  for(const name of KNOWN_SHEETS){
-    const headers = [...BASE_HEADERS];
-    if(name==='Positiva Evento'){
-      for(const col of EVENTO_EXTRAS){ if(!headers.includes(col)) headers.push(col); }
-    }
-    await ensureHeadersForSheet(name, headers);
+  const ws=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets`);
+  const names=(ws.value||[]).map(x=>x.name);
+  for(const s of SHEETS){ if(!names.includes(s)){ await gPOST(`/me/drive/items/${STATE.file.id}/workbook/worksheets/add`,{name:s}); await sleep(250);} }
+  for(const s of SHEETS){
+    const target=expectedHeadersFor(s);
+    await ensureHeaders(s,target);
+    await styleHeaderStrip(s,target); // coloriza: base azul, inasistencias rojo
   }
 }
-
-async function ensureHeadersForSheet(sheetName, headers){
-  const used = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-  let existing = [];
-  if(used && used.values && used.values.length>0){ existing = (used.values[0]||[]).map(v=> String(v||'').trim()); }
-  // Normaliza duplicados y crea faltantes al final
-  const normalized = normalizeHeaders(existing);
-  const toWrite = mergeHeaders(normalized, headers);
-  if(!arrayEquals(normalized, toWrite)){
-    // Escribe fila 1 completa con todos los headers
-    const lastCol = colLetter(toWrite.length-1);
-    await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/range(address='A1:${lastCol}1')`, { values:[toWrite] });
-    // Estilo (intenta replicar Apps Script)
-    await styleHeader(sheetName, `A1:${lastCol}1`);
-  }
+async function ensureHeaders(sheetName, headers){
+  const used=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/usedRange(valuesOnly=true)`).catch(()=>null);
+  let existing=[];
+  if(used?.values?.length>0){ existing = normalizeHeaders((used.values[0]||[]).map(v=>String(v||'').trim())); }
+  const merged = mergeHeaders(existing, headers);
+  if(merged.length===0){ merged = headers.slice(); }
+  const last=colLetter(merged.length-1);
+  await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheetName)}')/range(address='A1:${last}1')`,{values:[merged]});
 }
-function normalizeHeaders(hs){
-  // - Si hay 2 "CEDULA", renombra la segunda a "CEDULA (dup)" (no se muestra en UI)
-  // - Si hay varias "OBSERVACION", la última pasa a "OBSERVACION (final)"
-  const out=[]; let cedulaCount=0; let obsIdx=-1;
-  hs.forEach((h,i)=>{
-    let hdr = String(h||'').trim();
-    if(hdr.toUpperCase()==='CEDULA'){
-      cedulaCount++;
-      if(cedulaCount>1) hdr = 'CEDULA (dup)';
-    }
-    if(hdr.toUpperCase()==='OBSERVACION'){ obsIdx=i; }
-    out.push(hdr);
-  });
-  if(obsIdx>=0){ out[obsIdx] = 'OBSERVACION (final)'; }
-  return out;
-}
-function mergeHeaders(existing, target){
-  const res = [];
-  // Toma todos los de target, si existen en existing usa su nombre tal cual
-  target.forEach(t=>{
-    const match = existing.find(e=> e===t);
-    res.push(match || t);
-  });
-  // Conserva columnas adicionales que ya existan (p.ej., extras anteriores)
-  existing.forEach(e=>{
-    if(!res.includes(e)) res.push(e);
-  });
-  return res;
-}
-function arrayEquals(a,b){ return a.length===b.length && a.every((v,i)=> v===b[i]); }
-
-async function styleHeader(sheet, range){
+async function styleHeaderStrip(sheet, headers){
   try{
-    await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='${range}')/format/fill`,{ color: "#001f3f" });
-    await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='${range}')/format/font`,{ color: "#ffffff", bold: true });
-    await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='${range}')/format/`,{ horizontalAlignment: "Center" }).catch(()=>{});
-  }catch(_){ /* styling opcional */ }
+    const last=colLetter(headers.length-1);
+    // Estilo general azul
+    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='A1:${last}1')/format/fill`,{color:'#001f3f'});
+    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='A1:${last}1')/format/font`,{color:'#ffffff',bold:true});
+    // Resaltar INASISTENCIAS en rojo (#d9534f)
+    for(let i=0;i<headers.length;i++){
+      const h=headers[i];
+      if(h.toUpperCase().startsWith('INASISTENCIA ')){
+        const col=colLetter(i);
+        await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(sheet)}')/range(address='${col}1:${col}1')/format/fill`,{color:'#d9534f'}).catch(()=>{});
+      }
+    }
+  }catch(_){}
 }
 
 /* =========================
-   CARGA Y RENDER DE DATOS
+   CARGA / RENDER
    ========================= */
 async function loadSheet(name){
-  STATE.sheet.name = name;
-  $("#sheetBadge").textContent = `Hoja: ${name}`;
-  if(DEMO_MODE){
-    // DEMO — datos fake
-    const {headers, rows} = demoData(name);
-    STATE.headers = headers;
-    STATE.rows = rows;
-    applyFilters();
-    renderAuditorOptions();
-    renderTable();
-    updateSemaforo();
-    updateDashboard();
-    return;
-  }
-  // Real (Graph)
-  // Asegura que existan hojas/headers (idempotente)
+  STATE.sheet=name; $('#sheetBadge').textContent=`Hoja: ${name}`;
+  if(DEMO_MODE){ const d=demoData(name); STATE.headers=d.headers; STATE.rows=d.rows; postLoad(); return; }
   await ensureSheetsAndHeaders();
-  // usedRange
-  const used = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(name)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-  const vals = (used && used.values)? used.values: [];
-  if(vals.length===0){
-    STATE.headers = BASE_HEADERS.slice();
-    STATE.rows = [];
-  }else{
-    const rawHeaders = (vals[0]||[]).map(v=>String(v||'').trim());
-    const normalized = normalizeHeaders(rawHeaders);
-    STATE.headers = normalized;
-    const data = vals.slice(1).map(r=>{
-      const obj={};
-      normalized.forEach((h,idx)=> obj[h] = r[idx] ?? '');
-      return obj;
-    });
-    // Parse fechas + cálculo “Días sin seguimiento”
-    STATE.rows = data.map(row=>{
-      const fx = parseExcelDate(row['Fecha Último Seguimiento']);
-      // Si viene "Hoy", úsalo; si no, hoy
-      const hoy = row['Hoy']? parseExcelDate(row['Hoy']) : new Date();
-      const dias = fx? diffDaysBogota(fx, hoy): (row['Días sin seguimiento'] || '');
-      return {...row, 'Hoy': hoy, 'Días sin seguimiento': dias};
-    });
-  }
+  const used=await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(name)}')/usedRange(valuesOnly=true)`).catch(()=>null);
+  const vals = used?.values||[];
+  if(vals.length===0){ STATE.headers=expectedHeadersFor(name); STATE.rows=[]; postLoad(); return; }
+  const raw=normalizeHeaders((vals[0]||[]).map(v=>String(v||'').trim()));
+  STATE.headers=raw;
+  const rows=vals.slice(1).map(r=>{
+    const o={}; raw.forEach((h,i)=> o[h]=r[i] ?? ''); return o;
+  }).map(row=>{
+    const fseg=parseExcelDate(row['Fecha Último Seguimiento']);
+    const hoy = row['Hoy']? parseExcelDate(row['Hoy']) : new Date();
+    return {...row, 'Hoy': toISO(hoy), 'Días sin seguimiento': fseg? diffDaysBog(fseg, hoy): (row['Días sin seguimiento']||'')};
+  });
+  STATE.rows=rows;
+  postLoad();
+}
+function postLoad(){
+  renderSheets();
+  buildTiles();
+  buildAuditors();
   applyFilters();
-  renderAuditorOptions();
   renderTable();
-  updateSemaforo();
-  updateDashboard();
+  updateKpis();
+  updateSemaforoCounts();
+}
+function renderSheets(){
+  const cont=$('#listSheets');
+  cont.innerHTML = SHEETS.map(s=> (s==='CERRADOS'? `
+    <hr class="border-secondary-subtle my-2">
+    <button class="btn-aseg ${STATE.sheet===s?'active':''}" onclick="switchSheet('${s}')">
+      <span><i class="bi bi-archive me-1"></i> ${s}</span><i class="bi bi-chevron-right"></i>
+    </button>` : `
+    <button class="btn-aseg ${STATE.sheet===s?'active':''}" onclick="switchSheet('${s}')">
+      <span><i class="bi bi-folder2-open me-1"></i> ${s}</span><i class="bi bi-chevron-right"></i>
+    </button>`)).join('');
+  $('#btnAdd').disabled = (STATE.sheet==='CERRADOS');
+}
+async function switchSheet(s){ await loadSheet(s); }
+
+/* Auditor */
+function buildAuditors(){
+  const set=new Set();
+  STATE.rows.forEach(r=>{ const a=String(r['AUDITOR']||'').trim(); if(a) set.add(a); });
+  const opts=['',...Array.from(set).sort((a,b)=>a.localeCompare(b,'es'))];
+  const sel=$('#selAuditor');
+  sel.innerHTML = opts.map(v=> `<option value="${esc(v)}">${v? esc(v): '— Todos —'}</option>`).join('');
 }
 
+/* Tiles citas e inasistencias */
+function buildTiles(){
+  $('#tilesCitas').innerHTML = COL_CITAS.map(c=> (
+    `<div class="tile"><div class="h">${esc(c)}</div><div class="n" id="tc_${hash(c)}">0</div></div>`
+  )).join('');
+  $('#tilesInasistencias').innerHTML = COL_INASIS.map(c=> (
+    `<div class="tile"><div class="h">${esc(c)}</div><div class="n" id="ti_${hash(c)}">0</div></div>`
+  )).join('');
+}
+function hash(s){ return s.replace(/\W+/g,'_'); }
+
+/* Filtros */
 function applyFilters(){
-  const auditor = STATE.auditorFilter?.trim().toLowerCase();
-  const dFrom = STATE.dateFrom? new Date(STATE.dateFrom): null;
-  const dTo   = STATE.dateTo?   new Date(STATE.dateTo): null;
+  const q=STATE.buscar.toLowerCase();
+  const aud=STATE.auditor.toLowerCase();
+  const df = STATE.desde? new Date(STATE.desde): null;
+  const dt = STATE.hasta? new Date(STATE.hasta): null;
 
-  const rows = STATE.rows.filter(r=>{
-    // Filtro auditor
-    const aud = String(r['AUDITOR']||'').toLowerCase();
-    if(auditor && !aud.includes(auditor)) return false;
+  STATE.filtered = STATE.rows.filter(r=>{
+    // búsqueda libre
+    const blob = [
+      r['NOMBRE'], r['CEDULA'], r['SINIESTRO'],
+      r['OBSERVACION'], r['OBSERVACION (final)']
+    ].map(x=>String(x||'').toLowerCase()).join(' ');
+    if(q && !blob.includes(q)) return false;
 
-    // Filtro por fecha de asignación (si existen ambas)
-    const f = parseExcelDate(r['FECHA DE ASIGNACION A LA IPS']);
-    if(dFrom && f && f < dFrom) return false;
-    if(dTo   && f && f > dTo)   return false;
+    // auditor
+    const a = String(r['AUDITOR']||'').toLowerCase();
+    if(aud && !a.includes(aud)) return false;
 
-    // Filtro semáforo
-    const dias = Number(r['Días sin seguimiento']||'') || 0;
-    if(STATE.semFilter==='verde'   && !(dias<=5)) return false;
-    if(STATE.semFilter==='naranja' && !(dias>=6 && dias<=12)) return false;
-    if(STATE.semFilter==='rojo'    && !(dias>=13)) return false;
+    // rango por fecha de asignación
+    const fa = parseExcelDate(r['FECHA DE ASIGNACION A LA IPS']);
+    if(df && fa && fa < df) return false;
+    if(dt && fa && fa > dt) return false;
+
+    // semáforo
+    const d = Number(r['Días sin seguimiento']||0);
+    if(STATE.sem==='verde'   && !(d<=5)) return false;
+    if(STATE.sem==='naranja' && !(d>=6 && d<=12)) return false;
+    if(STATE.sem==='rojo'    && !(d>=13)) return false;
 
     return true;
   });
 
-  STATE.filteredRows = rows;
-}
-
-function renderAuditorOptions(){
-  const set = new Set();
-  STATE.rows.forEach(r=>{
-    const v = String(r['AUDITOR']||'').trim();
-    if(v) set.add(v);
+  // Actualiza tiles
+  const countsC = {};
+  COL_CITAS.forEach(c=> countsC[c]=0);
+  STATE.filtered.forEach(r=>{
+    COL_CITAS.forEach(c=>{
+      if(r[c]) countsC[c]++
+    });
   });
-  const arr = Array.from(set).sort((a,b)=> a.localeCompare(b,'es'));
-  STATE.auditorOptions = arr;
-  const sel = $('#filtroAuditor');
-  sel.innerHTML = `<option value="">— Todos —</option>` + arr.map(a=> `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
-}
+  COL_CITAS.forEach(c=> { const el = $(`#tc_${hash(c)}`); if(el) el.textContent = countsC[c]; });
 
+  const countsI = {};
+  COL_INASIS.forEach(c=> countsI[c]=0);
+  STATE.filtered.forEach(r=>{
+    COL_INASIS.forEach(c=>{
+      if(isYes(r[c]) || String(r[c]||'').trim().toUpperCase()==='NO ASISTE') countsI[c]++;
+    });
+  });
+  COL_INASIS.forEach(c=> { const el = $(`#ti_${hash(c)}`); if(el) el.textContent = countsI[c]; });
+}
+function updateKpis(){
+  $('#kpiActivos').textContent = String(STATE.filtered.length);
+
+  const setCed = new Set(), setSin = new Set();
+  STATE.filtered.forEach(r=>{
+    if(r['CEDULA']) setCed.add(String(r['CEDULA']).trim());
+    if(r['SINIESTRO']) setSin.add(String(r['SINIESTRO']).trim());
+  });
+  $('#kpiPacientes').textContent = String(setCed.size);
+  $('#kpiSiniestros').textContent = String(setSin.size);
+
+  let m=0,f=0,o=0;
+  STATE.filtered.forEach(r=>{
+    const g=String(r['GENERO']||'').toLowerCase();
+    if(g.startsWith('masc')) m++; else if(g.startsWith('fem')) f++; else o++;
+  });
+  $('#kpiMasculino').textContent=String(m);
+  $('#kpiFemenino').textContent=String(f);
+  $('#kpiOtro').textContent=String(o);
+}
+function updateSemaforoCounts(){
+  let v=0,n=0,r=0;
+  STATE.filtered.forEach(x=>{
+    const d=Number(x['Días sin seguimiento']||0);
+    if(d<=5) v++; else if(d<=12) n++; else r++;
+  });
+  $('#nVerde').textContent=v;
+  $('#nNaranja').textContent=n;
+  $('#nRojo').textContent=r;
+}
 function renderTable(){
-  const container = $('#tableContainer');
-  const headers = STATE.headers.filter(h=> h!=='CEDULA (dup)'); // ocultar duplicados técnicos
-  // Acciones
-  const th = `<th class="text-nowrap">Acciones</th>` + headers.map(h=> `<th class="text-nowrap">${escapeHtml(h)}</th>`).join('');
-  const rowsHtml = STATE.filteredRows.map((r,idx)=>{
-    const safe = headers.map(h=>{
-      const v = r[h];
-      return `<td>${escapeHtml(formatCell(v))}</td>`;
+  const H = STATE.headers.filter(h=> h!=='CEDULA (dup)');
+  const thead = `<th class="text-nowrap">Acciones</th>` + H.map(h=> `<th class="text-nowrap">${esc(h)}</th>`).join('');
+  const rows = STATE.filtered.map((r,idx)=>{
+    const tds = H.map(h=>{
+      const v=r[h];
+      const asDate = parseExcelDate(v);
+      return `<td>${esc(asDate? toISO(asDate): v)}</td>`;
     }).join('');
     return `<tr>
       <td class="text-nowrap">
         <button class="action-btn" onclick="openEdit(${idx})" title="Editar"><i class="bi bi-pencil-square"></i></button>
-      </td>
-      ${safe}
-    </tr>`;
+      </td>${tds}</tr>`;
   }).join('');
-  container.innerHTML = `
+  $('#tbl').innerHTML = `
     <div class="table-responsive">
-      <table class="table table-sm table-hover align-middle">
-        <thead><tr>${th}</tr></thead>
-        <tbody>${rowsHtml || `<tr><td colspan="${headers.length+1}" class="text-center text-muted">Sin datos</td></tr>`}</tbody>
+      <table class="table table-hover table-sm align-middle">
+        <thead><tr>${thead}</tr></thead>
+        <tbody>${rows || `<tr><td colspan="${H.length+1}" class="text-center text-muted">Sin datos</td></tr>`}</tbody>
       </table>
     </div>`;
-}
-
-function updateSemaforo(){
-  let v=0,n=0,r=0;
-  STATE.filteredRows.forEach(x=>{
-    const d = Number(x['Días sin seguimiento']||'')||0;
-    if(d<=5) v++; else if(d<=12) n++; else r++;
-  });
-  $('#semVerde').childNodes[1].textContent = ` ${v} `;
-  $('#semNaranja').childNodes[1].textContent = ` ${n} `;
-  $('#semRojo').childNodes[1].textContent = ` ${r} `;
-}
-
-function updateDashboard(){
-  // Activos: filas visibles
-  $('#kpiActivos').textContent = String(STATE.filteredRows.length);
-
-  // Únicos por CEDULA y SINIESTRO
-  const pacientes = new Set(), siniestros = new Set();
-  STATE.filteredRows.forEach(r=>{
-    if(r['CEDULA']) pacientes.add(String(r['CEDULA']).trim());
-    if(r['SINIESTRO']) siniestros.add(String(r['SINIESTRO']).trim());
-  });
-  $('#kpiPacientes').textContent = String(pacientes.size);
-  $('#kpiSiniestros').textContent = String(siniestros.size);
-
-  // Género
-  let m=0,f=0,o=0;
-  STATE.filteredRows.forEach(r=>{
-    const g = String(r['GENERO']||'').toLowerCase();
-    if(g.startsWith('masc')) m++;
-    else if(g.startsWith('fem')) f++;
-    else o++;
-  });
-  $('#kpiMasculino').textContent = String(m);
-  $('#kpiFemenino').textContent = String(f);
-  $('#kpiOtro').textContent = String(o);
-}
-
-function formatCell(v){
-  if(v==null) return '';
-  if(v instanceof Date) return toLocalDateStr(v);
-  // Detecta fechas en texto tipo MM/DD/YYYY o YYYY-MM-DD
-  const d = parseExcelDate(v);
-  if(d) return toLocalDateStr(d);
-  return String(v);
-}
-
-function escapeHtml(s){
-  return String(s??'').replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
 /* =========================
    AGREGAR / EDITAR / CERRAR
    ========================= */
-const modalEditar = new bootstrap.Modal('#modalEditar');
+const modal = new bootstrap.Modal('#mdlEdit');
 
-function openAdd(){
-  STATE.currentEdit = { rowIndex:-1, data: {} };
-  $('#modalTitulo').textContent = 'Agregar Usuario';
-  buildModalForms({});
-  $('#tipoCierre').value='';
-  modalEditar.show();
+function buildForms(row={}){
+  const H = STATE.headers.filter(h=>h!=='CEDULA (dup)');
+  const camposPaciente = ['SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','MAYOR A 56 AÑOS SI O NO','AUDITOR','CLASIFICACION SEVERIDAD'];
+  const camposSeguim = H.filter(h=> !camposPaciente.includes(h));
+
+  $('#formPaciente').innerHTML = camposPaciente.map(h=> inputFor(h,row)).join('');
+  $('#formSeguimiento').innerHTML = camposSeguim.map(h=> inputFor(h,row)).join('');
+  // set chkEvento (solo visible si hoja actual es Positiva)
+  $('#chkEvento').checked = false;
+  $('#chkEvento').closest('.form-check').style.display = (STATE.sheet==='Positiva')? '' : 'none';
 }
-
-function openEdit(filteredIndex){
-  // Mapea índice filtrado al índice real dentro de STATE.rows
-  const rowObj = STATE.filteredRows[filteredIndex];
-  const realIndex = STATE.rows.indexOf(rowObj);
-  STATE.currentEdit = { rowIndex: realIndex, data: {...rowObj} };
-  $('#modalTitulo').textContent = `Editar Usuario (fila ${realIndex+2})`;
-  buildModalForms(rowObj);
-  $('#tipoCierre').value='';
-  modalEditar.show();
-}
-
-function buildModalForms(row){
-  const H = STATE.headers.filter(h=> h!=='CEDULA (dup)'); // ocultamos duplicado técnico
-  // Dividimos campos entre "Paciente" y "Seguimiento"
-  const pacienteFields = [
-    'SINIESTRO','# MATRICULA','CEDULA','NOMBRE','FECHA DE ASIGNACION A LA IPS','GENERO','MAYOR A 56 AÑOS SI O NO','AUDITOR','CLASIFICACION SEVERIDAD'
-  ];
-  const seguimientoFields = H.filter(h=> !pacienteFields.includes(h));
-
-  // Renderiza inputs dinámicamente por tipo
-  $('#formPaciente').innerHTML = pacienteFields.filter(h=> H.includes(h)).map(h=> inputFor(h, row)).join('');
-  $('#formSeguimiento').innerHTML = seguimientoFields.map(h=> inputFor(h, row)).join('');
-}
-
-function inputFor(h, row){
-  const val = row[h] ?? '';
-  // Tipado básico
-  const lower = h.toLowerCase();
+function inputFor(h,row){
+  const v=row[h] ?? '';
   const isDate = /(fecha|hoy|cita|junta|fisiatra|valoracion|medicina|psicologia|terapia)/i.test(h) || ['Fecha Último Seguimiento','FECHA DE ASIGNACION A LA IPS','FECHA CIERRE','Hoy'].includes(h);
-  const isArea = /(observacion)/i.test(lower);
-  const isNumber = ['SINIESTRO','# MATRICULA','CEDULA','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES','Días sin seguimiento'].includes(h);
-  const isReadonly = ['Hoy','Días sin seguimiento'].includes(h);
-  let control = '';
-
+  const isArea = /observacion/i.test(h);
+  const isNum  = ['SINIESTRO','# MATRICULA','CEDULA','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES','Días sin seguimiento'].includes(h);
+  const ro     = ['Hoy','Días sin seguimiento'].includes(h);
+  let ctrl='';
   if(isDate){
-    control = `<input type="date" class="form-control" id="f_${hash(h)}" value="${escapeHtml(toLocalDateStr(parseExcelDate(val)))}" ${isReadonly?'readonly':''}/>`;
+    ctrl=`<input type="date" class="form-control" id="f_${hash(h)}" value="${esc(toISO(parseExcelDate(v)))}" ${ro?'readonly':''}>`;
   }else if(isArea){
-    control = `<textarea rows="2" class="form-control" id="f_${hash(h)}" ${isReadonly?'readonly':''}>${escapeHtml(val)}</textarea>`;
+    ctrl=`<textarea rows="2" class="form-control" id="f_${hash(h)}" ${ro?'readonly':''}>${esc(v)}</textarea>`;
   }else if(h==='GENERO'){
-    control = `<select class="form-select" id="f_${hash(h)}">
+    ctrl=`<select class="form-select" id="f_${hash(h)}">
       <option value="">— Seleccione —</option>
-      <option ${val==='Masculino'?'selected':''}>Masculino</option>
-      <option ${val==='Femenino'?'selected':''}>Femenino</option>
-      <option ${val==='Otro'?'selected':''}>Otro</option>
+      <option ${v==='Masculino'?'selected':''}>Masculino</option>
+      <option ${v==='Femenino'?'selected':''}>Femenino</option>
+      <option ${v==='Otro'?'selected':''}>Otro</option>
     </select>`;
   }else if(h==='MAYOR A 56 AÑOS SI O NO'){
-    control = `<select class="form-select" id="f_${hash(h)}">
+    ctrl=`<select class="form-select" id="f_${hash(h)}">
       <option value="">— Seleccione —</option>
-      <option ${String(val).toUpperCase()==='SI'?'selected':''}>SI</option>
-      <option ${String(val).toUpperCase()==='NO'?'selected':''}>NO</option>
+      <option ${String(v).toUpperCase()==='SI'?'selected':''}>SI</option>
+      <option ${String(v).toUpperCase()==='NO'?'selected':''}>NO</option>
     </select>`;
-  }else if(isNumber){
-    control = `<input type="number" class="form-control" id="f_${hash(h)}" value="${escapeHtml(val)}" ${isReadonly?'readonly':''}/>`;
+  }else if(h==='CLASIFICACION SEVERIDAD'){
+    const ops = ['AT Caso Muy Leve','AT Caso Leve','AT Caso Moderado','AT Caso Grave','AT Caso Muy Grave','AT Caso Severo','Enfermedad Laboral','Sin asignación de cita'];
+    ctrl=`<select class="form-select" id="f_${hash(h)}">
+      <option value="">— Seleccione —</option>
+      ${ops.map(o=> `<option ${o===v?'selected':''}>${o}</option>`).join('')}
+    </select>`;
+  }else if(isNum){
+    ctrl=`<input type="number" class="form-control" id="f_${hash(h)}" value="${esc(v)}" ${ro?'readonly':''}>`;
   }else{
-    control = `<input type="text" class="form-control" id="f_${hash(h)}" value="${escapeHtml(val)}" ${isReadonly?'readonly':''}/>`;
+    ctrl=`<input type="text" class="form-control" id="f_${hash(h)}" value="${esc(v)}" ${ro?'readonly':''}>`;
   }
-
   return `<div class="col-12 col-md-6">
-    <label class="form-label">${escapeHtml(h)}</label>
-    ${control}
+    <label class="form-label">${esc(h)}</label>
+    ${ctrl}
   </div>`;
 }
-function hash(s){ return s.replace(/\W+/g,'_'); }
-
+function openAdd(){
+  STATE.edit={index:-1,data:{}};
+  $('#mdlTitle').textContent='Agregar Usuario';
+  buildForms({});
+  $('#tipoCierre').value='';
+  modal.show();
+}
+function openEdit(filteredIdx){
+  const obj=STATE.filtered[filteredIdx];
+  const real=STATE.rows.indexOf(obj);
+  STATE.edit={index:real,data:{...obj}};
+  $('#mdlTitle').textContent=`Editar Usuario (fila ${real+2})`;
+  buildForms(obj);
+  $('#tipoCierre').value='';
+  modal.show();
+}
 async function guardar(){
   const H = STATE.headers.filter(h=> h!=='CEDULA (dup)');
-  // Recolectar valores
-  const data = {};
+  const data={};
   H.forEach(h=>{
-    const el = $(`#f_${hash(h)}`);
-    if(!el) return;
-    let v = el.value;
-    // Normaliza fechas: mantener YYYY-MM-DD
-    if(el.type==='date' && v) v = v;
-    data[h] = v;
+    const el=$(`#f_${hash(h)}`); if(!el) return;
+    data[h] = (el.type==='date' && el.value)? el.value : el.value;
   });
-
   // Recalcular "Hoy" y "Días sin seguimiento"
   const today = new Date(); today.setHours(0,0,0,0);
-  data['Hoy'] = toLocalDateStr(today);
+  data['Hoy'] = toISO(today);
   const fseg = data['Fecha Último Seguimiento']? new Date(data['Fecha Último Seguimiento']) : null;
-  data['Días sin seguimiento'] = fseg? diffDaysBogota(fseg, today): '';
+  data['Días sin seguimiento'] = fseg? diffDaysBog(fseg, today): '';
+
+  // ¿Positiva Evento?
+  const toEvento = ($('#chkEvento').checked && STATE.sheet==='Positiva');
 
   if(DEMO_MODE){
-    if(STATE.currentEdit.rowIndex<0){
-      STATE.rows.push(data);
-    }else{
-      STATE.rows[STATE.currentEdit.rowIndex] = data;
-    }
-    applyFilters(); renderTable(); updateSemaforo(); updateDashboard();
-    showToast('Guardado (DEMO).', 'success');
-    modalEditar.hide();
-    return;
+    if(STATE.edit.index<0){ STATE.rows.push(data); }
+    else{ STATE.rows[STATE.edit.index]=data; }
+    if(toEvento){ /* mover virtualmente */ }
+    applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
+    toast('Guardado (DEMO).','success'); modal.hide(); return;
   }
 
-  // Persistir en Excel real
-  showLoading('Guardando cambios en Excel...');
+  showLoad('Guardando en Excel...');
   try{
-    // Asegura headers (por si cambió la estructura)
-    await ensureHeadersForSheet(STATE.sheet.name, expectedHeadersForSheet(STATE.sheet.name));
+    // Asegurar headers actualizados
+    await ensureHeaders(STATE.sheet, expectedHeadersFor(STATE.sheet));
 
-    const used = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet.name)}')/usedRange(valuesOnly=true)`).catch(()=>null);
-    const headers = STATE.headers; // ya normalizados
+    // Lectura de usedRange para calcular última fila
+    const used = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/usedRange(valuesOnly=true)`).catch(()=>null);
+    const headers = STATE.headers;
     const lastCol = colLetter(headers.length-1);
 
-    if(STATE.currentEdit.rowIndex<0){
-      // Append: fila = usedRange.rows + 1
-      const totalRows = (used?.values?.length || 1);
-      const targetRow = totalRows + 1; // +1 por encabezados
-      const ordered = headers.map(h=> data[h] ?? '');
-      await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet.name)}')/range(address='A${targetRow}:${lastCol}${targetRow}')`, { values:[ordered] });
-      showToast('Usuario agregado.', 'success');
+    if(STATE.edit.index<0){
+      // Alta (append en hoja actual o “Positiva Evento” si aplica)
+      const destSheet = toEvento? 'Positiva Evento' : STATE.sheet;
+      await ensureHeaders(destSheet, expectedHeadersFor(destSheet));
+      const usedDest = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(destSheet)}')/usedRange(valuesOnly=true)`).catch(()=>null);
+      const hdrsDest = normalizeHeaders((usedDest?.values?.[0]||[]).map(v=>String(v||'').trim()));
+      const lastDest = colLetter(hdrsDest.length-1);
+      const nextRow = (usedDest?.values?.length || 1) + 1;
+      const ordered = hdrsDest.map(h=> data[h] ?? '');
+      await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(destSheet)}')/range(address='A${nextRow}:${lastDest}${nextRow}')`,{values:[ordered]});
+      toast(`Usuario agregado a ${destSheet}.`,'success');
     }else{
-      // Update en fila real: rowIndex + 2 (incluye encabezados)
-      const real = STATE.currentEdit.rowIndex + 2;
+      // Actualización en fila real
+      const real = STATE.edit.index + 2;
       const ordered = headers.map(h=> data[h] ?? '');
-      await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet.name)}')/range(address='A${real}:${lastCol}${real}')`, { values:[ordered] });
-      showToast('Actualizado correctamente.', 'success');
+      await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')`,{values:[ordered]});
+      toast('Actualizado correctamente.','success');
     }
-
-    modalEditar.hide();
-    await loadSheet(STATE.sheet.name);
-  }catch(e){
-    console.error(e); showToast('Error al guardar: '+e.message, 'danger');
-  }finally{ hideLoading(); }
+    modal.hide();
+    await loadSheet(STATE.sheet);
+  }catch(e){ console.error(e); toast('Error al guardar: '+e.message,'danger'); }
+  finally{ hideLoad(); }
 }
-
-function expectedHeadersForSheet(sheet){
-  const h = [...BASE_HEADERS];
-  if(sheet==='Positiva Evento'){
-    for(const col of EVENTO_EXTRAS){ if(!h.includes(col)) h.push(col); }
-  }
-  return h;
-}
-
 async function cerrarCaso(){
   const motivo = $('#tipoCierre').value;
-  if(!motivo){ showToast('Debes seleccionar un Tipo de Cierre.', 'warning'); return; }
-  if(STATE.currentEdit.rowIndex<0){ showToast('Primero debes guardar el registro.', 'warning'); return; }
-  const ok = confirm(`¿Confirmas cerrar el caso?\nMotivo: ${motivo}`);
-  if(!ok) return;
+  if(!motivo){ toast('Debes seleccionar Tipo de Cierre.','warning'); return; }
+  if(STATE.edit.index<0){ toast('Primero guarda el registro.','warning'); return; }
+  if(!confirm(`¿Cerrar el caso?\nMotivo: ${motivo}`)) return;
 
-  if(DEMO_MODE){
-    // Copia a "CERRADOS" local y elimina
-    showToast('Caso cerrado (DEMO).', 'success');
-    modalEditar.hide();
-    return;
-  }
+  if(DEMO_MODE){ toast('Caso cerrado (DEMO).','success'); modal.hide(); return; }
 
-  showLoading('Cerrando caso...');
+  showLoad('Cerrando caso...');
   try{
-    // Asegura hoja CERRADOS
-    await ensureHeadersForSheet('CERRADOS', [...STATE.headers, 'TIPO DE CIERRE','HOJA ORIGEN','FECHA DE CIERRE DEL CASO']);
-
-    // Leer fila actual ordenada
+    // Asegura CERRADOS
+    await ensureHeaders('CERRADOS', [...STATE.headers,'TIPO DE CIERRE','HOJA ORIGEN','FECHA DE CIERRE DEL CASO']);
     const headers = STATE.headers;
-    const real = STATE.currentEdit.rowIndex+2;
+    const real = STATE.edit.index + 2;
     const lastCol = colLetter(headers.length-1);
-    const rget = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet.name)}')/range(address='A${real}:${lastCol}${real}')`);
+    const rget = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')`);
     const fila = (rget?.values?.[0]||[]);
+    const newRow = fila.concat([motivo, STATE.sheet, toISO(new Date())]);
 
-    // Construir nueva fila para CERRADOS
-    const extras = [motivo, STATE.sheet.name, toLocalDateStr(new Date())];
-    const newRow = fila.concat(extras);
+    const usedC = await gGET(`/me/drive/items/${STATE.file.id}/workbook/worksheets('CERRADOS')/usedRange(valuesOnly=true)`).catch(()=>null);
+    const hdrC = (usedC?.values?.[0]||[]);
+    const lastC = colLetter(hdrC.length-1);
+    const next = (usedC?.values?.length || 1) + 1;
+    await gPATCH(`/me/drive/items/${STATE.file.id}/workbook/worksheets('CERRADOS')/range(address='A${next}:${lastC}${next}')`,{values:[newRow]});
 
-    // Append a CERRADOS
-    const usedC = await graphGET(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('CERRADOS')/usedRange(valuesOnly=true)`).catch(()=>null);
-    const headersC = (usedC?.values?.[0]||[]);
-    const lastColC = colLetter(headersC.length-1);
-    const nextRow = (usedC?.values?.length || 1)+1;
-    await graphPATCH(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('CERRADOS')/range(address='A${nextRow}:${lastColC}${nextRow}')`, { values:[newRow] });
+    // Delete fila origen
+    await gPOST(`/me/drive/items/${STATE.file.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet)}')/range(address='A${real}:${lastCol}${real}')/delete`,{shift:'Up'});
 
-    // Borrar fila original
-    await graphPOST(`/me/drive/items/${STATE.workbook.id}/workbook/worksheets('${encodeURIComponent(STATE.sheet.name)}')/range(address='A${real}:${lastCol}${real}')/delete`, { shift:'Up' });
-
-    showToast('Caso cerrado y movido a CERRADOS.', 'success');
-    modalEditar.hide();
-    await loadSheet(STATE.sheet.name);
-  }catch(e){
-    console.error(e); showToast('Error al cerrar caso: '+e.message, 'danger');
-  }finally{ hideLoading(); }
+    toast('Caso movido a CERRADOS.','success');
+    modal.hide();
+    await loadSheet(STATE.sheet);
+  }catch(e){ console.error(e); toast('Error al cerrar caso: '+e.message,'danger'); }
+  finally{ hideLoad(); }
 }
 
 /* =========================
-   SIDEBAR ASEGURADORES
+   DEMO DATA (opcional)
    ========================= */
-function renderAseguradores(){
-  const cont = $('#aseguradoresList');
-  cont.innerHTML = KNOWN_SHEETS.filter(n=> n!=='CERRADOS').map(n=> `
-    <button class="asegurador-btn" data-sheet="${n}" onclick="switchSheet('${n}')">
-      <span><i class="bi bi-folder2-open me-1"></i> ${n}</span>
-      <i class="bi bi-chevron-right"></i>
-    </button>
-  `).join('') + `
-    <hr class="border-secondary-subtle my-3"/>
-    <button class="asegurador-btn" data-sheet="CERRADOS" onclick="switchSheet('CERRADOS')">
-      <span><i class="bi bi-archive me-1"></i> CERRADOS</span>
-      <i class="bi bi-chevron-right"></i>
-    </button>
-  `;
-}
-async function switchSheet(name){
-  $$('#aseguradoresList .asegurador-btn').forEach(b=> b.classList.toggle('active', b.dataset.sheet===name));
-  const isClosed = (name==='CERRADOS');
-  $('#btnAdd').disabled = isClosed; // no agregar directo a CERRADOS
-  await loadSheet(name);
+function demoData(sheet){
+  const headers = expectedHeadersFor(sheet);
+  const today = toISO(new Date());
+  const rows = [
+    {'SINIESTRO':'498349289','# MATRICULA':'44814341','CEDULA':'1014235486','NOMBRЕ':'','NOMBRE':'ANDRES ESTEBAN SANCHEZ SANCHEZ','FECHA DE ASIGNACION A LA IPS':'2025-03-12','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'SI','AUDITOR':'FABIAN MACIAS','CLASIFICACION SEVERIDAD':'AT Caso Muy Leve','CITA INICIAL':'2025-10-14','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-31','INASISTENCIA FISIATRA':'NO','VALORACION OCUPACIONAL':'2025-10-22','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO','PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'','INASISTENCIA TERAPIA FISICA':'NO','ALTA INMEDIATA':'','ESTADO DE LA MATRICULA':'','FECHA CIERRE':'','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES':'','OBSERVACION':'PENDIENTE FISIATRIA','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS':'','OBSERVACION FACTURACION':'SE FACTURA 60%','Fecha Último Seguimiento':'2025-10-14','Hoy':today,'Días sin seguimiento':diffDaysBog('2025-10-14',today),'OBSERVACION (final)':''},
+    {'SINIESTRO':'498359726','# MATRICULA':'45228101','CEDULA':'96351808','NOMBRE':'PEDRO IGNACIO MARTIN MORENO','FECHA DE ASIGNACION A LA IPS':'2025-04-16','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'NO','AUDITOR':'YANETH OBREGON','CLASIFICACION SEVERIDAD':'AT Caso Moderado','CITA INICIAL':'','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-15','INASISTENCIA FISIATRA':'NO','VALORACION OCUPACIONAL':'2025-10-14','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO','PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'','INASISTENCIA TERAPIA FISICA':'NO','OBSERVACION':'Formal 02/10','Fecha Último Seguimiento':'2025-08-01','Hoy':today,'Días sin seguimiento':diffDaysBog('2025-08-01',today),'OBSERVACION (final)':''}
+  ];
+  return {headers,rows};
 }
 
 /* =========================
-   LOGIN / LOGOUT / INICIO
+   EVENTOS UI
    ========================= */
-async function init(){
-  // Detecta token tras redirect
-  const tok = parseHashToken();
-  if(tok){ STATE.accessToken = tok; window.history.replaceState({}, document.title, window.location.pathname+window.location.search); }
-
-  if(DEMO_MODE){
-    $('#userName').textContent = 'DEMO';
-    $('#loginScreen').style.display='none';
-    $('#mainSystem').style.display='flex';
-    $('#content').classList.add('main-layout');
-    renderAseguradores();
-    await switchSheet('Positiva');
-    return;
-  }
-
-  if(STATE.accessToken){
-    try{
-      showLoading('Conectando con Microsoft Graph...');
-      const me = await graphGET(`/me`);
-      STATE.user = me;
-      $('#userName').textContent = me.displayName || me.userPrincipalName || '(usuario)';
-      $('#loginScreen').style.display='none';
-      $('#mainSystem').style.display='flex';
-      renderAseguradores();
-      await ensureWorkbook();
-      await switchSheet('Positiva');
-    }catch(e){
-      console.error(e);
-      showToast('Error de inicio: '+e.message, 'danger');
-    }finally{ hideLoading(); }
-  }
-}
-
 $('#btnLogin').addEventListener('click', ()=>{
-  if(DEMO_MODE){
-    showToast('Estás en DEMO. Pulsa “Entrar en modo DEMO”.', 'warning'); return;
-  }
-  window.location.href = buildAuthUrl();
+  if(DEMO_MODE){ toast('DEMO activo: usa el botón DEMO.','warning'); return; }
+  location.href = authUrl();
 });
-$('#btnDemo').addEventListener('click', ()=>{
-  DEMO_MODE = true;
-  init();
-});
-$('#btnLogout').addEventListener('click', ()=>{
-  STATE.accessToken=null; window.location.href = CONFIG.redirectUri;
-});
-$('#btnAdd').addEventListener('click', openAdd);
-$('#btnReload').addEventListener('click', ()=> switchSheet(STATE.sheet.name));
+$('#btnDemo').addEventListener('click', ()=>{ DEMO_MODE=true; startApp(); });
+$('#btnLogout').addEventListener('click', ()=>{ STATE.token=null; location.href=CONFIG.redirectUri; });
 
+$('#btnAdd').addEventListener('click', openAdd);
+$('#btnReload').addEventListener('click', ()=> switchSheet(STATE.sheet));
 $('#btnGuardar').addEventListener('click', guardar);
 $('#btnCerrarCaso').addEventListener('click', cerrarCaso);
 
-$('#filtroAuditor').addEventListener('change', (e)=>{
-  STATE.auditorFilter = e.target.value || '';
-  applyFilters(); renderTable(); updateSemaforo(); updateDashboard();
+$('#txtSearch').addEventListener('input', e=>{ STATE.buscar=e.target.value||''; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
+$('#selAuditor').addEventListener('change', e=>{ STATE.auditor=e.target.value||''; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
+$('#fDesde').addEventListener('change', e=>{ STATE.desde=e.target.value||null; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
+$('#fHasta').addEventListener('change', e=>{ STATE.hasta=e.target.value||null; applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts(); });
+$('#btnClear').addEventListener('click', ()=>{
+  $('#txtSearch').value=''; $('#selAuditor').value=''; $('#fDesde').value=''; $('#fHasta').value='';
+  STATE.buscar=''; STATE.auditor=''; STATE.desde=null; STATE.hasta=null; STATE.sem=null;
+  $$('.chip').forEach(c=> c.classList.remove('active'));
+  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
 });
-$('#btnLimpiarFiltros').addEventListener('click', ()=>{
-  $('#filtroAuditor').value=''; $('#filtroDesde').value=''; $('#filtroHasta').value='';
-  STATE.auditorFilter=''; STATE.dateFrom=null; STATE.dateTo=null; STATE.semFilter=null;
-  $$('.circle').forEach(c=> c.classList.remove('active'));
-  applyFilters(); renderTable(); updateSemaforo(); updateDashboard();
+$('#chipVerde').addEventListener('click', ()=> toggleSem('verde'));
+$('#chipNaranja').addEventListener('click', ()=> toggleSem('naranja'));
+$('#chipRojo').addEventListener('click', ()=> toggleSem('rojo'));
+$('#btnVerTodos, #btnVerTodasCitas').addEventListener('click', ()=>{
+  STATE.sem=null; $$('.chip').forEach(c=> c.classList.remove('active'));
+  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
 });
-$('#filtroDesde').addEventListener('change', e=>{ STATE.dateFrom = e.target.value || null; applyFilters(); renderTable(); updateSemaforo(); updateDashboard(); });
-$('#filtroHasta').addEventListener('change', e=>{ STATE.dateTo   = e.target.value || null; applyFilters(); renderTable(); updateSemaforo(); updateDashboard(); });
-
-$('#semVerde').addEventListener('click', ()=>{ toggleSem('verde'); });
-$('#semNaranja').addEventListener('click', ()=>{ toggleSem('naranja'); });
-$('#semRojo').addEventListener('click', ()=>{ toggleSem('rojo'); });
-$('#btnVerTodos').addEventListener('click', ()=>{
-  STATE.semFilter=null; $$('.circle').forEach(c=> c.classList.remove('active'));
-  applyFilters(); renderTable(); updateSemaforo(); updateDashboard();
-});
-function toggleSem(color){
-  if(STATE.semFilter===color){ STATE.semFilter=null; }
-  else STATE.semFilter=color;
-  $$('.circle').forEach(c=> c.classList.toggle('active', c.dataset.filter===STATE.semFilter));
-  applyFilters(); renderTable(); updateSemaforo(); updateDashboard();
+function toggleSem(c){
+  STATE.sem = (STATE.sem===c)? null: c;
+  $$('.chip').forEach(el=> el.classList.toggle('active', el.dataset.sem===STATE.sem));
+  applyFilters(); renderTable(); updateKpis(); updateSemaforoCounts();
 }
 
 /* =========================
-   DEMO DATA
+   INICIO
    ========================= */
-function demoData(sheet){
-  const headers = expectedHeadersForSheet(sheet);
-  const today = toLocalDateStr(new Date());
-  const rows = [
-    {
-      'SINIESTRO':'498349289', '# MATRICULA':'44814341', 'CEDULA':'1014235486', 'NOMBRE':'ANDRES ESTEBAN SANCHEZ SANCHEZ',
-      'FECHA DE ASIGNACION A LA IPS':'2025-03-12','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'SI','AUDITOR':'FABIAN MACIAS','CLASIFICACION SEVERIDAD':'AT Caso Muy Leve',
-      'CITA INICIAL':'2025-10-14','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-31','INASISTENCIA FISIATRA':'NO',
-      'VALORACION OCUPACIONAL':'2025-10-22','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO',
-      'PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'',
-      'INASISTENCIA TERAPIA FISICA':'NO','ALTA INMEDIATA':'','ESTADO DE LA MATRICULA':'','FECHA CIERRE':'','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES':'',
-      'OBSERVACION':'TO Hasta el 15/10/2025 / PENDIENTE FISIATRIA','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS':'','OBSERVACION FACTURACION':'SE FACTURA EL 60% DEL PAQUETE',
-      'Fecha Último Seguimiento':'2025-10-14','Hoy':today,'Días sin seguimiento': diffDaysBogota('2025-10-14', new Date()), 'OBSERVACION (final)':'Seguimiento DEMO'
-    },
-    {
-      'SINIESTRO':'498359726', '# MATRICULA':'45228101', 'CEDULA':'96351808', 'NOMBRE':'PEDRO IGNACIO MARTIN MORENO',
-      'FECHA DE ASIGNACION A LA IPS':'2025-04-16','GENERO':'Masculino','MAYOR A 56 AÑOS SI O NO':'NO','AUDITOR':'FABIAN MACIAS','CLASIFICACION SEVERIDAD':'AT Caso Moderado',
-      'CITA INICIAL':'','JUNTA MEDICA':'NO','INASISTENCIA JUNTA MEDICA':'','FISIATRA':'2025-10-15','INASISTENCIA FISIATRA':'NO',
-      'VALORACION OCUPACIONAL':'2025-10-14','INASISTENCIA VALORACION OCUPACIONAL':'NO','MEDICINA LABORAL':'','INASISTENCIA MEDICINA LABORAL':'NO',
-      'PSICOLOGIA':'','INASISTENCIA PSICOLOGIA':'NO','TERAPIA OCUPACIONAL':'','INASISTENCIA TERAPIA OCUPACIONAL':'NO','TERAPIA FISICA':'',
-      'INASISTENCIA TERAPIA FISICA':'NO','ALTA INMEDIATA':'','ESTADO DE LA MATRICULA':'','FECHA CIERRE':'','NUM AGENDAMIENTOS y CITAS FORMALES INICIALES':'',
-      'OBSERVACION':'cita de fis citacion formal','SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS':'','OBSERVACION FACTURACION':'',
-      'Fecha Último Seguimiento':'2025-08-01','Hoy':today,'Días sin seguimiento': diffDaysBogota('2025-08-01', new Date()), 'OBSERVACION (final)':''
-    }
-  ];
-  return { headers, rows };
+async function startApp(){
+  // Si venimos del redirect, captura token
+  const tok=parseHashToken();
+  if(tok){ STATE.token=tok; history.replaceState({},document.title,location.pathname+location.search); }
+
+  if(DEMO_MODE){
+    $('#userName').textContent='DEMO';
+    $('#login').style.display='none'; $('#app').style.display='flex';
+    await loadSheet('Positiva'); return;
+  }
+
+  if(!STATE.token) return; // esperar a login
+  try{
+    showLoad('Conectando con Microsoft Graph...');
+    const me=await gGET('/me'); STATE.me=me;
+    $('#userName').textContent = me.displayName || me.userPrincipalName || '(usuario)';
+    $('#login').style.display='none'; $('#app').style.display='flex';
+    await ensureWorkbook();
+    await loadSheet('Positiva');
+  }catch(e){ console.error(e); toast('Error de inicio: '+e.message,'danger'); }
+  finally{ hideLoad(); }
 }
 
-/* =========================
-   UI BOOTSTRAP
-   ========================= */
 document.addEventListener('DOMContentLoaded', ()=>{
-  renderAseguradores();
-  init();
+  // Mostrar botones de hojas
+  renderSheets();
+  startApp();
 });
-
 </script>
 </body>
 </html>
