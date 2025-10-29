@@ -171,7 +171,58 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- NUEVAS TABLAS -->
+                <div class="row g-2 mt-2">
+                    <div class="col-md-6">
+                        <div style="background:white; border-radius:10px; padding:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <h6 style="font-size:0.85rem; font-weight:600; color:#2c3e50; margin-bottom:0.5rem;">
+                                <i class="bi bi-person-badge"></i> Pacientes por Auditor
+                            </h6>
+                            <div style="max-height:200px; overflow-y:auto;">
+                                <table style="width:100%; font-size:0.8rem;" id="tabla-auditores">
+                                    <thead style="position:sticky; top:0; background:#f8f9fa;">
+                                        <tr>
+                                            <th style="padding:0.5rem; text-align:left; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Auditor</th>
+                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Cantidad</th>
+                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-auditores">
+                                        <tr><td colspan="3" style="text-align:center; color:#999; padding:1rem;">Sin datos</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="background:white; border-radius:10px; padding:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <h6 style="font-size:0.85rem; font-weight:600; color:#2c3e50; margin-bottom:0.5rem;">
+                                <i class="bi bi-clipboard-data"></i> Clasificación de Severidad
+                            </h6>
+                            <div style="max-height:200px; overflow-y:auto;">
+                                <table style="width:100%; font-size:0.8rem;" id="tabla-severidad">
+                                    <thead style="position:sticky; top:0; background:#f8f9fa;">
+                                        <tr>
+                                            <th style="padding:0.5rem; text-align:left; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Clasificación</th>
+                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Cantidad</th>
+                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-severidad">
+                                        <tr><td colspan="3" style="text-align:center; color:#999; padding:1rem;">Sin datos</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Botón para mostrar Dashboard -->
+            <button id="btnMostrarDashboard" onclick="toggleDashboard()" style="display:none; position:fixed; top:10px; right:10px; z-index:999; background:linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%); color:white; border:none; padding:0.6rem 1.2rem; border-radius:25px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2); font-weight:600; font-size:0.85rem;">
+                <i class="bi bi-graph-up-arrow"></i> Estadísticas
+            </button>
 
             <!-- Semáforo de Seguimiento + Filtros -->
             <div style="display:grid; grid-template-columns: 2.5fr 1.5fr 1fr; gap:0.5rem; margin-bottom:0.75rem;">
@@ -363,7 +414,22 @@
                 <div class="modal-body">
                     <form id="formEditarUsuario">
                         <input type="hidden" id="editRowIndex">
-                        <div id="camposEdicion"></div>
+                        
+                        <!-- Sección: Información del Paciente -->
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-person-badge"></i> Información del Paciente
+                            </h6>
+                            <div id="seccionPaciente" class="row g-2"></div>
+                        </div>
+                        
+                        <!-- Sección: Seguimiento y Estado -->
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-clipboard-check"></i> Seguimiento y Estado
+                            </h6>
+                            <div id="seccionSeguimiento" class="row g-2"></div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1312,40 +1378,162 @@
         // MODAL EDITAR
         // ====================================
         function abrirModalEditar(rowIndex) {
-            const registro = STATE.rows[rowIndex];
-            if (!registro) return;
-            
-            document.getElementById('editRowIndex').value = rowIndex;
-            const container = document.getElementById('camposEdicion');
-            container.innerHTML = '';
-            
-            STATE.headers.forEach(header => {
-                if (header === 'Hoy' || header === 'Días sin seguimiento') return;
-                
-                const div = document.createElement('div');
-                div.className = 'mb-2';
-                
-                let inputHTML = '';
-                const valor = registro[header] || '';
-                
-                if (header.includes('FECHA') || header.includes('Fecha')) {
-                    inputHTML = `<input type="date" class="form-control form-control-sm" name="${header}" value="${valor}">`;
-                } else if (header.includes('OBSERVACION')) {
-                    inputHTML = `<textarea class="form-control form-control-sm" name="${header}" rows="2">${valor}</textarea>`;
-                } else {
-                    inputHTML = `<input type="text" class="form-control form-control-sm" name="${header}" value="${valor}">`;
-                }
-                
-                div.innerHTML = `
-                    <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">${header}</label>
-                    ${inputHTML}
-                `;
-                container.appendChild(div);
-            });
-            
-            const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
-            modal.show();
+    const usuario = usuarios[rowIndex];
+    document.getElementById('editRowIndex').value = rowIndex;
+    
+    // ===== SECCIÓN 1: INFORMACIÓN DEL PACIENTE =====
+    const camposPaciente = [
+        'nombre', 'documento', 'municipio', 'tipo_ingreso',
+        'institucion_remitente', 'fecha_ingreso', 'eps', 'regimen',
+        'etnia', 'escolaridad', 'ocupacion', 'estado_civil',
+        'religion', 'genero', 'orientacion_sexual', 'edad',
+        'estrato', 'tiene_hijos', 'embarazo', 'gestacion_semanas',
+        'lactancia', 'telefono', 'correo'
+    ];
+    
+    // ===== SECCIÓN 2: SEGUIMIENTO Y ESTADO =====
+    const camposSeguimiento = [
+        'estado', 'fase_cambio', 'sustancia_principal', 'policonsumo',
+        'diagnostico_dual', 'fecha_ingreso_fase', 'dias_fase',
+        'fecha_egreso', 'tipo_egreso', 'profesional_asignado',
+        'historico_fases', 'observaciones_seguimiento'
+    ];
+    
+    // Renderizar Sección 1: Información del Paciente
+    const seccionPaciente = document.getElementById('seccionPaciente');
+    seccionPaciente.innerHTML = camposPaciente.map(campo => {
+        const col = columnas.find(c => c.field === campo);
+        if (!col) return '';
+        
+        const valor = usuario[campo] || '';
+        const id = `edit_${campo}`;
+        const placeholder = col.title;
+        
+        // Campos específicos
+        if (campo === 'observaciones_seguimiento') {
+            return `
+                <div class="col-12">
+                    <label class="form-label">${col.title}</label>
+                    <textarea class="form-control form-control-sm" id="${id}" rows="3" placeholder="${placeholder}">${valor}</textarea>
+                </div>
+            `;
         }
+        
+        if (campo === 'historico_fases') {
+            return `
+                <div class="col-12">
+                    <label class="form-label">${col.title}</label>
+                    <textarea class="form-control form-control-sm" id="${id}" rows="2" placeholder="${placeholder}" readonly>${valor}</textarea>
+                </div>
+            `;
+        }
+        
+        if (col.type === 'select' && col.options) {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <select class="form-select form-select-sm" id="${id}">
+                        <option value="">Seleccionar...</option>
+                        ${col.options.map(opt => `<option value="${opt}" ${valor === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+        }
+        
+        if (col.type === 'date') {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <input type="date" class="form-control form-control-sm" id="${id}" value="${valor}">
+                </div>
+            `;
+        }
+        
+        if (col.type === 'number') {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <input type="number" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="col-md-6">
+                <label class="form-label">${col.title}</label>
+                <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
+            </div>
+        `;
+    }).join('');
+    
+    // Renderizar Sección 2: Seguimiento y Estado
+    const seccionSeguimiento = document.getElementById('seccionSeguimiento');
+    seccionSeguimiento.innerHTML = camposSeguimiento.map(campo => {
+        const col = columnas.find(c => c.field === campo);
+        if (!col) return '';
+        
+        const valor = usuario[campo] || '';
+        const id = `edit_${campo}`;
+        const placeholder = col.title;
+        
+        if (campo === 'observaciones_seguimiento') {
+            return `
+                <div class="col-12">
+                    <label class="form-label">${col.title}</label>
+                    <textarea class="form-control form-control-sm" id="${id}" rows="3" placeholder="${placeholder}">${valor}</textarea>
+                </div>
+            `;
+        }
+        
+        if (campo === 'historico_fases') {
+            return `
+                <div class="col-12">
+                    <label class="form-label">${col.title}</label>
+                    <textarea class="form-control form-control-sm" id="${id}" rows="2" placeholder="${placeholder}" readonly>${valor}</textarea>
+                </div>
+            `;
+        }
+        
+        if (col.type === 'select' && col.options) {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <select class="form-select form-select-sm" id="${id}">
+                        <option value="">Seleccionar...</option>
+                        ${col.options.map(opt => `<option value="${opt}" ${valor === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+        }
+        
+        if (col.type === 'date') {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <input type="date" class="form-control form-control-sm" id="${id}" value="${valor}">
+                </div>
+            `;
+        }
+        
+        if (col.type === 'number') {
+            return `
+                <div class="col-md-6">
+                    <label class="form-label">${col.title}</label>
+                    <input type="number" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="col-md-6">
+                <label class="form-label">${col.title}</label>
+                <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
+            </div>
+        `;
+    }).join('');
+    
+    new bootstrap.Modal(document.getElementById('modalEditarUsuario')).show();
+}
 
         // ====================================
         // EVENTOS DE BOTONES
