@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión ARL - Rangel | Sistema COMPLETO ✅</title>
+    <title>Gestión ARL - Rangel | Microsoft Excel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100vh; overflow: hidden; }
         
-        /* LOGIN SCREEN */
+        /* LOGIN */
         .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
         .login-card { background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 30px; max-width: 500px; text-align: center; }
         .login-logo { width: 80px; height: 80px; background: #667eea; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; margin: 0 auto 20px; }
@@ -24,19 +24,16 @@
         /* SIDEBAR */
         #sidebar { width: 180px; background: #001f3f; color: white; padding: 0.5rem; padding-top: 2.5rem; overflow-y: auto; position: fixed; left: 0; top: 0; height: 100vh; z-index: 100; transition: left 0.3s ease; }
         #sidebar.collapsed { left: -180px; }
-        #btnToggleSidebar { position: absolute; right: 5px; top: 5px; z-index: 1000; background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 0.3rem 0.5rem; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; }
-        #btnToggleSidebar:hover { background: rgba(255,255,255,0.25); }
-        #btnToggleSidebarFixed { display: none; position: fixed; left: 5px; top: 10px; z-index: 1001; background: #001f3f; color: white; border: 2px solid white; border-radius: 8px; padding: 0.4rem 0.5rem; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.3); font-size: 1rem; }
         #sidebar h5 { color: #c0c0c0; margin-bottom: 0.4rem; text-align: center; font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0; line-height: 1.2; }
         #sidebar ul { list-style: none; padding: 0; margin: 0; }
-        #sidebar li { padding: 0.4rem 0.5rem; cursor: pointer; border-radius: 4px; margin-bottom: 2px; position: relative; font-size: 0.8rem; transition: all 0.2s ease; }
+        #sidebar li { padding: 0.4rem 0.5rem; cursor: pointer; border-radius: 4px; margin-bottom: 2px; font-size: 0.8rem; transition: all 0.2s ease; }
         #sidebar li:hover, #sidebar li.active { background: #c0c0c0; color: #001f3f; font-weight: bold; }
         
         /* CONTENIDO */
         #content { margin-left: 180px; padding: 1rem; overflow: auto; display: flex; flex-direction: column; height: 100vh; transition: margin-left 0.3s ease; }
         #content.expanded { margin-left: 0; }
         
-        /* SEMÁFOROS */
+        /* SEMAFOROS */
         .semaforo-container { background: white; padding: 0.5rem 0.75rem; border-radius: 0.25rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 0.5rem; flex-shrink: 0; }
         .semaforo { display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; flex-shrink: 0; }
         .indicador { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 20px; background: #f9f9f9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.2s ease; font-size: 0.85rem; }
@@ -77,151 +74,17 @@
         
         .filter-panel { margin-bottom: 0.75rem; background: white; padding: 0.75rem; border-radius: 0.25rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         
-        /* MODALES */
-        #modalEditarUsuario .modal-body { padding: 0.75rem 1rem; max-height: 70vh; overflow-y: auto; }
-        #modalEditarUsuario .form-label { font-size: 0.7rem; margin-bottom: 0.15rem; font-weight: 600; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.3px; }
-        #modalEditarUsuario .form-control, #modalEditarUsuario .form-select, #modalEditarUsuario textarea { font-size: 0.75rem; padding: 0.25rem 0.4rem; height: 28px; border-radius: 4px; border: 1px solid #cbd5e0; }
-        #modalEditarUsuario textarea { height: 50px !important; resize: vertical; min-height: 50px; }
-        .seccion-form { background: white; padding: 0.65rem; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 0.6rem; }
-        .seccion-titulo { color: #001f3f; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #007bff; }
+        /* MODAL */
+        .seccion-form { background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+        .seccion-titulo { color: #001f3f; font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #001f3f; display: flex; align-items: center; gap: 8px; }
+        .seccion-form .form-label { font-weight: 500; color: #495057; margin-bottom: 5px; font-size: 0.9rem; }
+        .seccion-form .form-control, .seccion-form .form-select { border-radius: 6px; border: 1px solid #ced4da; transition: all 0.3s ease; font-size: 0.875rem; padding: 0.375rem 0.75rem; }
+        .seccion-form .form-control:focus, .seccion-form .form-select:focus { border-color: #001f3f; box-shadow: 0 0 0 0.2rem rgba(0, 31, 63, 0.15); }
+        .modal-footer { background-color: #f8f9fa; border-top: 2px solid #dee2e6; padding: 1rem; display: flex; gap: 10px; justify-content: flex-end; align-items: center; }
         
-        /* BOTONES ESPECIALES SIDEBAR */
         .btn-evento { background: #17a2b8; color: white; font-size: 0.7rem; padding: 0.35rem 0.4rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: all 0.2s ease; }
         .btn-evento:hover { background: #138496; transform: scale(1.02); }
-        
         .auditor-select { width: 100%; font-size: 0.75rem; padding: 0.3rem; border-radius: 4px; background: white; color: #001f3f; border: 1px solid #c0c0c0; margin-top: 0.5rem; }
-        /* ========================================
-   ESTILOS PARA MODAL EDITAR USUARIO
-======================================== */
-
-.seccion-form {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-}
-
-.seccion-titulo {
-    color: #001f3f;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #001f3f;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.seccion-titulo i {
-    font-size: 1.2rem;
-}
-
-.seccion-form .form-label {
-    font-weight: 500;
-    color: #495057;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.seccion-form .form-control,
-.seccion-form .form-select {
-    border-radius: 6px;
-    border: 1px solid #ced4da;
-    transition: all 0.3s ease;
-}
-
-.seccion-form .form-control:focus,
-.seccion-form .form-select:focus {
-    border-color: #001f3f;
-    box-shadow: 0 0 0 0.2rem rgba(0, 31, 63, 0.15);
-}
-
-.seccion-form .form-control-sm {
-    font-size: 0.875rem;
-    padding: 0.375rem 0.75rem;
-}
-
-.seccion-form textarea.form-control {
-    resize: vertical;
-    min-height: 80px;
-}
-
-/* Estilos para campos readonly */
-.seccion-form .form-control[readonly] {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* Espaciado entre columnas */
-.seccion-form .row.g-2 {
-    margin-left: -0.25rem;
-    margin-right: -0.25rem;
-}
-
-.seccion-form .row.g-2 > * {
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-}
-
-/* Modal footer personalizado */
-.modal-footer {
-    background-color: #f8f9fa;
-    border-top: 2px solid #dee2e6;
-    padding: 1rem;
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.modal-footer .form-select {
-    flex: 0 0 auto;
-}
-
-.modal-footer .btn {
-    min-width: 100px;
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-    .seccion-form {
-        padding: 15px;
-    }
-    
-    .seccion-titulo {
-        font-size: 1rem;
-    }
-    
-    .modal-footer {
-        flex-direction: column;
-    }
-    
-    .modal-footer .form-select,
-    .modal-footer .btn {
-        width: 100%;
-    }
-}
-
-/* Animación suave al abrir modal */
-.modal.fade .modal-dialog {
-    transition: transform 0.3s ease-out;
-}
-
-/* Mejora visual para el header del modal */
-.modal-header {
-    border-bottom: none;
-    padding: 1.25rem;
-}
-
-.modal-header .modal-title {
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
     </style>
 </head>
 <body>
@@ -230,10 +93,10 @@
         <div class="login-card">
             <div class="login-logo">🏥</div>
             <h1>Gestión ARL - Rangel</h1>
-            <p class="subtitle">Sistema Integrado Completo ✅</p>
+            <p class="subtitle">Sistema Microsoft Excel Online</p>
             <div style="background: #d1ecf1; border: 2px solid #17a2b8; padding: 20px; border-radius: 8px; margin: 20px 0;">
                 <h3 style="color: #0c5460; margin-bottom: 10px;">✅ Sistema Listo</h3>
-                <p style="margin-bottom: 10px;">Todas las funcionalidades implementadas</p>
+                <p style="margin-bottom: 10px;">Conectado con Microsoft Graph API</p>
             </div>
             <button class="btn-login" onclick="iniciarSesion()">
                 🔐 Iniciar Sesión con Microsoft
@@ -245,9 +108,6 @@
     <div class="main-system" id="mainSystem">
         <!-- SIDEBAR -->
         <nav id="sidebar">
-            <button id="btnToggleSidebar" onclick="toggleSidebar()" title="Ocultar menú">
-                <i class="bi bi-chevron-left"></i>
-            </button>
             <h5>Seguimiento ARL - Rangel</h5>
             <ul id="aseguradoresList"></ul>
             <div class="mt-2 text-center">
@@ -261,10 +121,6 @@
                 </button>
             </div>
         </nav>
-
-        <button id="btnToggleSidebarFixed" onclick="toggleSidebar()" title="Mostrar menú">
-            <i class="bi bi-chevron-right"></i>
-        </button>
 
         <!-- CONTENIDO PRINCIPAL -->
         <main id="content">
@@ -303,182 +159,26 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- NUEVAS TABLAS -->
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div style="background:white; border-radius:10px; padding:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                            <h6 style="font-size:0.85rem; font-weight:600; color:#2c3e50; margin-bottom:0.5rem;">
-                                <i class="bi bi-person-badge"></i> Pacientes por Auditor
-                            </h6>
-                            <div style="max-height:200px; overflow-y:auto;">
-                                <table style="width:100%; font-size:0.8rem;" id="tabla-auditores">
-                                    <thead style="position:sticky; top:0; background:#f8f9fa;">
-                                        <tr>
-                                            <th style="padding:0.5rem; text-align:left; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Auditor</th>
-                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Cantidad</th>
-                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody-auditores">
-                                        <tr><td colspan="3" style="text-align:center; color:#999; padding:1rem;">Sin datos</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="background:white; border-radius:10px; padding:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                            <h6 style="font-size:0.85rem; font-weight:600; color:#2c3e50; margin-bottom:0.5rem;">
-                                <i class="bi bi-clipboard-data"></i> Clasificación de Severidad
-                            </h6>
-                            <div style="max-height:200px; overflow-y:auto;">
-                                <table style="width:100%; font-size:0.8rem;" id="tabla-severidad">
-                                    <thead style="position:sticky; top:0; background:#f8f9fa;">
-                                        <tr>
-                                            <th style="padding:0.5rem; text-align:left; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Clasificación</th>
-                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">Cantidad</th>
-                                            <th style="padding:0.5rem; text-align:center; font-weight:600; color:#495057; border-bottom:2px solid #dee2e6;">%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody-severidad">
-                                        <tr><td colspan="3" style="text-align:center; color:#999; padding:1rem;">Sin datos</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Botón para mostrar Dashboard -->
-            <button id="btnMostrarDashboard" onclick="toggleDashboard()" style="display:none; position:fixed; top:10px; right:10px; z-index:999; background:linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%); color:white; border:none; padding:0.6rem 1.2rem; border-radius:25px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2); font-weight:600; font-size:0.85rem;">
-                <i class="bi bi-graph-up-arrow"></i> Estadísticas
-            </button>
-
-            <!-- Semáforo de Seguimiento + Filtros -->
-            <div style="display:grid; grid-template-columns: 2.5fr 1.5fr 1fr; gap:0.5rem; margin-bottom:0.75rem;">
-                <div class="semaforo-container">
-                    <h6 style="font-size:0.75rem; font-weight:500; color:#001f3f; margin-bottom:0.3rem;">📅 Seguimiento de Pacientes</h6>
-                    <div class="semaforo">
-                        <div class="indicador" onclick="filtrarPorSemaforo('verde')">
-                            <div class="bolita verde"></div>
-                            <span id="conteo-verde">0</span> (0–5 días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('naranja')">
-                            <div class="bolita naranja"></div>
-                            <span id="conteo-naranja">0</span> (6–12 días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('rojo')">
-                            <div class="bolita rojo"></div>
-                            <span id="conteo-rojo">0</span> (13+ días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('todos')">
-                            🔄 Ver todos
-                        </div>
+            <!-- Semáforo de Seguimiento -->
+            <div class="semaforo-container">
+                <h6 style="font-size:0.75rem; font-weight:500; color:#001f3f; margin-bottom:0.3rem;">📅 Seguimiento de Pacientes</h6>
+                <div class="semaforo">
+                    <div class="indicador" onclick="filtrarPorSemaforo('verde')">
+                        <div class="bolita verde"></div>
+                        <span id="conteo-verde">0</span> (0–5 días)
                     </div>
-                </div>
-                
-                <div class="filter-panel">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem;">
-                        <i class="bi bi-calendar-event"></i> Filtro por Fecha
-                    </h6>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.3rem;">
-                        <input type="date" id="fechaDesde" class="form-control form-control-sm" placeholder="Desde">
-                        <input type="date" id="fechaHasta" class="form-control form-control-sm" placeholder="Hasta">
+                    <div class="indicador" onclick="filtrarPorSemaforo('naranja')">
+                        <div class="bolita naranja"></div>
+                        <span id="conteo-naranja">0</span> (6–12 días)
                     </div>
-                </div>
-                
-                <div class="filter-panel">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem;">
-                        <i class="bi bi-search"></i> Búsqueda
-                    </h6>
-                    <input type="text" id="searchFree" class="form-control form-control-sm" placeholder="Buscar...">
-                    <button class="btn btn-dark btn-sm w-100 mt-1" onclick="aplicarFiltros()">
-                        <i class="bi bi-search"></i> Buscar
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm w-100 mt-1" onclick="limpiarFiltros()">
-                        <i class="bi bi-x-circle"></i> Limpiar
-                    </button>
-                </div>
-            </div>
-
-            <!-- Semáforo de Citas -->
-            <div id="semaforoCitas" class="semaforo-container" style="display:none;">
-                <h6 style="font-size:0.75rem; font-weight:600; color:#001f3f; margin-bottom:0.5rem;">🏥 Control de Citas Médicas</h6>
-                
-                <div style="background:#f8f9fa; padding:0.5rem; border-radius:8px; margin-bottom:0.5rem;">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#2e7d32; margin-bottom:0.3rem;">
-                        <i class="bi bi-calendar-check"></i> Citas Pendientes
-                    </h6>
-                    <div class="semaforo">
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('FISIATRA')" style="background:#e3f2fd; border:1px solid #1976d2; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#1976d2;">🩺 Fisiatra:</span>
-                            <span id="conteo-fisiatra" style="font-weight:bold; color:#1976d2;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('JUNTA MEDICA')" style="background:#f3e5f5; border:1px solid #7b1fa2; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#7b1fa2;">👥 Junta:</span>
-                            <span id="conteo-junta" style="font-weight:bold; color:#7b1fa2;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('VALORACION OCUPACIONAL')" style="background:#fff3e0; border:1px solid #e65100; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#e65100;">💼 Valoración:</span>
-                            <span id="conteo-valoracion" style="font-weight:bold; color:#e65100;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('MEDICINA LABORAL')" style="background:#e8f5e9; border:1px solid #2e7d32; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#2e7d32;">⚕️ Med. Lab.:</span>
-                            <span id="conteo-medicina-laboral" style="font-weight:bold; color:#2e7d32;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('PSICOLOGIA')" style="background:#fce4ec; border:1px solid #c2185b; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c2185b;">🧠 Psicología:</span>
-                            <span id="conteo-psicologia" style="font-weight:bold; color:#c2185b;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA OCUPACIONAL')" style="background:#e0f2f1; border:1px solid #00695c; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#00695c;">🛠️ T. Ocup.:</span>
-                            <span id="conteo-terapia-ocupacional" style="font-weight:bold; color:#00695c;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA FISICA')" style="background:#fff9c4; border:1px solid #f57f17; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#f57f17;">🏃 T. Física:</span>
-                            <span id="conteo-terapia-fisica" style="font-weight:bold; color:#f57f17;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('todos')" style="background:#eceff1; border:2px solid #546e7a; padding:0.3rem 0.8rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#546e7a;">🔄 Ver todos</span>
-                        </div>
+                    <div class="indicador" onclick="filtrarPorSemaforo('rojo')">
+                        <div class="bolita rojo"></div>
+                        <span id="conteo-rojo">0</span> (13+ días)
                     </div>
-                </div>
-                
-                <div style="background:#fff5f5; padding:0.5rem; border-radius:8px; border-left:4px solid #d9534f;">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#d9534f; margin-bottom:0.3rem;">
-                        <i class="bi bi-x-circle-fill"></i> Inasistencias
-                    </h6>
-                    <div class="semaforo">
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('FISIATRA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">🩺:</span>
-                            <span id="inasistencia-fisiatra" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('JUNTA MEDICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">👥:</span>
-                            <span id="inasistencia-junta" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('VALORACION OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">💼:</span>
-                            <span id="inasistencia-valoracion" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('MEDICINA LABORAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">⚕️:</span>
-                            <span id="inasistencia-medicina-laboral" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('PSICOLOGIA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">🧠:</span>
-                            <span id="inasistencia-psicologia" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">🛠️:</span>
-                            <span id="inasistencia-terapia-ocupacional" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA FISICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;">
-                            <span style="font-weight:600; color:#c62828;">🏃:</span>
-                            <span id="inasistencia-terapia-fisica" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
+                    <div class="indicador" onclick="filtrarPorSemaforo('todos')">
+                        🔄 Ver todos
                     </div>
                 </div>
             </div>
@@ -491,48 +191,6 @@
                 </table>
             </div>
         </main>
-    </div>
-    <!-- Modal Agregar Usuario -->
-    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">➕ Agregar Usuario</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAgregarUsuario">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Asegurador</label>
-                                <select class="form-select" name="hoja" required>
-                                    <option value="">-- Seleccione --</option>
-                                    <option value="Positiva">Positiva</option>
-                                    <option value="Colmena">Colmena</option>
-                                    <option value="Colsanitas">Colsanitas</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Paciente por Evento</label>
-                                <div class="form-check" style="padding-top:0.4rem;">
-                                    <input class="form-check-input" type="checkbox" name="PACIENTE_EVENTO" id="checkPacienteEvento">
-                                    <label class="form-check-label">Sí, es paciente por evento</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4"><label>SINIESTRO</label><input class="form-control" name="SINIESTRO"></div>
-                            <div class="col-md-4"><label># MATRICULA</label><input class="form-control" name="# MATRICULA"></div>
-                            <div class="col-md-4"><label>CEDULA</label><input class="form-control" name="CEDULA"></div>
-                            <div class="col-md-4"><label>NOMBRE</label><input class="form-control" name="NOMBRE"></div>
-                            <div class="col-md-4"><label>Fecha Último Seguimiento</label><input type="date" class="form-control" name="Fecha Último Seguimiento"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="btnGuardarUsuario">Guardar</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Modal Editar Usuario -->
@@ -590,7 +248,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ====================================
+// ====================================
         // CONFIGURACIÓN
         // ====================================
         const CONFIG = {
@@ -679,6 +337,7 @@
             try {
                 let archivosEncontrados = [];
                 
+                // Buscar en raíz
                 try {
                     const rootUrl = `https://graph.microsoft.com/v1.0/me/drive/root/children`;
                     const rootResponse = await fetch(rootUrl, {
@@ -690,6 +349,7 @@
                     }
                 } catch (e) {}
                 
+                // Buscar en Documentos
                 try {
                     const docsUrl = `https://graph.microsoft.com/v1.0/me/drive/special/documents/children`;
                     const docsResponse = await fetch(docsUrl, {
@@ -701,6 +361,7 @@
                     }
                 } catch (e) {}
                 
+                // Eliminar duplicados
                 const archivosUnicos = [];
                 const idsVistos = new Set();
                 archivosEncontrados.forEach(archivo => {
@@ -710,6 +371,7 @@
                     }
                 });
                 
+                // Filtrar por nombre ARL o Rangel
                 const archivosARL = archivosUnicos.filter(file => {
                     const nombre = file.name.toLowerCase();
                     return (nombre.includes('arl') || nombre.includes('seguimiento')) && 
@@ -730,21 +392,8 @@
         }
 
         // ====================================
-        // FUNCIÓN: PACIENTES POR EVENTO
+        // MANEJO DE HOJAS
         // ====================================
-        async function verPacientesEvento() {
-            const nombreHoja = 'Positiva Evento';
-            showLoading(`Cargando ${nombreHoja}...`);
-            
-            try {
-                await cargarDatosHoja(nombreHoja);
-                showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
-            } catch (error) {
-                hideLoading();
-                showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
-            }
-        }
-
         function cargarAseguradores() {
             const aseguradores = ['Positiva', 'Colmena', 'Colsanitas'];
             const list = document.getElementById('aseguradoresList');
@@ -755,33 +404,6 @@
                 li.textContent = asegurador;
                 li.onclick = () => seleccionarHoja(asegurador, li);
                 list.appendChild(li);
-                
-                // AGREGAR BOTONES ESPECIALES PARA POSITIVA
-                if (asegurador === 'Positiva') {
-                    // Botón: Pacientes por Evento
-                    const btnEvento = document.createElement('button');
-                    btnEvento.className = 'btn-evento';
-                    btnEvento.innerHTML = '📋 Pacientes por Evento';
-                    btnEvento.onclick = (e) => {
-                        e.stopPropagation();
-                        verPacientesEvento();
-                    };
-                    li.appendChild(btnEvento);
-                    // Botón: Volver a Positiva Normal
-                    const btnVolver = document.createElement('button');
-                    btnVolver.className = 'btn-evento';
-                    btnVolver.style.background = '#6c757d';
-                    btnVolver.style.display = 'none';
-                    btnVolver.id = 'btnVolverPositiva';
-                    btnVolver.innerHTML = '↩️ Volver a Positiva';
-                    btnVolver.onclick = (e) => {
-                        e.stopPropagation();
-                        seleccionarHoja('Positiva', li);
-                        btnVolver.style.display = 'none';
-                        btnEvento.style.display = 'block';
-                    };
-                    li.appendChild(btnVolver);
-                }
                 
                 // FILTRO POR AUDITOR
                 const selectAuditor = document.createElement('select');
@@ -801,28 +423,10 @@
             }
         }
 
-        // ====================================
-        // MANEJO DE HOJAS
-        // ====================================
         async function seleccionarHoja(nombreHoja, liElement) {
             STATE.hoja = nombreHoja;
             [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
             liElement.classList.add('active');
-            
-            // Mostrar/ocultar botón "Volver a Positiva"
-            const btnVolver = document.getElementById('btnVolverPositiva');
-            if (btnVolver) {
-                if (nombreHoja === 'Positiva Evento') {
-                    btnVolver.style.display = 'block';
-                    const btnEvento = liElement.querySelector('.btn-evento');
-                    if (btnEvento && btnEvento.textContent.includes('Evento')) {
-                        btnEvento.style.display = 'none';
-                    }
-                } else {
-                    btnVolver.style.display = 'none';
-                }
-            }
-            
             await cargarDatosHoja(nombreHoja);
         }
 
@@ -872,17 +476,9 @@
 
                 renderTable();
                 actualizarSemaforo();
-                actualizarSemaforoCitas();
                 calcularEstadisticasDashboard();
                 hideLoading();
                 showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
-                
-                const semaforoCitas = document.getElementById('semaforoCitas');
-                if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas' || nombreHoja === 'Positiva Evento') {
-                    semaforoCitas.style.display = 'block';
-                } else {
-                    semaforoCitas.style.display = 'none';
-                }
                 
             } catch (error) {
                 hideLoading();
@@ -891,9 +487,6 @@
             }
         }
 
-        // ====================================
-        // FILTRO POR AUDITOR
-        // ====================================
         function cargarAuditoresEnSelect(nombreHoja) {
             const select = document.getElementById(`auditorSelect-${nombreHoja}`);
             if (!select) return;
@@ -911,15 +504,12 @@
                 opt.textContent = a;
                 select.appendChild(opt);
             });
-            
-            console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
         }
 
         function filtrarPorAuditor(auditor) {
             STATE.auditorSeleccionado = auditor.trim().toLowerCase();
             renderTable();
             actualizarSemaforo();
-            actualizarSemaforoCitas();
             calcularEstadisticasDashboard();
             
             if (auditor) {
@@ -928,101 +518,333 @@
                 showMessage('info', '🔄 Filtro de auditor removido');
             }
         }
+        // ====================================
+        // RENDERIZADO DE TABLA
+        // ====================================
+        function aplicarFiltrosAFila(r) {
+            let mostrar = true;
+            
+            // Filtro por Auditor
+            if (STATE.auditorSeleccionado) {
+                const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
+                if (!auditorRow.includes(STATE.auditorSeleccionado)) {
+                    mostrar = false;
+                }
+            }
+            
+            // Otros filtros
+            Object.keys(STATE.filtros).forEach(k => {
+                if (k === '__semaforo__') return;
+                const f = STATE.filtros[k] || '';
+                if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
+            });
+            
+            // Filtro por semáforo
+            if (STATE.filtros['__semaforo__']) {
+                const dias = obtenerDiasDeFila(r);
+                if (isNaN(dias)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
+                if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
+            }
+            
+            return mostrar;
+        }
+
+        function renderTable() {
+            const th = document.getElementById('tablaHead');
+            th.innerHTML = '';
+            const trHead = document.createElement('tr');
+            
+            const thAcciones = document.createElement('th');
+            thAcciones.textContent = 'Acciones';
+            thAcciones.style.width = '80px';
+            trHead.appendChild(thAcciones);
+            
+            STATE.headers.forEach(h => {
+                const thEl = document.createElement('th');
+                thEl.textContent = h;
+                trHead.appendChild(thEl);
+            });
+            th.appendChild(trHead);
+            
+            const tb = document.getElementById('tablaBody');
+            tb.innerHTML = '';
+            
+            if (STATE.rows.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = STATE.headers.length + 1;
+                td.style.cssText = 'text-align:center; padding:40px; color:#999;';
+                td.innerHTML = '📭 No hay datos para mostrar';
+                tr.appendChild(td);
+                tb.appendChild(tr);
+                return;
+            }
+            
+            STATE.rows.forEach((r, idx) => {
+                let mostrar = aplicarFiltrosAFila(r);
+                if (!mostrar) return;
+                
+                const tr = document.createElement('tr');
+                const tdAcciones = document.createElement('td');
+                tdAcciones.style.textAlign = 'center';
+                const btnEdit = document.createElement('button');
+                btnEdit.className = 'btn-edit-row';
+                btnEdit.innerHTML = '✏️';
+                btnEdit.onclick = () => abrirModalEditar(idx);
+                tdAcciones.appendChild(btnEdit);
+                tr.appendChild(tdAcciones);
+                
+                STATE.headers.forEach(h => {
+                    const td = document.createElement('td');
+                    td.textContent = r[h] || '';
+                    tr.appendChild(td);
+                });
+                tb.appendChild(tr);
+            });
+        }
 
         // ====================================
-        // AGREGAR USUARIOS (ESCRITURA REAL)
+        // FILTROS Y SEMÁFOROS
         // ====================================
-        async function agregarUsuarioExcel(nombreHoja, datos) {
-            showLoading('Guardando usuario en Excel...');
+        function filtrarPorSemaforo(color) {
+            if (color === 'todos') {
+                delete STATE.filtros['__semaforo__'];
+            } else {
+                STATE.filtros['__semaforo__'] = color;
+            }
+            renderTable();
+        }
+
+        function obtenerDiasDeFila(r) {
+            const clave = 'Días sin seguimiento';
+            if (r[clave]) {
+                const m = String(r[clave]).replace(/\s/g, '').match(/-?\d+/);
+                if (m) return parseInt(m[0], 10);
+            }
+            return NaN;
+        }
+
+        function actualizarSemaforo() {
+            let verde = 0, naranja = 0, rojo = 0;
+            STATE.rows.forEach(r => {
+                let mostrar = aplicarFiltrosAFila(r);
+                if (!mostrar) return;
+                const dias = obtenerDiasDeFila(r);
+                if (isNaN(dias)) return;
+                if (dias <= 5) verde++;
+                else if (dias <= 12) naranja++;
+                else rojo++;
+            });
+            document.getElementById('conteo-verde').innerText = verde;
+            document.getElementById('conteo-naranja').innerText = naranja;
+            document.getElementById('conteo-rojo').innerText = rojo;
+        }
+
+        // ====================================
+        // DASHBOARD
+        // ====================================
+        function calcularEstadisticasDashboard() {
+            document.getElementById('dashboardPanel').style.display = 'block';
+            document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
             
-            try {
-                const esPacienteEvento = datos['PACIENTE_EVENTO'] === 'SI';
-                let nombreHojaDestino = nombreHoja;
-                
-                if (esPacienteEvento && nombreHoja === 'Positiva') {
-                    nombreHojaDestino = 'Positiva Evento';
-                }
-                
-                const worksheetsUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets`;
-                const worksheetsResponse = await fetch(worksheetsUrl, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const worksheetsData = await worksheetsResponse.json();
-                
-                const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHojaDestino.toLowerCase());
-                if (!hojaExacta) throw new Error(`Hoja "${nombreHojaDestino}" no encontrada`);
-                
-                const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/usedRange`;
-                const usedRangeResponse = await fetch(usedRangeUrl, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const usedRangeData = await usedRangeResponse.json();
-                
-                const headers = usedRangeData.values[0];
-                const ultimaFila = usedRangeData.rowCount + 1;
-                
-                // CALCULAR "Hoy" y "Días sin seguimiento"
-                const hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
-                
-                let fechaUltimoSeguimiento = null;
-                const valorFecha = datos['Fecha Último Seguimiento'];
-                if (valorFecha) {
-                    if (typeof valorFecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(valorFecha)) {
-                        const partes = valorFecha.split("-");
-                        fechaUltimoSeguimiento = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-                    }
-                }
-                
-                let diasSinSeguimiento = '';
-                if (fechaUltimoSeguimiento) {
-                    fechaUltimoSeguimiento.setHours(0, 0, 0, 0);
-                    const diferenciaMilisegundos = hoy.getTime() - fechaUltimoSeguimiento.getTime();
-                    const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-                    diasSinSeguimiento = diferenciaDias;
-                }
-                
-                datos['Hoy'] = hoy.toISOString().split('T')[0];
-                datos['Días sin seguimiento'] = diasSinSeguimiento;
-                
-                const nuevaFila = headers.map(h => {
-                    let val = datos[h] || "";
-                    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
-                        return val;
-                    }
-                    return val;
-                });
-                
-                const ultimaColumna = String.fromCharCode(65 + headers.length - 1);
-                const rangeAddress = `A${ultimaFila}:${ultimaColumna}${ultimaFila}`;
-                
-                const writeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/range(address='${rangeAddress}')`;
-                
-                const writeResponse = await fetch(writeUrl, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ values: [nuevaFila] })
-                });
-                
-                if (!writeResponse.ok) {
-                    const errorText = await writeResponse.text();
-                    throw new Error(`Error al escribir: ${writeResponse.status} - ${errorText}`);
-                }
-                
-                hideLoading();
-                return { exito: true, mensaje: "Usuario agregado correctamente", hojaDestino: nombreHojaDestino };
-                
-            } catch (error) {
-                hideLoading();
-                throw error;
+            const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
+            const poblacionTotal = filasVisibles.length;
+            document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
+            
+            const cedulasUnicas = new Set();
+            filasVisibles.forEach(r => {
+                const cedula = r['CEDULA'];
+                if (cedula) cedulasUnicas.add(String(cedula).trim());
+            });
+            document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
+            
+            const siniestrosUnicos = new Set();
+            filasVisibles.forEach(r => {
+                const siniestro = r['SINIESTRO'];
+                if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
+            });
+            document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
+        }
+
+        function toggleDashboard() {
+            const panel = document.getElementById('dashboardPanel');
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+            } else {
+                panel.style.display = 'none';
             }
         }
 
         // ====================================
-        // ACTUALIZAR USUARIOS (ESCRITURA REAL)
+        // MODAL EDITAR
+        // ====================================
+        function abrirModalEditar(rowIndex) {
+            const usuario = STATE.rows[rowIndex];
+            if (!usuario) {
+                showMessage('error', 'Usuario no encontrado');
+                return;
+            }
+            
+            document.getElementById('editRowIndex').value = rowIndex;
+            
+            // SECCIÓN 1: Información del Paciente
+            const camposPaciente = [
+                'SINIESTRO', '# MATRICULA', 'CEDULA', 'NOMBRE',
+                'FECHA DE ASIGNACION A LA IPS', 'GENERO', 'MAYOR A 56 AÑOS SI O NO',
+                'AUDITOR', 'CLASIFICACION SEVERIDAD'
+            ];
+            
+            // SECCIÓN 2: Seguimiento
+            const camposSeguimiento = [
+                'CITA INICIAL', 'JUNTA MEDICA', 'INASISTENCIA JUNTA MEDICA',
+                'FISIATRA', 'INASISTENCIA FISIATRA',
+                'VALORACION OCUPACIONAL', 'INASISTENCIA VALORACION OCUPACIONAL',
+                'MEDICINA LABORAL', 'INASISTENCIA MEDICINA LABORAL',
+                'PSICOLOGIA', 'INASISTENCIA PSICOLOGIA',
+                'TERAPIA OCUPACIONAL', 'INASISTENCIA TERAPIA OCUPACIONAL',
+                'TERAPIA FISICA', 'INASISTENCIA TERAPIA FISICA',
+                'ALTA INMEDIATA', 'ESTADO DE LA MATRICULA', 'FECHA CIERRE',
+                'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES',
+                'OBSERVACION', 'SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOS',
+                'OBSERVACION FACTURACION', 'Fecha Último Seguimiento',
+                'Hoy', 'Días sin seguimiento'
+            ];
+            
+            // Renderizar Sección 1
+            const seccionPaciente = document.getElementById('seccionPaciente');
+            seccionPaciente.innerHTML = '';
+            
+            camposPaciente.forEach(campo => {
+                if (!STATE.headers.includes(campo)) return;
+                
+                const valor = usuario[campo] || '';
+                const id = `edit_${campo.replace(/\s+/g, '_').replace(/[^\w]/g, '')}`;
+                let html = '';
+                
+                if (campo.includes('FECHA') || campo === 'Hoy') {
+                    let valorFecha = valor;
+                    if (typeof valorFecha === 'string' && valorFecha.includes('/')) {
+                        const partes = valorFecha.split('/');
+                        if (partes.length === 3) {
+                            valorFecha = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+                        }
+                    }
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="date" class="form-control form-control-sm" id="${id}" value="${valorFecha}">
+                        </div>
+                    `;
+                } else if (campo === 'MAYOR A 56 AÑOS SI O NO') {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <select class="form-select form-select-sm" id="${id}">
+                                <option value="">Seleccionar...</option>
+                                <option value="SI" ${valor === 'SI' ? 'selected' : ''}>SI</option>
+                                <option value="NO" ${valor === 'NO' ? 'selected' : ''}>NO</option>
+                            </select>
+                        </div>
+                    `;
+                } else if (campo === 'GENERO') {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <select class="form-select form-select-sm" id="${id}">
+                                <option value="">Seleccionar...</option>
+                                <option value="M" ${valor === 'M' ? 'selected' : ''}>M</option>
+                                <option value="F" ${valor === 'F' ? 'selected' : ''}>F</option>
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${campo}">
+                        </div>
+                    `;
+                }
+                
+                seccionPaciente.innerHTML += html;
+            });
+            
+            // Renderizar Sección 2
+            const seccionSeguimiento = document.getElementById('seccionSeguimiento');
+            seccionSeguimiento.innerHTML = '';
+            
+            camposSeguimiento.forEach(campo => {
+                if (!STATE.headers.includes(campo)) return;
+                
+                const valor = usuario[campo] || '';
+                const id = `edit_${campo.replace(/\s+/g, '_').replace(/[^\w]/g, '')}`;
+                let html = '';
+                
+                if (campo.includes('OBSERVACION')) {
+                    html = `
+                        <div class="col-12">
+                            <label class="form-label">${campo}</label>
+                            <textarea class="form-control form-control-sm" id="${id}" rows="3" placeholder="${campo}">${valor}</textarea>
+                        </div>
+                    `;
+                } else if (campo.includes('FECHA') || campo === 'Hoy' || campo === 'Fecha Último Seguimiento') {
+                    let valorFecha = valor;
+                    if (typeof valorFecha === 'string' && valorFecha.includes('/')) {
+                        const partes = valorFecha.split('/');
+                        if (partes.length === 3) {
+                            valorFecha = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+                        }
+                    }
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="date" class="form-control form-control-sm" id="${id}" value="${valorFecha}">
+                        </div>
+                    `;
+                } else if (campo.includes('INASISTENCIA')) {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <select class="form-select form-select-sm" id="${id}">
+                                <option value="">Seleccionar...</option>
+                                <option value="SI" ${valor === 'SI' ? 'selected' : ''}>SI</option>
+                                <option value="NO" ${valor === 'NO' ? 'selected' : ''}>NO</option>
+                            </select>
+                        </div>
+                    `;
+                } else if (campo === 'Días sin seguimiento') {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" readonly style="background:#e9ecef;">
+                        </div>
+                    `;
+                } else if (campo === 'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES') {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="number" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${campo}">
+                        </div>
+                    `;
+                } else {
+                    html = `
+                        <div class="col-md-6">
+                            <label class="form-label">${campo}</label>
+                            <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${campo}">
+                        </div>
+                    `;
+                }
+                
+                seccionSeguimiento.innerHTML += html;
+            });
+            
+            const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+            modal.show();
+        }
+        // ====================================
+        // ACTUALIZAR USUARIO
         // ====================================
         async function actualizarUsuarioExcel(nombreHoja, rowIndex, datosActualizados) {
             showLoading('Actualizando usuario en Excel...');
@@ -1036,6 +858,7 @@
                 
                 const hojaExacta = worksheetsData.value.find(s => s.name.toLowerCase() === nombreHoja.toLowerCase());
                 if (!hojaExacta) throw new Error(`Hoja "${nombreHoja}" no encontrada`);
+                
                 const usedRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaExacta.name)}/usedRange`;
                 const usedRangeResponse = await fetch(usedRangeUrl, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
@@ -1044,7 +867,7 @@
                 
                 const headers = usedRangeData.values[0];
                 
-                // RECALCULAR "Hoy" y "Días sin seguimiento"
+                // Recalcular "Hoy" y "Días sin seguimiento"
                 const hoy = new Date();
                 hoy.setHours(0, 0, 0, 0);
                 
@@ -1070,9 +893,6 @@
                 
                 const filaActualizada = headers.map(h => {
                     let val = datosActualizados[h] !== undefined ? datosActualizados[h] : '';
-                    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
-                        return val;
-                    }
                     return val;
                 });
                 
@@ -1105,8 +925,38 @@
             }
         }
 
+        // Evento botón Actualizar
+        document.getElementById('btnActualizarUsuario').addEventListener('click', async function() {
+            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
+            
+            // Recopilar datos de todos los campos
+            const datosActualizados = {};
+            STATE.headers.forEach(campo => {
+                const id = `edit_${campo.replace(/\s+/g, '_').replace(/[^\w]/g, '')}`;
+                const elemento = document.getElementById(id);
+                if (elemento) {
+                    datosActualizados[campo] = elemento.value;
+                }
+            });
+            
+            try {
+                await actualizarUsuarioExcel(STATE.hoja, rowIndex, datosActualizados);
+                
+                // Cerrar modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
+                modal.hide();
+                
+                // Recargar datos
+                await cargarDatosHoja(STATE.hoja);
+                
+                showMessage('success', '✅ Usuario actualizado correctamente');
+            } catch (error) {
+                showMessage('error', 'Error al actualizar: ' + error.message);
+            }
+        });
+
         // ====================================
-        // CERRAR CASOS (MOVER A CERRADOS)
+        // CERRAR CASOS
         // ====================================
         async function cerrarCasoExcel(hojaOrigen, rowIndex, tipoCierre) {
             showLoading('Cerrando caso y moviendo a CERRADOS...');
@@ -1153,7 +1003,7 @@
                     
                     hojaCerrados = await createResponse.json();
                     
-                    // Escribir headers con columnas extra
+                    // Escribir headers
                     const headersConExtras = [...headersOrigen, 'TIPO DE CIERRE', 'HOJA ORIGEN', 'FECHA DE CIERRE DEL CASO'];
                     const headerRangeAddress = `A1:${String.fromCharCode(65 + headersConExtras.length - 1)}1`;
                     
@@ -1168,11 +1018,10 @@
                     });
                 }
                 
-                // Agregar fila con datos extra a CERRADOS
+                // Agregar fila a CERRADOS
                 const fechaCierre = new Date().toISOString().split('T')[0];
                 const nuevaFilaCerrados = [...datosFila, tipoCierre, hojaOrigen, fechaCierre];
                 
-                // Obtener última fila de CERRADOS
                 const cerradosRangeUrl = `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(hojaCerrados.name)}/usedRange`;
                 const cerradosRangeResponse = await fetch(cerradosRangeUrl, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
@@ -1207,7 +1056,7 @@
                 });
                 
                 hideLoading();
-                return { exito: true, mensaje: `Caso cerrado desde ${hojaOrigen}`, hojaOrigen: hojaOrigen, tipoCierre: tipoCierre };
+                return { exito: true, mensaje: 'Caso cerrado', hojaOrigen: hojaOrigen, tipoCierre: tipoCierre };
                 
             } catch (error) {
                 hideLoading();
@@ -1215,657 +1064,42 @@
             }
         }
 
-        // ====================================
-        // RENDERIZADO DE TABLA
-        // ====================================
-        function aplicarFiltrosAFila(r) {
-            let mostrar = true;
+        // Evento botón Cerrar Caso
+        document.getElementById('btnCerrarCaso').addEventListener('click', async function() {
+            const tipoCierre = document.getElementById('selectTipoCierre').value;
             
-            // Filtro por Auditor
-            if (STATE.auditorSeleccionado) {
-                const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
-                if (!auditorRow.includes(STATE.auditorSeleccionado)) {
-                    mostrar = false;
-                }
-            }
-            
-            Object.keys(STATE.filtros).forEach(k => {
-                if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
-                const f = STATE.filtros[k] || '';
-                if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
-            });
-            
-            const free = STATE.filtros['__free__'] || '';
-            if (free) {
-                const any = STATE.headers.some(h => (String(r[h] || '')).toLowerCase().includes(free));
-                if (!any) mostrar = false;
-            }
-            
-            if (STATE.filtros['__semaforo__']) {
-                const dias = obtenerDiasDeFila(r);
-                if (isNaN(dias)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
-            }
-            
-            if (STATE.filtros['__cita_vacia__']) {
-                const campoCita = STATE.filtros['__cita_vacia__'];
-                const valor = String(r[campoCita] || '').trim();
-                const estaVacio = (valor === '' || valor === '-- Vacío --' || !valor);
-                if (!estaVacio) mostrar = false;
-            }
-            
-            if (STATE.filtros['__inasistencia__']) {
-                const campoCita = STATE.filtros['__inasistencia__'];
-                const columnaInasistencia = `INASISTENCIA ${campoCita}`;
-                const valor = String(r[columnaInasistencia] || '').trim().toUpperCase();
-                const tieneInasistencia = (valor === 'SI' || valor === 'SÍ');
-                if (!tieneInasistencia) mostrar = false;
-            }
-            
-            return mostrar;
-        }
-
-        function renderTable() {
-            const th = document.getElementById('tablaHead');
-            th.innerHTML = '';
-            const trHead = document.createElement('tr');
-            
-            const thAcciones = document.createElement('th');
-            thAcciones.textContent = 'Acciones';
-            thAcciones.style.width = '80px';
-            trHead.appendChild(thAcciones);
-            
-            STATE.headers.forEach(h => {
-                const thEl = document.createElement('th');
-                thEl.textContent = h;
-                trHead.appendChild(thEl);
-            });
-            th.appendChild(trHead);
-            
-            const tb = document.getElementById('tablaBody');
-            tb.innerHTML = '';
-            
-            if (STATE.rows.length === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = STATE.headers.length + 1;
-                td.style.cssText = 'text-align:center; padding:40px; color:#999;';
-                td.innerHTML = '📭 No hay datos para mostrar';
-                tr.appendChild(td);
-                tb.appendChild(tr);
+            if (!tipoCierre) {
+                showMessage('error', '⚠️ Debe seleccionar un tipo de cierre');
                 return;
             }
             
-            STATE.rows.forEach((r, idx) => {
-                let mostrar = aplicarFiltrosAFila(r);
-                if (!mostrar) return;
-                const tr = document.createElement('tr');
-                const tdAcciones = document.createElement('td');
-                tdAcciones.style.textAlign = 'center';
-                const btnEdit = document.createElement('button');
-                btnEdit.className = 'btn-edit-row';
-                btnEdit.innerHTML = '🔄';
-                btnEdit.onclick = () => abrirModalEditar(idx);
-                tdAcciones.appendChild(btnEdit);
-                tr.appendChild(tdAcciones);
-                
-                STATE.headers.forEach(h => {
-                    const td = document.createElement('td');
-                    td.textContent = r[h] || '';
-                    tr.appendChild(td);
-                });
-                tb.appendChild(tr);
-            });
-        }
-
-        // ====================================
-        // FILTROS Y SEMÁFOROS
-        // ====================================
-        function aplicarFiltros() {
-            const inputs = document.querySelectorAll("#filtrosContainer input");
-            STATE.filtros = {};
-            inputs.forEach(inp => {
-                const key = inp.dataset.colName;
-                if (key) {
-                    STATE.filtros[key] = inp.value.trim().toLowerCase();
-                }
-            });
+            const confirmar = confirm(`¿Cerrar caso con: ${tipoCierre}?`);
+            if (!confirmar) return;
             
-            STATE.filtros['__free__'] = document.getElementById('searchFree').value.trim().toLowerCase();
-            
-            const fechaDesde = document.getElementById('fechaDesde').value;
-            const fechaHasta = document.getElementById('fechaHasta').value;
-            
-            if (fechaDesde || fechaHasta) {
-                STATE.filtros['__fecha_desde__'] = fechaDesde;
-                STATE.filtros['__fecha_hasta__'] = fechaHasta;
-            }
-            
-            const liActivo = document.querySelector("#aseguradoresList li.active");
-            const auditorSelect = liActivo ? liActivo.querySelector('select') : null;
-            if (auditorSelect) {
-                STATE.filtros['AUDITOR'] = auditorSelect.value.trim().toLowerCase();
-            }
-            renderTable();
-        }
-
-        function limpiarFiltros() {
-            STATE.filtros = {};
-            STATE.auditorSeleccionado = '';
-            document.getElementById('searchFree').value = '';
-            document.getElementById('fechaDesde').value = '';
-            document.getElementById('fechaHasta').value = '';
-            
-            // Limpiar select de auditor
-            const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
-            if (selectAuditor) selectAuditor.value = '';
-            
-            renderTable();
-            actualizarSemaforo();
-            actualizarSemaforoCitas();
-        }
-
-        function filtrarPorSemaforo(color) {
-            if (color === 'todos') {
-                delete STATE.filtros['__semaforo__'];
-            } else {
-                delete STATE.filtros['__cita_vacia__'];
-                delete STATE.filtros['__inasistencia__'];
-                STATE.filtros['__semaforo__'] = color;
-            }
-            renderTable();
-        }
-
-        function filtrarPorCitaVacia(tipoCita) {
-            if (tipoCita === 'todos') {
-                delete STATE.filtros['__cita_vacia__'];
-            } else {
-                delete STATE.filtros['__semaforo__'];
-                delete STATE.filtros['__inasistencia__'];
-                STATE.filtros['__cita_vacia__'] = tipoCita;
-            }
-            renderTable();
-        }
-
-        function filtrarPorInasistencia(tipoCita) {
-            if (tipoCita === 'todos') {
-                delete STATE.filtros['__inasistencia__'];
-            } else {
-                delete STATE.filtros['__semaforo__'];
-                delete STATE.filtros['__cita_vacia__'];
-                STATE.filtros['__inasistencia__'] = tipoCita;
-            }
-            renderTable();
-        }
-
-        function obtenerDiasDeFila(r) {
-            const clave = 'Días sin seguimiento';
-            if (r[clave]) {
-                const m = String(r[clave]).replace(/\s/g, '').match(/-?\d+/);
-                if (m) return parseInt(m[0], 10);
-            }
-            return NaN;
-        }
-
-        function actualizarSemaforo() {
-            let verde = 0, naranja = 0, rojo = 0;
-            STATE.rows.forEach(r => {
-                let mostrar = aplicarFiltrosAFila(r);
-                if (!mostrar) return;
-                const dias = obtenerDiasDeFila(r);
-                if (isNaN(dias)) return;
-                if (dias <= 5) verde++;
-                else if (dias <= 12) naranja++;
-                else rojo++;
-            });
-            document.getElementById('conteo-verde').innerText = verde;
-            document.getElementById('conteo-naranja').innerText = naranja;
-            document.getElementById('conteo-rojo').innerText = rojo;
-        }
-
-        function actualizarSemaforoCitas() {
-            if (STATE.hoja !== 'Positiva' && STATE.hoja !== 'Colmena' && STATE.hoja !== 'Colsanitas' && STATE.hoja !== 'Positiva Evento') {
-                return;
-            }
-            
-            const contadores = {
-                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-            };
-            
-            const inasistencias = {
-                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-            };
-            
-            STATE.rows.forEach(r => {
-                let mostrar = aplicarFiltrosAFila(r);
-                if (!mostrar) return;
-                
-                Object.keys(contadores).forEach(campo => {
-                    const valor = String(r[campo] || '').trim();
-                    if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
-                    
-                    const columnaInasistencia = `INASISTENCIA ${campo}`;
-                    const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
-                    if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
-                });
-            });
-            
-            document.getElementById('conteo-fisiatra').innerText = contadores['FISIATRA'];
-            document.getElementById('conteo-junta').innerText = contadores['JUNTA MEDICA'];
-            document.getElementById('conteo-valoracion').innerText = contadores['VALORACION OCUPACIONAL'];
-            document.getElementById('conteo-medicina-laboral').innerText = contadores['MEDICINA LABORAL'];
-            document.getElementById('conteo-psicologia').innerText = contadores['PSICOLOGIA'];
-            document.getElementById('conteo-terapia-ocupacional').innerText = contadores['TERAPIA OCUPACIONAL'];
-            document.getElementById('conteo-terapia-fisica').innerText = contadores['TERAPIA FISICA'];
-            
-            document.getElementById('inasistencia-fisiatra').innerText = inasistencias['FISIATRA'];
-            document.getElementById('inasistencia-junta').innerText = inasistencias['JUNTA MEDICA'];
-            document.getElementById('inasistencia-valoracion').innerText = inasistencias['VALORACION OCUPACIONAL'];
-            document.getElementById('inasistencia-medicina-laboral').innerText = inasistencias['MEDICINA LABORAL'];
-            document.getElementById('inasistencia-psicologia').innerText = inasistencias['PSICOLOGIA'];
-            document.getElementById('inasistencia-terapia-ocupacional').innerText = inasistencias['TERAPIA OCUPACIONAL'];
-            document.getElementById('inasistencia-terapia-fisica').innerText = inasistencias['TERAPIA FISICA'];
-        }
-
-        // ====================================
-        // DASHBOARD
-        // ====================================
-        function calcularEstadisticasDashboard() {
-            document.getElementById('dashboardPanel').style.display = 'block';
-            document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
-            
-            const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
-            const poblacionTotal = filasVisibles.length;
-            document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
-            
-            const cedulasUnicas = new Set();
-            filasVisibles.forEach(r => {
-                const cedula = r['CEDULA'];
-                if (cedula) cedulasUnicas.add(String(cedula).trim());
-            });
-            document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
-            
-            const siniestrosUnicos = new Set();
-            filasVisibles.forEach(r => {
-                const siniestro = r['SINIESTRO'];
-                if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
-            });
-            document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
-        }
-
-        function toggleDashboard() {
-            const panel = document.getElementById('dashboardPanel');
-            if (panel.style.display === 'none') {
-                panel.style.display = 'block';
-            } else {
-                panel.style.display = 'none';
-            }
-        }
-
-        // ====================================
-        // MODAL EDITAR
-        // ====================================
-        function abrirModalEditar(rowIndex) {
-    const usuario = usuarios[rowIndex];
-    document.getElementById('editRowIndex').value = rowIndex;
-    
-    // ===== SECCIÓN 1: INFORMACIÓN DEL PACIENTE =====
-    const camposPaciente = [
-        'nombre', 'documento', 'municipio', 'tipo_ingreso',
-        'institucion_remitente', 'fecha_ingreso', 'eps', 'regimen',
-        'etnia', 'escolaridad', 'ocupacion', 'estado_civil',
-        'religion', 'genero', 'orientacion_sexual', 'edad',
-        'estrato', 'tiene_hijos', 'embarazo', 'gestacion_semanas',
-        'lactancia', 'telefono', 'correo'
-    ];
-    
-    // ===== SECCIÓN 2: SEGUIMIENTO Y ESTADO =====
-    const camposSeguimiento = [
-        'estado', 'fase_cambio', 'sustancia_principal', 'policonsumo',
-        'diagnostico_dual', 'fecha_ingreso_fase', 'dias_fase',
-        'fecha_egreso', 'tipo_egreso', 'profesional_asignado',
-        'historico_fases', 'observaciones_seguimiento'
-    ];
-    
-    // Renderizar Sección 1: Información del Paciente
-    const seccionPaciente = document.getElementById('seccionPaciente');
-    seccionPaciente.innerHTML = camposPaciente.map(campo => {
-        const col = columnas.find(c => c.field === campo);
-        if (!col) return '';
-        
-        const valor = usuario[campo] || '';
-        const id = `edit_${campo}`;
-        const placeholder = col.title;
-        
-        // Campos específicos
-        if (campo === 'observaciones_seguimiento') {
-            return `
-                <div class="col-12">
-                    <label class="form-label">${col.title}</label>
-                    <textarea class="form-control form-control-sm" id="${id}" rows="3" placeholder="${placeholder}">${valor}</textarea>
-                </div>
-            `;
-        }
-        
-        if (campo === 'historico_fases') {
-            return `
-                <div class="col-12">
-                    <label class="form-label">${col.title}</label>
-                    <textarea class="form-control form-control-sm" id="${id}" rows="2" placeholder="${placeholder}" readonly>${valor}</textarea>
-                </div>
-            `;
-        }
-        
-        if (col.type === 'select' && col.options) {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <select class="form-select form-select-sm" id="${id}">
-                        <option value="">Seleccionar...</option>
-                        ${col.options.map(opt => `<option value="${opt}" ${valor === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-                    </select>
-                </div>
-            `;
-        }
-        
-        if (col.type === 'date') {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <input type="date" class="form-control form-control-sm" id="${id}" value="${valor}">
-                </div>
-            `;
-        }
-        
-        if (col.type === 'number') {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <input type="number" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
-                </div>
-            `;
-        }
-        
-        return `
-            <div class="col-md-6">
-                <label class="form-label">${col.title}</label>
-                <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
-            </div>
-        `;
-    }).join('');
-    
-    // Renderizar Sección 2: Seguimiento y Estado
-    const seccionSeguimiento = document.getElementById('seccionSeguimiento');
-    seccionSeguimiento.innerHTML = camposSeguimiento.map(campo => {
-        const col = columnas.find(c => c.field === campo);
-        if (!col) return '';
-        
-        const valor = usuario[campo] || '';
-        const id = `edit_${campo}`;
-        const placeholder = col.title;
-        
-        if (campo === 'observaciones_seguimiento') {
-            return `
-                <div class="col-12">
-                    <label class="form-label">${col.title}</label>
-                    <textarea class="form-control form-control-sm" id="${id}" rows="3" placeholder="${placeholder}">${valor}</textarea>
-                </div>
-            `;
-        }
-        
-        if (campo === 'historico_fases') {
-            return `
-                <div class="col-12">
-                    <label class="form-label">${col.title}</label>
-                    <textarea class="form-control form-control-sm" id="${id}" rows="2" placeholder="${placeholder}" readonly>${valor}</textarea>
-                </div>
-            `;
-        }
-        
-        if (col.type === 'select' && col.options) {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <select class="form-select form-select-sm" id="${id}">
-                        <option value="">Seleccionar...</option>
-                        ${col.options.map(opt => `<option value="${opt}" ${valor === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-                    </select>
-                </div>
-            `;
-        }
-        
-        if (col.type === 'date') {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <input type="date" class="form-control form-control-sm" id="${id}" value="${valor}">
-                </div>
-            `;
-        }
-        
-        if (col.type === 'number') {
-            return `
-                <div class="col-md-6">
-                    <label class="form-label">${col.title}</label>
-                    <input type="number" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
-                </div>
-            `;
-        }
-        
-        return `
-            <div class="col-md-6">
-                <label class="form-label">${col.title}</label>
-                <input type="text" class="form-control form-control-sm" id="${id}" value="${valor}" placeholder="${placeholder}">
-            </div>
-        `;
-    }).join('');
-    
-    new bootstrap.Modal(document.getElementById('modalEditarUsuario')).show();
-}
-
-        // ====================================
-        // EVENTOS DE BOTONES
-        // ====================================
-        document.getElementById('btnGuardarUsuario').addEventListener('click', async function() {
-            const form = document.getElementById('formAgregarUsuario');
-            const formData = new FormData(form);
-            const datos = Object.fromEntries(formData.entries());
-            
-            const hoja = datos['hoja'];
-            if (!hoja) {
-                showMessage('error', 'Seleccione el asegurador');
-                return;
-            }
-            
-            const checkEvento = document.getElementById('checkPacienteEvento');
-            datos['PACIENTE_EVENTO'] = checkEvento && checkEvento.checked ? 'SI' : 'NO';
+            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
             
             try {
-                const resultado = await agregarUsuarioExcel(hoja, datos);
+                await cerrarCasoExcel(STATE.hoja, rowIndex, tipoCierre);
                 
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgregarUsuario'));
+                // Cerrar modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario'));
                 modal.hide();
-                form.reset();
                 
+                // Recargar datos
                 await cargarDatosHoja(STATE.hoja);
-                showMessage('success', `✅ Usuario agregado correctamente a ${resultado.hojaDestino}`);
+                
+                // Resetear select
+                document.getElementById('selectTipoCierre').value = '';
+                
+                showMessage('success', `✅ Caso cerrado: ${tipoCierre}`);
             } catch (error) {
-                showMessage('error', 'Error al guardar: ' + error.message);
+                showMessage('error', 'Error al cerrar caso: ' + error.message);
             }
         });
-
-        document.getElementById('btnActualizarUsuario').addEventListener('click', function() {
-    const rowIndex = parseInt(document.getElementById('editRowIndex').value);
-    const usuario = usuarios[rowIndex];
-    
-    // Lista de todos los campos editables
-    const todosLosCampos = [
-        'nombre', 'documento', 'municipio', 'tipo_ingreso',
-        'institucion_remitente', 'fecha_ingreso', 'eps', 'regimen',
-        'etnia', 'escolaridad', 'ocupacion', 'estado_civil',
-        'religion', 'genero', 'orientacion_sexual', 'edad',
-        'estrato', 'tiene_hijos', 'embarazo', 'gestacion_semanas',
-        'lactancia', 'telefono', 'correo',
-        'estado', 'fase_cambio', 'sustancia_principal', 'policonsumo',
-        'diagnostico_dual', 'fecha_ingreso_fase', 'dias_fase',
-        'fecha_egreso', 'tipo_egreso', 'profesional_asignado',
-        'historico_fases', 'observaciones_seguimiento'
-    ];
-    
-    // Detectar si cambió la fase
-    const faseAnterior = usuario.fase_cambio;
-    const faseNueva = document.getElementById('edit_fase_cambio').value;
-    
-    // Actualizar todos los campos
-    todosLosCampos.forEach(campo => {
-        const elemento = document.getElementById(`edit_${campo}`);
-        if (elemento) {
-            usuario[campo] = elemento.value;
-        }
-    });
-    
-    // Si cambió la fase, actualizar historial
-    if (faseAnterior && faseNueva && faseAnterior !== faseNueva) {
-        const fechaCambio = new Date().toLocaleDateString('es-CO');
-        const nuevaEntrada = `${fechaCambio}: ${faseAnterior} → ${faseNueva}`;
-        
-        if (usuario.historico_fases) {
-            usuario.historico_fases += `\n${nuevaEntrada}`;
-        } else {
-            usuario.historico_fases = nuevaEntrada;
-        }
-        
-        // Actualizar fecha de ingreso a la nueva fase
-        usuario.fecha_ingreso_fase = new Date().toISOString().split('T')[0];
-        usuario.dias_fase = '0';
-    }
-    
-    // Recalcular días en fase si existe fecha de ingreso
-    if (usuario.fecha_ingreso_fase) {
-        const fechaIngreso = new Date(usuario.fecha_ingreso_fase);
-        const hoy = new Date();
-        const diferencia = Math.floor((hoy - fechaIngreso) / (1000 * 60 * 60 * 24));
-        usuario.dias_fase = diferencia.toString();
-    }
-    
-    // Guardar en localStorage
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    
-    // Cerrar modal
-    bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
-    
-    // Recargar tabla
-    cargarDatos();
-    
-    // Mensaje de éxito
-    Swal.fire({
-        icon: 'success',
-        title: 'Actualizado',
-        text: 'Usuario actualizado correctamente',
-        timer: 1500,
-        showConfirmButton: false
-    });
-});
-        });
-
-    document.getElementById('btnCerrarCaso').addEventListener('click', function() {
-    const tipoCierre = document.getElementById('selectTipoCierre').value;
-    
-    // Validar que se seleccionó un tipo de cierre
-    if (!tipoCierre) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Atención',
-            text: 'Debe seleccionar un tipo de cierre',
-            confirmButtonColor: '#001f3f'
-        });
-        return;
-    }
-    
-    // Confirmar cierre de caso
-    Swal.fire({
-        title: '¿Cerrar caso?',
-        text: `Se cerrará el caso con: ${tipoCierre}`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#001f3f',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Sí, cerrar caso',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const rowIndex = parseInt(document.getElementById('editRowIndex').value);
-            const usuario = usuarios[rowIndex];
-            
-            // Actualizar campos del usuario
-            usuario.estado = 'Inactivo';
-            usuario.tipo_egreso = tipoCierre;
-            usuario.fecha_egreso = new Date().toISOString().split('T')[0];
-            
-            // Agregar al historial de fases
-            const fechaCierre = new Date().toLocaleDateString('es-CO');
-            const entradaCierre = `${fechaCierre}: CASO CERRADO - ${tipoCierre}`;
-            
-            if (usuario.historico_fases) {
-                usuario.historico_fases += `\n${entradaCierre}`;
-            } else {
-                usuario.historico_fases = entradaCierre;
-            }
-            
-            // Agregar observación de cierre
-            const observacionCierre = `CASO CERRADO - ${tipoCierre} - Fecha: ${fechaCierre}`;
-            if (usuario.observaciones_seguimiento) {
-                usuario.observaciones_seguimiento += `\n${observacionCierre}`;
-            } else {
-                usuario.observaciones_seguimiento = observacionCierre;
-            }
-            
-            // Guardar en localStorage
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-            
-            // Cerrar modal
-            bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
-            
-            // Recargar tabla
-            cargarDatos();
-            
-            // Mensaje de éxito
-            Swal.fire({
-                icon: 'success',
-                title: 'Caso cerrado',
-                text: `El caso se cerró correctamente como: ${tipoCierre}`,
-                timer: 2000,
-                showConfirmButton: false
-            });
-            
-            // Resetear el select
-            document.getElementById('selectTipoCierre').value = '';
-        }
-    });
-});
 
         // ====================================
         // UI HELPERS
         // ====================================
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const btnFixed = document.getElementById('btnToggleSidebarFixed');
-            
-            sidebar.classList.toggle('collapsed');
-            content.classList.toggle('expanded');
-            
-            if (sidebar.classList.contains('collapsed')) {
-                btnFixed.style.display = 'block';
-            } else {
-                btnFixed.style.display = 'none';
-            }
-        }
-
         function showLoading(message) {
             document.getElementById('loadingMessage').textContent = message;
             document.getElementById('loadingOverlay').classList.add('show');
