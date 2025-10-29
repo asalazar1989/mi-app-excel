@@ -831,65 +831,111 @@
         }
 
         async function buscarArchivoExcel() {
-            console.log('🔍 Buscando archivo Excel ARL...');
+            console.log('🔍 Buscando archivo Excel ARL en tu OneDrive...');
             
             try {
-                // Buscar por "ARL Rangel" para ser más flexible
-                const searchUrl = `https://graph.microsoft.com/v1.0/me/drive/root/search(q='ARL Rangel')`;
-                console.log('📡 URL búsqueda:', searchUrl);
+                let archivosEncontrados = [];
                 
-                const response = await fetch(searchUrl, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                // ESTRATEGIA 1: Buscar en la carpeta raíz
+                console.log('📂 Buscando en carpeta raíz...');
+                try {
+                    const rootUrl = `https://graph.microsoft.com/v1.0/me/drive/root/children`;
+                    const rootResponse = await fetch(rootUrl, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    
+                    if (rootResponse.ok) {
+                        const rootData = await rootResponse.json();
+                        archivosEncontrados = archivosEncontrados.concat(rootData.value);
+                        console.log('📁 Archivos en raíz:', rootData.value.length);
+                    }
+                } catch (e) {
+                    console.log('⚠️ No se pudo listar raíz:', e.message);
+                }
+                
+                // ESTRATEGIA 2: Buscar en la carpeta Documents
+                console.log('📂 Buscando en carpeta Documents...');
+                try {
+                    const docsUrl = `https://graph.microsoft.com/v1.0/me/drive/special/documents/children`;
+                    const docsResponse = await fetch(docsUrl, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    
+                    if (docsResponse.ok) {
+                        const docsData = await docsResponse.json();
+                        archivosEncontrados = archivosEncontrados.concat(docsData.value);
+                        console.log('📁 Archivos en Documents:', docsData.value.length);
+                    }
+                } catch (e) {
+                    console.log('⚠️ No se pudo listar Documents:', e.message);
+                }
+                
+                // ESTRATEGIA 3: Listar todos los archivos recientes
+                console.log('📂 Buscando en archivos recientes...');
+                try {
+                    const recentUrl = `https://graph.microsoft.com/v1.0/me/drive/recent`;
+                    const recentResponse = await fetch(recentUrl, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    
+                    if (recentResponse.ok) {
+                        const recentData = await recentResponse.json();
+                        archivosEncontrados = archivosEncontrados.concat(recentData.value);
+                        console.log('📁 Archivos recientes:', recentData.value.length);
+                    }
+                } catch (e) {
+                    console.log('⚠️ No se pudo listar recientes:', e.message);
+                }
+                
+                console.log('📊 Total de archivos encontrados:', archivosEncontrados.length);
+                console.log('📋 Lista completa de archivos:', archivosEncontrados.map(f => f.name));
+                
+                // Eliminar duplicados por ID
+                const archivosUnicos = [];
+                const idsVistos = new Set();
+                archivosEncontrados.forEach(archivo => {
+                    if (!idsVistos.has(archivo.id)) {
+                        idsVistos.add(archivo.id);
+                        archivosUnicos.push(archivo);
+                    }
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`Error al buscar archivo: ${response.status}`);
+                console.log('📊 Archivos únicos:', archivosUnicos.length);
+                
+                if (archivosUnicos.length === 0) {
+                    throw new Error('No se pudo acceder a ningún archivo en OneDrive.\n\nVerifica que:\n1. Has dado permisos correctos a la aplicación\n2. Tienes archivos en tu OneDrive');
                 }
                 
-                const data = await response.json();
-                console.log('📁 Archivos encontrados:', data.value.length);
-                console.log('📋 Lista de archivos:', data.value.map(f => f.name));
+                // Buscar archivos que contengan "ARL" y "Rangel"
+                const archivosARL = archivosUnicos.filter(file => {
+                    const nombre = file.name.toLowerCase();
+                    return (nombre.includes('arl') || nombre.includes('seguimiento')) && 
+                           (nombre.includes('rangel') || nombre.includes('seguimiento'));
+                });
                 
-                if (data.value.length === 0) {
-                    throw new Error(`No se encontró ningún archivo con "ARL Rangel" en tu OneDrive.\n\nPor favor:\n1. Verifica que el archivo existe\n2. Está en tu OneDrive (no en SharePoint)\n3. El nombre contiene "ARL" y "Rangel"`);
-                }
+                console.log('📊 Archivos ARL encontrados:', archivosARL.length);
+                console.log('📋 Archivos ARL:', archivosARL.map(f => f.name));
                 
-                // Buscar archivos Excel (.xlsx, .xlsm, .xls)
-                const archivosExcel = data.value.filter(file => 
-                    file.name.toLowerCase().includes('arl') && 
-                    file.name.toLowerCase().includes('rangel') &&
-                    (file.name.toLowerCase().endsWith('.xlsx') || 
-                     file.name.toLowerCase().endsWith('.xlsm') ||
-                     file.name.toLowerCase().endsWith('.xls'))
-                );
-                
-                console.log('📊 Archivos Excel encontrados:', archivosExcel.length);
-                
-                if (archivosExcel.length === 0) {
-                    // Si no encontró Excel, tomar el primero que tenga ARL y Rangel
-                    const primerArchivo = data.value.find(f => 
-                        f.name.toLowerCase().includes('arl') && 
-                        f.name.toLowerCase().includes('rangel')
+                if (archivosARL.length === 0) {
+                    // Mostrar todos los archivos Excel disponibles
+                    const archivosExcel = archivosUnicos.filter(f => 
+                        f.name.toLowerCase().endsWith('.xlsx') || 
+                        f.name.toLowerCase().endsWith('.xlsm') ||
+                        f.name.toLowerCase().endsWith('.xls')
                     );
                     
-                    if (primerArchivo) {
-                        excelFileId = primerArchivo.id;
-                        console.log('✅ Archivo encontrado:', primerArchivo.name);
-                        console.log('📁 File ID:', excelFileId);
-                        console.log('📄 Tipo:', primerArchivo.file?.mimeType);
-                        showMessage('success', `✅ Conectado a: ${primerArchivo.name}`);
-                    } else {
-                        throw new Error(`No se encontró archivo Excel. Archivos disponibles:\n${data.value.map(f => f.name).join('\n')}`);
-                    }
-                } else {
-                    // Tomar el primero que sea Excel
-                    const archivoExcel = archivosExcel[0];
-                    excelFileId = archivoExcel.id;
-                    console.log('✅ Archivo Excel encontrado:', archivoExcel.name);
-                    console.log('📁 File ID:', excelFileId);
-                    console.log('📄 Tipo:', archivoExcel.file?.mimeType);
-                    showMessage('success', `✅ Conectado a: ${archivoExcel.name}`);
+                    throw new Error(`No se encontró archivo con "ARL" o "Rangel".\n\nArchivos Excel disponibles:\n${archivosExcel.map(f => `- ${f.name}`).join('\n')}`);
                 }
+                
+                // Tomar el primer archivo ARL
+                const archivoARL = archivosARL[0];
+                excelFileId = archivoARL.id;
+                
+                console.log('✅ Archivo seleccionado:', archivoARL.name);
+                console.log('📁 File ID:', excelFileId);
+                console.log('📄 Ruta:', archivoARL.webUrl);
+                
+                showMessage('success', `✅ Conectado a: ${archivoARL.name}`);
                 
             } catch (error) {
                 console.error('❌ Error al buscar archivo:', error);
