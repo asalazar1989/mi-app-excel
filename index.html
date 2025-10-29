@@ -86,10 +86,34 @@
         .seccion-titulo { color: #001f3f; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid #007bff; }
         
         /* BOTONES ESPECIALES SIDEBAR */
-        .btn-evento { background: #17a2b8; color: white; font-size: 0.7rem; padding: 0.35rem 0.4rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: all 0.2s ease; }
-        .btn-evento:hover { background: #138496; transform: scale(1.02); }
-        
-        .auditor-select { width: 100%; font-size: 0.75rem; padding: 0.3rem; border-radius: 4px; background: white; color: #001f3f; border: 1px solid #c0c0c0; margin-top: 0.5rem; }
+        .btn-evento {
+    background: #17a2b8;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.4rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-evento:hover {
+    background: #138496;
+    transform: scale(1.02);
+}
+
+.auditor-select {
+    width: 100%;
+    font-size: 0.75rem;
+    padding: 0.3rem;
+    border-radius: 4px;
+    background: white;
+    color: #001f3f;
+    border: 1px solid #c0c0c0;
+    margin-top: 0.5rem;
+}
     </style>
 </head>
 <body>
@@ -535,99 +559,99 @@
         // ✨ FUNCIÓN 4: PACIENTES POR EVENTO
         // ====================================
         async function verPacientesEvento() {
-            const nombreHoja = 'Positiva Evento';
-            showLoading(`Cargando ${nombreHoja}...`);
-            
-            try {
-                await cargarDatosHoja(nombreHoja);
-                showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
-            } catch (error) {
-                hideLoading();
-                showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
-            }
-        }
+    const nombreHoja = 'Positiva Evento';
+    showLoading(`Cargando ${nombreHoja}...`);
+    
+    try {
+        await cargarDatosHoja(nombreHoja);
+        showMessage('success', `✅ Visualizando hoja: ${nombreHoja}`);
+    } catch (error) {
+        hideLoading();
+        showMessage('error', `Error al cargar ${nombreHoja}: ${error.message}`);
+    }
+}
 
         function cargarAseguradores() {
-            const aseguradores = ['Positiva', 'Colmena', 'Colsanitas'];
-            const list = document.getElementById('aseguradoresList');
-            list.innerHTML = '';
+    const aseguradores = ['Positiva', 'Colmena', 'Colsanitas'];
+    const list = document.getElementById('aseguradoresList');
+    list.innerHTML = '';
+    
+    aseguradores.forEach(asegurador => {
+        const li = document.createElement('li');
+        li.textContent = asegurador;
+        li.onclick = () => seleccionarHoja(asegurador, li);
+        list.appendChild(li);
+        
+        // ✨ AGREGAR BOTONES ESPECIALES PARA POSITIVA
+        if (asegurador === 'Positiva') {
+            // Botón: Pacientes por Evento
+            const btnEvento = document.createElement('button');
+            btnEvento.className = 'btn-evento';
+            btnEvento.innerHTML = '📋 Pacientes por Evento';
+            btnEvento.onclick = (e) => {
+                e.stopPropagation();
+                verPacientesEvento();
+            };
+            li.appendChild(btnEvento);
             
-            aseguradores.forEach(asegurador => {
-                const li = document.createElement('li');
-                li.textContent = asegurador;
-                li.onclick = () => seleccionarHoja(asegurador, li);
-                list.appendChild(li);
-                
-                // ✨ AGREGAR BOTONES ESPECIALES PARA POSITIVA
-                if (asegurador === 'Positiva') {
-                    // Botón: Pacientes por Evento
-                    const btnEvento = document.createElement('button');
-                    btnEvento.className = 'btn-evento';
-                    btnEvento.innerHTML = '📋 Pacientes por Evento';
-                    btnEvento.onclick = (e) => {
-                        e.stopPropagation();
-                        verPacientesEvento();
-                    };
-                    li.appendChild(btnEvento);
-                    
-                    // Botón: Volver a Positiva Normal
-                    const btnVolver = document.createElement('button');
-                    btnVolver.className = 'btn-evento';
-                    btnVolver.style.background = '#6c757d';
-                    btnVolver.style.display = 'none';
-                    btnVolver.id = 'btnVolverPositiva';
-                    btnVolver.innerHTML = '↩️ Volver a Positiva';
-                    btnVolver.onclick = (e) => {
-                        e.stopPropagation();
-                        seleccionarHoja('Positiva', li);
-                        btnVolver.style.display = 'none';
-                        btnEvento.style.display = 'block';
-                    };
-                    li.appendChild(btnVolver);
-                }
-                
-                // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
-                const selectAuditor = document.createElement('select');
-                selectAuditor.className = 'auditor-select';
-                selectAuditor.id = `auditorSelect-${asegurador}`;
-                selectAuditor.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
-                selectAuditor.style.display = 'none';
-                selectAuditor.onchange = (e) => {
-                    e.stopPropagation();
-                    filtrarPorAuditor(e.target.value);
-                };
-                li.appendChild(selectAuditor);
-            });
-            
-            if (list.firstChild) {
-                seleccionarHoja(aseguradores[0], list.firstChild);
-            }
+            // Botón: Volver a Positiva Normal
+            const btnVolver = document.createElement('button');
+            btnVolver.className = 'btn-evento';
+            btnVolver.style.background = '#6c757d';
+            btnVolver.style.display = 'none';
+            btnVolver.id = 'btnVolverPositiva';
+            btnVolver.innerHTML = '↩️ Volver a Positiva';
+            btnVolver.onclick = (e) => {
+                e.stopPropagation();
+                seleccionarHoja('Positiva', li);
+                btnVolver.style.display = 'none';
+                btnEvento.style.display = 'block';
+            };
+            li.appendChild(btnVolver);
         }
+        
+        // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
+        const selectAuditor = document.createElement('select');
+        selectAuditor.className = 'auditor-select';
+        selectAuditor.id = `auditorSelect-${asegurador}`;
+        selectAuditor.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+        selectAuditor.style.display = 'none';
+        selectAuditor.onchange = (e) => {
+            e.stopPropagation();
+            filtrarPorAuditor(e.target.value);
+        };
+        li.appendChild(selectAuditor);
+    });
+    
+    if (list.firstChild) {
+        seleccionarHoja(aseguradores[0], list.firstChild);
+    }
+}
 
         // ====================================
         // MANEJO DE HOJAS
         // ====================================
-        async function seleccionarHoja(nombreHoja, liElement) {
-            STATE.hoja = nombreHoja;
-            [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
-            liElement.classList.add('active');
-            
-            // Mostrar/ocultar botón "Volver a Positiva"
-            const btnVolver = document.getElementById('btnVolverPositiva');
-            if (btnVolver) {
-                if (nombreHoja === 'Positiva Evento') {
-                    btnVolver.style.display = 'block';
-                    const btnEvento = liElement.querySelector('.btn-evento');
-                    if (btnEvento && btnEvento.textContent.includes('Evento')) {
-                        btnEvento.style.display = 'none';
-                    }
-                } else {
-                    btnVolver.style.display = 'none';
-                }
+       async function seleccionarHoja(nombreHoja, liElement) {
+    STATE.hoja = nombreHoja;
+    [...document.querySelectorAll('#aseguradoresList li')].forEach(el => el.classList.remove('active'));
+    liElement.classList.add('active');
+    
+    // ✨ NUEVO: Mostrar/ocultar botón "Volver a Positiva"
+    const btnVolver = document.getElementById('btnVolverPositiva');
+    if (btnVolver) {
+        if (nombreHoja === 'Positiva Evento') {
+            btnVolver.style.display = 'block';
+            const btnEvento = liElement.querySelector('.btn-evento');
+            if (btnEvento && btnEvento.textContent.includes('Evento')) {
+                btnEvento.style.display = 'none';
             }
-            
-            await cargarDatosHoja(nombreHoja);
+        } else {
+            btnVolver.style.display = 'none';
         }
+    }
+    
+    await cargarDatosHoja(nombreHoja);
+}
 
         async function cargarDatosHoja(nombreHoja) {
             showLoading(`Cargando datos de ${nombreHoja}...`);
@@ -671,14 +695,15 @@
                 });
 
                 // ✨ CARGAR AUDITORES EN SELECT
-                cargarAuditoresEnSelect(nombreHoja);
+                // ✨ CARGAR AUDITORES EN SELECT
+    cargarAuditoresEnSelect(nombreHoja);
 
-                renderTable();
-                actualizarSemaforo();
-                actualizarSemaforoCitas();
-                calcularEstadisticasDashboard();
-                hideLoading();
-                showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
+    renderTable();
+    actualizarSemaforo();
+    actualizarSemaforoCitas();
+    calcularEstadisticasDashboard();
+    hideLoading();
+    showMessage('success', `✅ Cargados ${STATE.rows.length} registros de ${nombreHojaExacto}`);
                 
                 const semaforoCitas = document.getElementById('semaforoCitas');
                 if (nombreHoja === 'Positiva' || nombreHoja === 'Colmena' || nombreHoja === 'Colsanitas' || nombreHoja === 'Positiva Evento') {
@@ -698,39 +723,39 @@
         // ✨ FUNCIÓN 5: FILTRO POR AUDITOR
         // ====================================
         function cargarAuditoresEnSelect(nombreHoja) {
-            const select = document.getElementById(`auditorSelect-${nombreHoja}`);
-            if (!select) return;
-            
-            select.style.display = 'block';
-            select.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
-            
-            const auditores = Array.from(new Set(
-                STATE.rows.map(r => r['AUDITOR']).filter(a => a && String(a).trim() !== '')
-            )).sort();
-            
-            auditores.forEach(a => {
-                const opt = document.createElement('option');
-                opt.value = a;
-                opt.textContent = a;
-                select.appendChild(opt);
-            });
-            
-            console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
-        }
+    const select = document.getElementById(`auditorSelect-${nombreHoja}`);
+    if (!select) return;
+    
+    select.style.display = 'block';
+    select.innerHTML = '<option value="">-- Filtro por Auditor --</option>';
+    
+    const auditores = Array.from(new Set(
+        STATE.rows.map(r => r['AUDITOR']).filter(a => a && String(a).trim() !== '')
+    )).sort();
+    
+    auditores.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a;
+        opt.textContent = a;
+        select.appendChild(opt);
+    });
+    
+    console.log(`✅ Cargados ${auditores.length} auditores en select para ${nombreHoja}`);
+}
 
         function filtrarPorAuditor(auditor) {
-            STATE.auditorSeleccionado = auditor.trim().toLowerCase();
-            renderTable();
-            actualizarSemaforo();
-            actualizarSemaforoCitas();
-            calcularEstadisticasDashboard();
-            
-            if (auditor) {
-                showMessage('info', `🔍 Filtrando por auditor: ${auditor}`);
-            } else {
-                showMessage('info', '🔄 Filtro de auditor removido');
-            }
-        }
+    STATE.auditorSeleccionado = auditor.trim().toLowerCase();
+    renderTable();
+    actualizarSemaforo();
+    actualizarSemaforoCitas();
+    calcularEstadisticasDashboard();
+    
+    if (auditor) {
+        showMessage('info', `🔍 Filtrando por auditor: ${auditor}`);
+    } else {
+        showMessage('info', '🔄 Filtro de auditor removido');
+    }
+}
 
         // ====================================
         // ✨ FUNCIÓN 1: AGREGAR USUARIOS (ESCRITURA REAL)
@@ -1077,53 +1102,53 @@
         }
 
         function aplicarFiltrosAFila(r) {
-            let mostrar = true;
-            
-            // Filtro por Auditor
-            if (STATE.auditorSeleccionado) {
-                const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
-                if (!auditorRow.includes(STATE.auditorSeleccionado)) {
-                    mostrar = false;
-                }
-            }
-            
-            Object.keys(STATE.filtros).forEach(k => {
-                if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
-                const f = STATE.filtros[k] || '';
-                if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
-            });
-            
-            const free = STATE.filtros['__free__'] || '';
-            if (free) {
-                const any = STATE.headers.some(h => (String(r[h] || '')).toLowerCase().includes(free));
-                if (!any) mostrar = false;
-            }
-            
-            if (STATE.filtros['__semaforo__']) {
-                const dias = obtenerDiasDeFila(r);
-                if (isNaN(dias)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
-                if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
-            }
-            
-            if (STATE.filtros['__cita_vacia__']) {
-                const campoCita = STATE.filtros['__cita_vacia__'];
-                const valor = String(r[campoCita] || '').trim();
-                const estaVacio = (valor === '' || valor === '-- Vacío --' || !valor);
-                if (!estaVacio) mostrar = false;
-            }
-            
-            if (STATE.filtros['__inasistencia__']) {
-                const campoCita = STATE.filtros['__inasistencia__'];
-                const columnaInasistencia = `INASISTENCIA ${campoCita}`;
-                const valor = String(r[columnaInasistencia] || '').trim().toUpperCase();
-                const tieneInasistencia = (valor === 'SI' || valor === 'SÍ');
-                if (!tieneInasistencia) mostrar = false;
-            }
-            
-            return mostrar;
+    let mostrar = true;
+    
+    // Filtro por Auditor
+    if (STATE.auditorSeleccionado) {
+        const auditorRow = String(r['AUDITOR'] || '').toLowerCase();
+        if (!auditorRow.includes(STATE.auditorSeleccionado)) {
+            mostrar = false;
         }
+    }
+    
+    Object.keys(STATE.filtros).forEach(k => {
+        if (k === '__free__' || k === '__semaforo__' || k === '__cita_vacia__' || k === '__inasistencia__' || k === '__fecha_desde__' || k === '__fecha_hasta__') return;
+        const f = STATE.filtros[k] || '';
+        if (f && !(String(r[k] || '').toLowerCase().includes(f))) mostrar = false;
+    });
+    
+    const free = STATE.filtros['__free__'] || '';
+    if (free) {
+        const any = STATE.headers.some(h => (String(r[h] || '')).toLowerCase().includes(free));
+        if (!any) mostrar = false;
+    }
+    
+    if (STATE.filtros['__semaforo__']) {
+        const dias = obtenerDiasDeFila(r);
+        if (isNaN(dias)) mostrar = false;
+        if (STATE.filtros['__semaforo__'] === 'verde' && !(dias <= 5)) mostrar = false;
+        if (STATE.filtros['__semaforo__'] === 'naranja' && !(dias >= 6 && dias <= 12)) mostrar = false;
+        if (STATE.filtros['__semaforo__'] === 'rojo' && !(dias >= 13)) mostrar = false;
+    }
+    
+    if (STATE.filtros['__cita_vacia__']) {
+        const campoCita = STATE.filtros['__cita_vacia__'];
+        const valor = String(r[campoCita] || '').trim();
+        const estaVacio = (valor === '' || valor === '-- Vacío --' || !valor);
+        if (!estaVacio) mostrar = false;
+    }
+    
+    if (STATE.filtros['__inasistencia__']) {
+        const campoCita = STATE.filtros['__inasistencia__'];
+        const columnaInasistencia = `INASISTENCIA ${campoCita}`;
+        const valor = String(r[columnaInasistencia] || '').trim().toUpperCase();
+        const tieneInasistencia = (valor === 'SI' || valor === 'SÍ');
+        if (!tieneInasistencia) mostrar = false;
+    }
+    
+    return mostrar;
+}
 
         // ====================================
         // FILTROS Y SEMÁFOROS
@@ -1140,20 +1165,20 @@
         }
 
         function limpiarFiltros() {
-            STATE.filtros = {};
-            STATE.auditorSeleccionado = '';
-            document.getElementById('searchFree').value = '';
-            document.getElementById('fechaDesde').value = '';
-            document.getElementById('fechaHasta').value = '';
-            
-            // Limpiar select de auditor
-            const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
-            if (selectAuditor) selectAuditor.value = '';
-            
-            renderTable();
-            actualizarSemaforo();
-            actualizarSemaforoCitas();
-        }
+    STATE.filtros = {};
+    STATE.auditorSeleccionado = '';
+    document.getElementById('searchFree').value = '';
+    document.getElementById('fechaDesde').value = '';
+    document.getElementById('fechaHasta').value = '';
+    
+    // Limpiar select de auditor
+    const selectAuditor = document.getElementById(`auditorSelect-${STATE.hoja}`);
+    if (selectAuditor) selectAuditor.value = '';
+    
+    renderTable();
+    actualizarSemaforo();
+    actualizarSemaforoCitas();
+}
 
         function filtrarPorSemaforo(color) {
             if (color === 'todos') {
