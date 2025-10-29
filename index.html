@@ -430,12 +430,12 @@
         let excelFileId = null;
         
         const STATE = {
-            hoja: '',
-            headers: [],
-            rows: [],
-            filtros: {},
-            auditorSeleccionado: ''
-        };
+    hoja: '',
+    headers: [],
+    rows: [],
+    filtros: {},
+    auditorSeleccionado: ''  // ← AGREGAR ESTA LÍNEA
+};
 
         // ====================================
         // AUTENTICACIÓN
@@ -1047,36 +1047,59 @@
         // ====================================
         // RENDERIZADO DE TABLA
         // ====================================
-        function renderTable() {
-            const th = document.getElementById('tablaHead');
-            th.innerHTML = '';
-            const trHead = document.createElement('tr');
-            
-            const thAcciones = document.createElement('th');
-            thAcciones.textContent = 'Acciones';
-            thAcciones.style.width = '80px';
-            trHead.appendChild(thAcciones);
-            
-            STATE.headers.forEach(h => {
-                const thEl = document.createElement('th');
-                thEl.textContent = h;
-                trHead.appendChild(thEl);
-            });
-            th.appendChild(trHead);
-            
-            const tb = document.getElementById('tablaBody');
-            tb.innerHTML = '';
-            
-            if (STATE.rows.length === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = STATE.headers.length + 1;
-                td.style.cssText = 'text-align:center; padding:40px; color:#999;';
-                td.innerHTML = '📭 No hay datos para mostrar';
-                tr.appendChild(td);
-                tb.appendChild(tr);
-                return;
-            }
+       function renderTable() {
+    const th = document.getElementById('tablaHead');
+    th.innerHTML = '';
+    const trHead = document.createElement('tr');
+    
+    const thAcciones = document.createElement('th');
+    thAcciones.textContent = 'Acciones';
+    thAcciones.style.width = '80px';
+    trHead.appendChild(thAcciones);
+    
+    STATE.headers.forEach(h => {
+        const thEl = document.createElement('th');
+        thEl.textContent = h;
+        trHead.appendChild(thEl);
+    });
+    th.appendChild(trHead);
+    
+    const tb = document.getElementById('tablaBody');
+    tb.innerHTML = '';
+    
+    if (STATE.rows.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = STATE.headers.length + 1;
+        td.style.cssText = 'text-align:center; padding:40px; color:#999;';
+        td.innerHTML = '📭 No hay datos para mostrar';
+        tr.appendChild(td);
+        tb.appendChild(tr);
+        return;
+    }
+    
+    STATE.rows.forEach((r, idx) => {
+        let mostrar = aplicarFiltrosAFila(r);
+        if (!mostrar) return;
+        
+        const tr = document.createElement('tr');
+        const tdAcciones = document.createElement('td');
+        tdAcciones.style.textAlign = 'center';
+        const btnEdit = document.createElement('button');
+        btnEdit.className = 'btn-edit-row';
+        btnEdit.innerHTML = '🔄';
+        btnEdit.onclick = () => abrirModalEditar(idx);
+        tdAcciones.appendChild(btnEdit);
+        tr.appendChild(tdAcciones);
+        
+        STATE.headers.forEach(h => {
+            const td = document.createElement('td');
+            td.textContent = r[h] || '';
+            tr.appendChild(td);
+        });
+        tb.appendChild(tr);
+    });
+}
             
             STATE.rows.forEach((r, idx) => {
                 let mostrar = aplicarFiltrosAFila(r);
@@ -1181,37 +1204,26 @@
 }
 
         function filtrarPorSemaforo(color) {
-            if (color === 'todos') {
-                delete STATE.filtros['__semaforo__'];
-            } else {
-                delete STATE.filtros['__cita_vacia__'];
-                delete STATE.filtros['__inasistencia__'];
-                STATE.filtros['__semaforo__'] = color;
-            }
-            renderTable();
-        }
-
-        function filtrarPorCitaVacia(tipoCita) {
-            if (tipoCita === 'todos') {
-                delete STATE.filtros['__cita_vacia__'];
-            } else {
-                delete STATE.filtros['__semaforo__'];
-                delete STATE.filtros['__inasistencia__'];
-                STATE.filtros['__cita_vacia__'] = tipoCita;
-            }
-            renderTable();
-        }
+    if (color === 'todos') {
+        delete STATE.filtros['__semaforo__'];
+    } else {
+        delete STATE.filtros['__cita_vacia__'];
+        delete STATE.filtros['__inasistencia__'];
+        STATE.filtros['__semaforo__'] = color;
+    }
+    renderTable();
+}
 
         function filtrarPorInasistencia(tipoCita) {
-            if (tipoCita === 'todos') {
-                delete STATE.filtros['__inasistencia__'];
-            } else {
-                delete STATE.filtros['__semaforo__'];
-                delete STATE.filtros['__cita_vacia__'];
-                STATE.filtros['__inasistencia__'] = tipoCita;
-            }
-            renderTable();
-        }
+    if (tipoCita === 'todos') {
+        delete STATE.filtros['__inasistencia__'];
+    } else {
+        delete STATE.filtros['__semaforo__'];
+        delete STATE.filtros['__cita_vacia__'];
+        STATE.filtros['__inasistencia__'] = tipoCita;
+    }
+    renderTable();
+}
 
         function obtenerDiasDeFila(r) {
             const clave = 'Días sin seguimiento';
@@ -1222,89 +1234,89 @@
             return NaN;
         }
 
-        function actualizarSemaforo() {
-            let verde = 0, naranja = 0, rojo = 0;
-            STATE.rows.forEach(r => {
-                let mostrar = aplicarFiltrosAFila(r);
-                if (!mostrar) return;
-                const dias = obtenerDiasDeFila(r);
-                if (isNaN(dias)) return;
-                if (dias <= 5) verde++;
-                else if (dias <= 12) naranja++;
-                else rojo++;
-            });
-            document.getElementById('conteo-verde').innerText = verde;
-            document.getElementById('conteo-naranja').innerText = naranja;
-            document.getElementById('conteo-rojo').innerText = rojo;
-        }
+       function actualizarSemaforo() {
+    let verde = 0, naranja = 0, rojo = 0;
+    STATE.rows.forEach(r => {
+        let mostrar = aplicarFiltrosAFila(r);
+        if (!mostrar) return;
+        const dias = obtenerDiasDeFila(r);
+        if (isNaN(dias)) return;
+        if (dias <= 5) verde++;
+        else if (dias <= 12) naranja++;
+        else rojo++;
+    });
+    document.getElementById('conteo-verde').innerText = verde;
+    document.getElementById('conteo-naranja').innerText = naranja;
+    document.getElementById('conteo-rojo').innerText = rojo;
+}
 
         function actualizarSemaforoCitas() {
-            const contadores = {
-                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-            };
+    const contadores = {
+        'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+        'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
+    };
+    
+    const inasistencias = {
+        'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
+        'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
+    };
+    
+    STATE.rows.forEach(r => {
+        let mostrar = aplicarFiltrosAFila(r);
+        if (!mostrar) return;
+        
+        Object.keys(contadores).forEach(campo => {
+            const valor = String(r[campo] || '').trim();
+            if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
             
-            const inasistencias = {
-                'FISIATRA': 0, 'JUNTA MEDICA': 0, 'VALORACION OCUPACIONAL': 0,
-                'MEDICINA LABORAL': 0, 'PSICOLOGIA': 0, 'TERAPIA OCUPACIONAL': 0, 'TERAPIA FISICA': 0
-            };
-            
-            STATE.rows.forEach(r => {
-                let mostrar = aplicarFiltrosAFila(r);
-                if (!mostrar) return;
-                
-                Object.keys(contadores).forEach(campo => {
-                    const valor = String(r[campo] || '').trim();
-                    if (valor === '' || valor === '-- Vacío --' || !valor) contadores[campo]++;
-                    
-                    const columnaInasistencia = `INASISTENCIA ${campo}`;
-                    const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
-                    if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
-                });
-            });
-            
-            document.getElementById('conteo-fisiatra').innerText = contadores['FISIATRA'];
-            document.getElementById('conteo-junta').innerText = contadores['JUNTA MEDICA'];
-            document.getElementById('conteo-valoracion').innerText = contadores['VALORACION OCUPACIONAL'];
-            document.getElementById('conteo-medicina-laboral').innerText = contadores['MEDICINA LABORAL'];
-            document.getElementById('conteo-psicologia').innerText = contadores['PSICOLOGIA'];
-            document.getElementById('conteo-terapia-ocupacional').innerText = contadores['TERAPIA OCUPACIONAL'];
-            document.getElementById('conteo-terapia-fisica').innerText = contadores['TERAPIA FISICA'];
-            
-            document.getElementById('inasistencia-fisiatra').innerText = inasistencias['FISIATRA'];
-            document.getElementById('inasistencia-junta').innerText = inasistencias['JUNTA MEDICA'];
-            document.getElementById('inasistencia-valoracion').innerText = inasistencias['VALORACION OCUPACIONAL'];
-            document.getElementById('inasistencia-medicina-laboral').innerText = inasistencias['MEDICINA LABORAL'];
-            document.getElementById('inasistencia-psicologia').innerText = inasistencias['PSICOLOGIA'];
-            document.getElementById('inasistencia-terapia-ocupacional').innerText = inasistencias['TERAPIA OCUPACIONAL'];
-            document.getElementById('inasistencia-terapia-fisica').innerText = inasistencias['TERAPIA FISICA'];
-        }
+            const columnaInasistencia = `INASISTENCIA ${campo}`;
+            const valorInasistencia = String(r[columnaInasistencia] || '').trim().toUpperCase();
+            if (valorInasistencia === 'SI' || valorInasistencia === 'SÍ') inasistencias[campo]++;
+        });
+    });
+    
+    document.getElementById('conteo-fisiatra').innerText = contadores['FISIATRA'];
+    document.getElementById('conteo-junta').innerText = contadores['JUNTA MEDICA'];
+    document.getElementById('conteo-valoracion').innerText = contadores['VALORACION OCUPACIONAL'];
+    document.getElementById('conteo-medicina-laboral').innerText = contadores['MEDICINA LABORAL'];
+    document.getElementById('conteo-psicologia').innerText = contadores['PSICOLOGIA'];
+    document.getElementById('conteo-terapia-ocupacional').innerText = contadores['TERAPIA OCUPACIONAL'];
+    document.getElementById('conteo-terapia-fisica').innerText = contadores['TERAPIA FISICA'];
+    
+    document.getElementById('inasistencia-fisiatra').innerText = inasistencias['FISIATRA'];
+    document.getElementById('inasistencia-junta').innerText = inasistencias['JUNTA MEDICA'];
+    document.getElementById('inasistencia-valoracion').innerText = inasistencias['VALORACION OCUPACIONAL'];
+    document.getElementById('inasistencia-medicina-laboral').innerText = inasistencias['MEDICINA LABORAL'];
+    document.getElementById('inasistencia-psicologia').innerText = inasistencias['PSICOLOGIA'];
+    document.getElementById('inasistencia-terapia-ocupacional').innerText = inasistencias['TERAPIA OCUPACIONAL'];
+    document.getElementById('inasistencia-terapia-fisica').innerText = inasistencias['TERAPIA FISICA'];
+}
 
         // ====================================
         // DASHBOARD
         // ====================================
         function calcularEstadisticasDashboard() {
-            document.getElementById('dashboardPanel').style.display = 'block';
-            document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
-            
-            const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
-            const poblacionTotal = filasVisibles.length;
-            document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
-            
-            const cedulasUnicas = new Set();
-            filasVisibles.forEach(r => {
-                const cedula = r['CEDULA'];
-                if (cedula) cedulasUnicas.add(String(cedula).trim());
-            });
-            document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
-            
-            const siniestrosUnicos = new Set();
-            filasVisibles.forEach(r => {
-                const siniestro = r['SINIESTRO'];
-                if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
-            });
-            document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
-        }
+    document.getElementById('dashboardPanel').style.display = 'block';
+    document.getElementById('dashboardHojaActual').textContent = STATE.hoja;
+    
+    const filasVisibles = STATE.rows.filter(r => aplicarFiltrosAFila(r));
+    const poblacionTotal = filasVisibles.length;
+    document.getElementById('stat-poblacion-total').textContent = poblacionTotal;
+    
+    const cedulasUnicas = new Set();
+    filasVisibles.forEach(r => {
+        const cedula = r['CEDULA'];
+        if (cedula) cedulasUnicas.add(String(cedula).trim());
+    });
+    document.getElementById('stat-pacientes-unicos').textContent = cedulasUnicas.size;
+    
+    const siniestrosUnicos = new Set();
+    filasVisibles.forEach(r => {
+        const siniestro = r['SINIESTRO'];
+        if (siniestro) siniestrosUnicos.add(String(siniestro).trim());
+    });
+    document.getElementById('stat-siniestros').textContent = siniestrosUnicos.size;
+}
 
         function toggleDashboard() {
             const panel = document.getElementById('dashboardPanel');
