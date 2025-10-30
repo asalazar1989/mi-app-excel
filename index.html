@@ -3,803 +3,570 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión ARL - Rangel | Microsoft Excel</title>
+    <title>Gestión ARL - Rangel | Sistema Completo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-body {
-  margin:0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  height:100vh;
-  background:#f0f2f5;
-  overflow:hidden;
-}
-
-/* ========== PANTALLA DE LOGIN ========== */
-.login-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-  padding: 20px;
-}
-
-.login-card {
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-  padding: 50px;
-  max-width: 450px;
-  text-align: center;
-  animation: fadeInScale 0.5s ease-out;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.login-logo {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 50px;
-  margin: 0 auto 25px;
-  box-shadow: 0 10px 30px rgba(0, 31, 63, 0.3);
-}
-
-.btn-login {
-  background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 14px 35px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 31, 63, 0.4);
-}
-
-#sidebar {
-  width:180px;
-  background:#001f3f;
-  color:white;
-  padding:0.5rem;
-  padding-top:2.5rem;
-  overflow-y:auto;
-  position:fixed;
-  left:0;
-  top:0;
-  height:100vh;
-  z-index:100;
-  transition: left 0.3s ease;
-}
-
-#sidebar.collapsed {
-  left: -180px;
-}
-
-#btnToggleSidebar {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  z-index: 1000;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 4px;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-}
-
-#btnToggleSidebar:hover {
-  background: rgba(255,255,255,0.25);
-}
-
-#btnToggleSidebarFixed {
-  display: none;
-  position: fixed;
-  left: 5px;
-  top: 10px;
-  z-index: 1001;
-  background: #001f3f;
-  color: white;
-  border: 2px solid white;
-  border-radius: 8px;
-  padding: 0.4rem 0.5rem;
-  cursor: pointer;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-  font-size: 1rem;
-}
-
-#btnToggleSidebarFixed:hover {
-  background: #003366;
-}
-
-#sidebar h5 {
-  color:#c0c0c0;
-  margin-bottom:0.4rem;
-  text-align:center;
-  font-size:0.8rem;
-  font-weight:600;
-  padding:0.3rem 0;
-  line-height:1.2;
-}
-
-#sidebar ul {
-  list-style:none;
-  padding:0;
-  margin:0;
-}
-
-#sidebar li {
-  padding:0.4rem 0.5rem;
-  cursor:pointer;
-  border-radius:4px;
-  margin-bottom:2px;
-  position:relative;
-  font-size:0.8rem;
-  transition:all 0.2s ease;
-}
-
-#sidebar li:hover, #sidebar li.active {
-  background:#c0c0c0;
-  color:#001f3f;
-  font-weight:bold;
-}
-
-.accordion {
-  width:100%;
-  margin-top:0.2rem;
-}
-
-.accordion-button {
-  background:#c0c0c0;
-  color:#001f3f;
-  font-weight:bold;
-  padding:0.3rem 0.4rem;
-  font-size:0.7rem;
-  line-height:1.2;
-}
-
-.accordion-button:not(.collapsed) {
-  background:#ff2400;
-  color:white;
-}
-
-.accordion-body {
-  background:#001f3f;
-  padding:0.4rem;
-}
-
-.accordion-body select {
-  width:100%;
-  font-size:0.75rem;
-  padding:0.25rem;
-}
-
-#content {
-  margin-left: 180px;
-  padding:1rem;
-  overflow:auto;
-  display:flex;
-  flex-direction:column;
-  height:100vh;
-  transition: margin-left 0.3s ease;
-}
-
-#content.expanded {
-  margin-left: 0;
-}
-
-.filter-panel {
-  margin-bottom:0.75rem;
-  background:white;
-  padding:0.75rem;
-  border-radius:0.25rem;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  flex-shrink:0;
-}
-
-.filter-panel h6 {
-  font-size:0.9rem;
-  margin-bottom:0.5rem;
-}
-
-.filter-panel .form-control-sm {
-  padding:0.25rem 0.5rem;
-  font-size:0.8rem;
-}
-
-.table-wrapper {
-  flex-grow:1;
-  overflow:auto;
-  position:relative;
-  border:1px solid #ddd;
-  border-radius:8px;
-  background:white;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  background:white;
-}
-
-th, td {
-  padding:6px 8px;
-  border:1px solid #ddd;
-  text-align:left;
-  white-space:nowrap;
-}
-
-th {
-  background:#001f3f;
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:10;
-  font-size:0.75rem;
-  font-weight:600;
-}
-
-td {
-  font-size:0.85rem;
-}
-
-.btn-edit-row {
-  padding:0.2rem 0.4rem;
-  font-size:0.7rem;
-  background:#007bff;
-  color:white;
-  border:none;
-  border-radius:3px;
-  cursor:pointer;
-  transition:all 0.2s ease;
-}
-
-.btn-edit-row:hover {
-  background:#0056b3;
-  transform:scale(1.05);
-}
-
-tr:nth-child(even) {
-  background:#f9f9f9;
-}
-
-tr:hover {
-  background:#d9e6f2;
-  cursor:pointer;
-}
-
-.semaforo {
-  display:flex;
-  gap:1rem;
-  margin-bottom:0.75rem;
-  flex-wrap:wrap;
-  flex-shrink:0;
-}
-
-.indicador {
-  display:flex;
-  align-items:center;
-  gap:0.5rem;
-  cursor:pointer;
-  padding:0.4rem 0.8rem;
-  border-radius:20px;
-  background:#f9f9f9;
-  box-shadow:0 1px 3px rgba(0,0,0,0.1);
-  transition:transform 0.2s ease;
-  font-size:0.85rem;
-}
-
-.indicador:hover {
-  transform:scale(1.03);
-}
-
-.bolita {
-  width:14px;
-  height:14px;
-  border-radius:50%;
-}
-
-.verde { background:green; }
-.naranja { background:orange; }
-.rojo { background:red; }
-
-.table-wrapper::-webkit-scrollbar {
-  height:12px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-  background:#f1f1f1;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-  background:#888;
-  border-radius:6px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-  background:#555;
-}
-
-.table-wrapper {
-  overflow-x:scroll !important;
-  overflow-y:auto;
-}
-
-#modalEditarUsuario .modal-body {
-  padding: 0.75rem 1rem;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-#modalEditarUsuario .form-label {
-  font-size: 0.7rem;
-  margin-bottom: 0.15rem;
-  font-weight: 600;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-#modalEditarUsuario .form-control,
-#modalEditarUsuario .form-select,
-#modalEditarUsuario textarea {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.4rem;
-  height: 28px;
-  border-radius: 4px;
-  border: 1px solid #cbd5e0;
-  transition: border-color 0.2s ease;
-}
-
-#modalEditarUsuario .form-control:focus,
-#modalEditarUsuario .form-select:focus,
-#modalEditarUsuario textarea:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
-}
-
-#modalEditarUsuario textarea {
-  height: 50px !important;
-  resize: vertical;
-  min-height: 50px;
-}
-
-#modalEditarUsuario .mb-2 { 
-  margin-bottom: 0.4rem !important; 
-}
-
-#modalEditarUsuario .row.g-2 { 
-  gap: 0.4rem; 
-  row-gap: 0.4rem !important;
-}
-
-#modalEditarUsuario .cita-fecha-input {
-  padding: 0.25rem 0.4rem;
-  height: 28px;
-  font-size: 0.75rem;
-}
-
-#modalEditarUsuario .seccion-form {
-  background: white;
-  padding: 0.65rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  margin-bottom: 0.6rem;
-}
-
-#modalEditarUsuario .seccion-titulo {
-  color: #001f3f;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 2px solid #007bff;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-@media (min-width: 992px) {
-  #modalEditarUsuario .col-form { 
-    width: 25% !important;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-  
-  #modalEditarUsuario .col-form-wide {
-    width: 50% !important;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  
-  #modalEditarUsuario .col-form-full {
-    width: 100% !important;
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  #modalEditarUsuario .col-form { 
-    width: 50% !important;
-    flex: 0 0 50%;
-  }
-}
-
-@media (max-width: 767px) {
-  #modalEditarUsuario .col-form,
-  #modalEditarUsuario .col-form-wide,
-  #modalEditarUsuario .col-form-full { 
-    width: 100% !important;
-    flex: 0 0 100%;
-  }
-}
-
-.semaforo-container {
-  background:white;
-  padding:0.5rem 0.75rem;
-  border-radius:0.25rem;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom:0.5rem;
-  flex-shrink:0;
-}
-
-.indicador-cita {
-  display:flex;
-  align-items:center;
-  gap:0.3rem;
-  font-size:0.75rem;
-  transition:all 0.2s ease;
-  box-shadow:0 1px 3px rgba(0,0,0,0.1);
-  cursor:pointer;
-}
-
-.indicador-cita:hover {
-  transform:scale(1.05);
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
-
-.indicador-cita:active {
-  transform:scale(0.98);
-}
-
-.dashboard-container {
-  background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  flex-shrink: 0;
-  animation: slideDown 0.4s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.dashboard-header h6 {
-  color: white;
-  margin: 0;
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.btn-toggle-dashboard {
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-}
-
-.btn-toggle-dashboard:hover {
-  background: rgba(255,255,255,0.3);
-  transform: scale(1.05);
-}
-
-.btn-show-dashboard {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 999;
-  background: linear-gradient(135deg, #001f3f 0%, #c0c0c0 100%);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  font-weight: 600;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.btn-show-dashboard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-}
-
-.dashboard-content {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 10px;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  height: 100%;
-  min-height: 85px;
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-
-.stat-icon {
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
-.stat-primary .stat-icon { background: #e3f2fd; color: #1976d2; }
-.stat-success .stat-icon { background: #e8f5e9; color: #2e7d32; }
-.stat-warning .stat-icon { background: #fff3e0; color: #f57c00; }
-.stat-info .stat-icon { background: #e1f5fe; color: #0288d1; }
-.stat-danger .stat-icon { background: #fce4ec; color: #c2185b; }
-.stat-secondary .stat-icon { background: #f3e5f5; color: #7b1fa2; }
-
-.stat-info-text {
-  flex-grow: 1;
-}
-
-.stat-label {
-  font-size: 0.7rem;
-  color: #666;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
-}
-
-.stat-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2c3e50;
-  line-height: 1;
-}
-
-.stat-percentage {
-  font-size: 0.75rem;
-  color: #999;
-  margin-top: 0.2rem;
-}
-
-.stat-table-container {
-  background: white;
-  border-radius: 10px;
-  padding: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  height: 100%;
-}
-
-.stat-table-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.stat-table-scroll {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.stat-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-}
-
-.stat-table thead {
-  position: sticky;
-  top: 0;
-  background: #f8f9fa;
-  z-index: 10;
-}
-
-.stat-table th {
-  padding: 0.5rem;
-  text-align: left;
-  font-weight: 600;
-  color: #495057;
-  border-bottom: 2px solid #dee2e6;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.stat-table td {
-  padding: 0.5rem;
-  border-bottom: 1px solid #f0f0f0;
-  color: #495057;
-}
-
-.stat-table tbody tr:hover {
-  background: #f8f9fa;
-}
-
-.stat-table-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.stat-table-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.stat-table-scroll::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.stat-table-scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-@media (max-width: 768px) {
-  .stat-card {
-    min-height: 70px;
-  }
-  
-  .stat-icon {
-    font-size: 1.5rem;
-    width: 40px;
-    height: 40px;
-  }
-  
-  .stat-value {
-    font-size: 1.3rem;
-  }
-}
-
-/* Loading Overlay */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-}
-
-.loading-overlay.show {
-  display: flex;
-}
-
-.loading-content {
-  background: white;
-  padding: 40px 60px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  animation: fadeInScale 0.3s ease-out;
-}
-
-.spinner {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #001f3f;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.user-info {
-  margin-top: auto;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  font-size: 0.75rem;
-}
-
-.btn-logout {
-  width: 100%;
-  padding: 8px;
-  background: #dc3545;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-.btn-logout:hover {
-  background: #c82333;
-  transform: scale(1.02);
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ========== PANTALLA DE LOGIN ========== */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            margin: 0 auto 20px;
+        }
+
+        .btn-login {
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ========== LAYOUT PRINCIPAL ========== */
+        .main-app {
+            display: none;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #001f3f 0%, #003d7a 100%);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.collapsed {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sidebar-item.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .user-info {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 10px;
+            background: rgba(220, 53, 69, 0.8);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-toggle-sidebar {
+            background: #001f3f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-toggle-sidebar:hover {
+            background: #003d7a;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f5f7fa;
+        }
+
+        /* ========== DASHBOARD CARDS ========== */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card-title {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #001f3f;
+        }
+
+        /* ========== TABLA ========== */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h5 {
+            margin: 0;
+            color: #001f3f;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 600px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: #001f3f;
+            color: white;
+            z-index: 10;
+        }
+
+        thead th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody td {
+            padding: 12px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #0b5ed7;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #bb2d3b;
+        }
+
+        /* ========== MODAL EDITAR ========== */
+        .modal-content {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .seccion-form {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .seccion-titulo {
+            color: #001f3f;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #001f3f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ========== CAMPOS DE FORMULARIO ========== */
+        .col-form {
+            flex: 0 0 calc(25% - 10px);
+        }
+
+        .col-form-wide {
+            flex: 0 0 calc(50% - 10px);
+        }
+
+        .col-form-full {
+            flex: 0 0 100%;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: block;
+        }
+
+        .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.85rem;
+            height: 32px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        textarea.form-control {
+            height: auto;
+            min-height: 70px;
+        }
+
+        /* ========== LOADING OVERLAY ========== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========== FILTROS ========== */
+        .filters-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        /* ========== SEMAFOROS ========== */
+        .semaforo-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .semaforo-verde {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .semaforo-naranja {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .semaforo-rojo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* ========== BTN FIXED TOGGLE ========== */
+        .btn-toggle-fixed {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #001f3f;
+            color: white;
+            border: none;
+            padding: 12px 8px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            z-index: 1000;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-toggle-fixed:hover {
+            background: #003d7a;
+            padding-left: 12px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 1001;
+            }
+
+            .col-form {
+                flex: 0 0 calc(50% - 10px);
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== CHECKBOX INASISTENCIA ========== */
+        .checkbox-inasistencia {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+        }
+
+        .checkbox-inasistencia input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-inasistencia label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -809,457 +576,260 @@ tr:hover {
             <div class="login-logo">
                 <i class="bi bi-hospital"></i>
             </div>
-            <h2 style="margin-bottom: 12px; color: #001f3f; font-weight: 700;">Gestión ARL Rangel</h2>
-            <p style="color: #6c757d; margin-bottom: 35px; font-size: 15px;">Sistema de Seguimiento Médico | Microsoft Excel</p>
+            <h2 style="margin-bottom: 10px; color: #001f3f;">Gestión ARL Rangel</h2>
+            <p style="color: #6c757d; margin-bottom: 30px;">Sistema de Seguimiento Médico</p>
             <button class="btn-login" onclick="iniciarSesionMicrosoft()">
-                <i class="bi bi-microsoft" style="font-size: 22px;"></i>
-                <span>Iniciar sesión con Microsoft</span>
+                <i class="bi bi-microsoft"></i> Iniciar sesión con Microsoft
             </button>
-            <p style="margin-top: 25px; font-size: 12px; color: #999;">
-                Versión 7.0 - Microsoft Graph API Integration
+            <p style="margin-top: 20px; font-size: 12px; color: #999;">
+                Versión 6.0 | Microsoft Excel Integration
             </p>
         </div>
     </div>
 
     <!-- ========== APLICACIÓN PRINCIPAL ========== -->
-    <div id="mainApp" style="display: none;">
-        <!-- SIDEBAR -->
-        <nav id="sidebar">
-            <button id="btnToggleSidebar" onclick="toggleSidebar()" title="Ocultar menú">
-                <i class="bi bi-chevron-left"></i>
-            </button>
-            
-            <h5>Seguimiento ARL - Rangel</h5>
-            <ul id="aseguradoresList"></ul>
-            
-            <div class="mt-2 text-center">
-                <button id="btnAbrirAgregar" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario" style="font-size:0.75rem; padding:0.35rem 0.4rem;">
-                    ➕ Agregar
-                </button>
+    <div id="mainApp" class="main-app">
+        <div class="app-container">
+            <!-- ========== SIDEBAR ========== -->
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="bi bi-hospital"></i>
+                    </div>
+                    <div>
+                        <h5 style="margin: 0; font-size: 18px;">ARL Rangel</h5>
+                        <small style="opacity: 0.8; font-size: 12px;">Gestión Médica</small>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" onclick="cargarHoja('Positiva')">
+                        <i class="bi bi-file-earmark-medical"></i>
+                        <span>Positiva</span>
+                    </li>
+                    <li class="sidebar-item" onclick="cargarHoja('Seguros Bolivar')">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Seguros Bolivar</span>
+                    </li>
+                    <li class="sidebar-item" onclick="cargarHoja('Colmena')">
+                        <i class="bi bi-hexagon"></i>
+                        <span>Colmena</span>
+                    </li>
+                    <li class="sidebar-item" onclick="cargarHoja('Colsanitas')">
+                        <i class="bi bi-heart-pulse"></i>
+                        <span>Colsanitas</span>
+                    </li>
+                    <li class="sidebar-item" onclick="cargarHoja('Positiva Evento')">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Positiva Evento</span>
+                    </li>
+                    <li class="sidebar-item" onclick="cargarHoja('CERRADOS')">
+                        <i class="bi bi-archive"></i>
+                        <span>Casos Cerrados</span>
+                    </li>
+                </ul>
+
+                <div class="user-info">
+                    <p id="userEmail" style="margin-bottom: 10px; font-size: 14px; opacity: 0.9;"></p>
+                    <button class="btn-logout" onclick="cerrarSesion()">
+                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                    </button>
+                </div>
             </div>
 
-            <div class="user-info">
-                <p id="userEmail" style="margin-bottom: 5px; opacity: 0.9; word-break: break-word;"></p>
-                <button class="btn-logout" onclick="cerrarSesion()">
-                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                </button>
-            </div>
-        </nav>
+            <!-- ========== CONTENIDO PRINCIPAL ========== -->
+            <div id="content" class="main-content">
+                <!-- TOP BAR -->
+                <div class="top-bar">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button class="btn-toggle-sidebar" onclick="toggleSidebar()">
+                            <i class="bi bi-list"></i>
+                        </button>
+                        <h4 id="hojaActual" style="margin: 0; color: #001f3f;">Positiva</h4>
+                    </div>
+                    <button class="btn btn-success" onclick="abrirModalAgregar()">
+                        <i class="bi bi-plus-circle"></i> Agregar Usuario
+                    </button>
+                </div>
 
-        <button id="btnToggleSidebarFixed" onclick="toggleSidebar()" title="Mostrar menú">
+                <!-- ÁREA DE CONTENIDO -->
+                <div class="content-area">
+                    <!-- FILTROS -->
+                    <div class="filters-section">
+                        <h6 style="margin-bottom: 15px; color: #001f3f; font-weight: 700;">
+                            <i class="bi bi-funnel"></i> Filtros
+                        </h6>
+                        <div class="filters-grid">
+                            <div class="filter-group">
+                                <label>Auditor</label>
+                                <select id="filtroAuditor" class="form-select" onchange="aplicarFiltros()">
+                                    <option value="">Todos los auditores</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Semáforo Seguimiento</label>
+                                <select id="filtroSemaforo" class="form-select" onchange="aplicarFiltros()">
+                                    <option value="">Todos</option>
+                                    <option value="verde">Verde (0-7 días)</option>
+                                    <option value="naranja">Naranja (8-15 días)</option>
+                                    <option value="rojo">Rojo (>15 días)</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Inasistencias</label>
+                                <select id="filtroInasistencias" class="form-select" onchange="aplicarFiltros()">
+                                    <option value="">Todos</option>
+                                    <option value="si">Con inasistencias</option>
+                                    <option value="no">Sin inasistencias</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Búsqueda</label>
+                                <input type="text" id="filtroBusqueda" class="form-control" placeholder="Buscar..." oninput="aplicarFiltros()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ESTADÍSTICAS -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="bi bi-people-fill text-white"></i>
+                            </div>
+                            <div class="stat-card-title">Total Pacientes</div>
+                            <div class="stat-card-value" id="statTotal">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                                <i class="bi bi-check-circle-fill text-white"></i>
+                            </div>
+                            <div class="stat-card-title">Semáforo Verde</div>
+                            <div class="stat-card-value" id="statVerde">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                                <i class="bi bi-exclamation-triangle-fill text-white"></i>
+                            </div>
+                            <div class="stat-card-title">Semáforo Naranja</div>
+                            <div class="stat-card-value" id="statNaranja">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                                <i class="bi bi-x-circle-fill text-white"></i>
+                            </div>
+                            <div class="stat-card-title">Semáforo Rojo</div>
+                            <div class="stat-card-value" id="statRojo">0</div>
+                        </div>
+                    </div>
+
+                    <!-- TABLA -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h5><i class="bi bi-table"></i> Lista de Pacientes</h5>
+                            <span id="contadorRegistros" class="badge bg-primary">0 registros</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="tablaUsuarios">
+                                <thead>
+                                    <tr>
+                                        <!-- Headers dinámicos -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Datos dinámicos -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTÓN TOGGLE SIDEBAR FIXED -->
+        <button id="btnToggleSidebarFixed" class="btn-toggle-fixed" onclick="toggleSidebar()">
             <i class="bi bi-chevron-right"></i>
         </button>
-
-        <main id="content">
-            <!-- DASHBOARD -->
-            <div id="dashboardPanel" class="dashboard-container" style="display:none;">
-                <div class="dashboard-header">
-                    <h6><i class="bi bi-graph-up-arrow"></i> Dashboard Estadístico - <span id="dashboardHojaActual">---</span></h6>
-                    <button class="btn-toggle-dashboard" onclick="toggleDashboard()" title="Ocultar dashboard">
-                        <i class="bi bi-chevron-up"></i>
-                    </button>
-                </div>
-                
-                <div class="dashboard-content" id="dashboardContent">
-                    <div class="row g-2">
-                        <div class="col-md-4 col-lg-2">
-                            <div class="stat-card stat-primary">
-                                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Casos Activos</div>
-                                    <div class="stat-value" id="stat-poblacion-total">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-2">
-                            <div class="stat-card stat-success">
-                                <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Población Activa</div>
-                                    <div class="stat-value" id="stat-pacientes-unicos">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-2">
-                            <div class="stat-card stat-warning">
-                                <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Siniestros Totales</div>
-                                    <div class="stat-value" id="stat-siniestros">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="stat-card stat-info">
-                                <div class="stat-icon"><i class="bi bi-gender-male"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Masculino</div>
-                                    <div class="stat-value" id="stat-masculino">0</div>
-                                    <div class="stat-percentage" id="stat-masculino-pct">0%</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="stat-card stat-danger">
-                                <div class="stat-icon"><i class="bi bi-gender-female"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Femenino</div>
-                                    <div class="stat-value" id="stat-femenino">0</div>
-                                    <div class="stat-percentage" id="stat-femenino-pct">0%</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="stat-card stat-secondary">
-                                <div class="stat-icon"><i class="bi bi-gender-ambiguous"></i></div>
-                                <div class="stat-info-text">
-                                    <div class="stat-label">Otro</div>
-                                    <div class="stat-value" id="stat-otro">0</div>
-                                    <div class="stat-percentage" id="stat-otro-pct">0%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row g-2 mt-2">
-                        <div class="col-md-6">
-                            <div class="stat-table-container">
-                                <h6 class="stat-table-title"><i class="bi bi-person-badge"></i> Pacientes por Auditor</h6>
-                                <div class="stat-table-scroll">
-                                    <table class="stat-table" id="tabla-auditores">
-                                        <thead>
-                                            <tr>
-                                                <th>Auditor</th>
-                                                <th style="text-align:center;">Cantidad</th>
-                                                <th style="text-align:center;">%</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody-auditores">
-                                            <tr><td colspan="3" style="text-align:center; color:#999;">Sin datos</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="stat-table-container">
-                                <h6 class="stat-table-title"><i class="bi bi-clipboard-data"></i> Clasificación de Severidad</h6>
-                                <div class="stat-table-scroll">
-                                    <table class="stat-table" id="tabla-severidad">
-                                        <thead>
-                                            <tr>
-                                                <th>Clasificación</th>
-                                                <th style="text-align:center;">Cantidad</th>
-                                                <th style="text-align:center;">%</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody-severidad">
-                                            <tr><td colspan="3" style="text-align:center; color:#999;">Sin datos</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button id="btnMostrarDashboard" class="btn-show-dashboard" onclick="toggleDashboard()" style="display:none;" title="Mostrar dashboard">
-                <i class="bi bi-graph-up-arrow"></i> Estadísticas
-            </button>
-
-            <!-- SECCIÓN COMBINADA: SEMÁFORO 1 + FILTRO EN DOS COLUMNAS -->
-            <div style="display:grid; grid-template-columns: 2.5fr 1.5fr 1fr; gap:0.5rem; margin-bottom:0.75rem; align-items:start;">
-                <!-- COLUMNA 1: SEMÁFORO DE SEGUIMIENTO -->
-                <div class="semaforo-container" style="margin-bottom:0;">
-                    <h6 style="font-size:0.75rem; font-weight:500; color:#001f3f; margin-bottom:0.3rem;">📅 Seguimiento de Pacientes</h6>
-                    <div class="semaforo">
-                        <div class="indicador" onclick="filtrarPorSemaforo('verde')" title="Filtrar 0–5 días">
-                            <div class="bolita verde"></div>
-                            <span id="conteo-verde">0</span> pacientes (0–5 días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('naranja')" title="Filtrar 6–12 días">
-                            <div class="bolita naranja"></div>
-                            <span id="conteo-naranja">0</span> pacientes (6–12 días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('rojo')" title="Filtrar 13+ días">
-                            <div class="bolita rojo"></div>
-                            <span id="conteo-rojo">0</span> pacientes (13+ días)
-                        </div>
-                        <div class="indicador" onclick="filtrarPorSemaforo('todos')" title="Quitar filtro semáforo">
-                            🔄 Ver todos
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- COLUMNA 2: FILTRO DE FECHA -->
-                <div class="filter-panel" style="margin-bottom:0; padding:0.6rem; background:white; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.3rem;">
-                        <i class="bi bi-calendar-event"></i> Filtro por Fecha de Ingreso
-                    </h6>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.3rem; margin-bottom:0.4rem;">
-                        <div>
-                            <label style="font-size:0.6rem; font-weight:600; color:#666; margin-bottom:0.1rem; display:block;">Desde</label>
-                            <input type="date" id="fechaDesde" class="form-control form-control-sm" style="font-size:0.7rem; padding:0.25rem 0.3rem; height:24px; border:1px solid #cbd5e0; border-radius:4px;">
-                        </div>
-                        <div>
-                            <label style="font-size:0.6rem; font-weight:600; color:#666; margin-bottom:0.1rem; display:block;">Hasta</label>
-                            <input type="date" id="fechaHasta" class="form-control form-control-sm" style="font-size:0.7rem; padding:0.25rem 0.3rem; height:24px; border:1px solid #cbd5e0; border-radius:4px;">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- COLUMNA 3: BÚSQUEDA DE TEXTO -->
-                <div class="filter-panel" style="margin-bottom:0; padding:0.6rem; background:white; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#001f3f; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.3rem;">
-                        <i class="bi bi-search"></i> Búsqueda
-                    </h6>
-                    <input type="text" id="searchFree" class="form-control form-control-sm" placeholder="Buscar..." style="font-size:0.7rem; padding:0.35rem 0.5rem; border:1px solid #001f3f; border-radius:4px; margin-bottom:0.3rem;">
-                    <button class="btn btn-dark btn-sm w-100" onclick="aplicarFiltros()" style="font-weight:600; font-size:0.65rem; padding:0.3rem; border-radius:4px; background:#001f3f; border:none; margin-bottom:0.2rem;">
-                        <i class="bi bi-search"></i> Buscar
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="limpiarFiltros()" style="font-weight:600; font-size:0.6rem; padding:0.25rem; border-radius:4px;">
-                        <i class="bi bi-x-circle"></i> Limpiar
-                    </button>
-                </div>
-            </div>
-
-            <!-- SEMÁFORO 2: CITAS MÉDICAS -->
-            <div id="semaforoCitas" class="semaforo-container" style="display:none;">
-                <h6 style="font-size:0.75rem; font-weight:600; color:#001f3f; margin-bottom:0.5rem;">🏥 Control de Citas Médicas</h6>
-                
-                <!-- SECCIÓN: CITAS PENDIENTES -->
-                <div style="background:#f8f9fa; padding:0.5rem; border-radius:8px; margin-bottom:0.5rem;">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#2e7d32; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.3rem;">
-                        <i class="bi bi-calendar-check"></i> Citas Pendientes
-                    </h6>
-                    <div class="semaforo" style="flex-wrap:wrap;">
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('FISIATRA')" style="background:#e3f2fd; border:1px solid #1976d2; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#1976d2;">🩺 Fisiatra:</span>
-                            <span id="conteo-fisiatra" style="font-weight:bold; color:#1976d2;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('JUNTA MEDICA')" style="background:#f3e5f5; border:1px solid #7b1fa2; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#7b1fa2;">👥 Junta Médica:</span>
-                            <span id="conteo-junta" style="font-weight:bold; color:#7b1fa2;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('VALORACION OCUPACIONAL')" style="background:#fff3e0; border:1px solid #e65100; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#e65100;">💼 Valoración Ocup.:</span>
-                            <span id="conteo-valoracion" style="font-weight:bold; color:#e65100;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('MEDICINA LABORAL')" style="background:#e8f5e9; border:1px solid #2e7d32; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#2e7d32;">⚕️ Medicina Lab.:</span>
-                            <span id="conteo-medicina-laboral" style="font-weight:bold; color:#2e7d32;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('PSICOLOGIA')" style="background:#fce4ec; border:1px solid #c2185b; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#c2185b;">🧠 Psicología:</span>
-                            <span id="conteo-psicologia" style="font-weight:bold; color:#c2185b;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA OCUPACIONAL')" style="background:#e0f2f1; border:1px solid #00695c; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#00695c;">🛠️ Terapia Ocup.:</span>
-                            <span id="conteo-terapia-ocupacional" style="font-weight:bold; color:#00695c;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('TERAPIA FISICA')" style="background:#fff9c4; border:1px solid #f57f17; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar">
-                            <span style="font-weight:600; color:#f57f17;">🏃 Terapia Física:</span>
-                            <span id="conteo-terapia-fisica" style="font-weight:bold; color:#f57f17;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorCitaVacia('todos')" style="background:#eceff1; border:2px solid #546e7a; padding:0.3rem 0.8rem; border-radius:15px;" title="Click para quitar filtros">
-                            <span style="font-weight:600; color:#546e7a;">🔄 Ver todos</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- SECCIÓN: INASISTENCIAS -->
-                <div style="background:#fff5f5; padding:0.5rem; border-radius:8px; border-left:4px solid #d9534f;">
-                    <h6 style="font-size:0.7rem; font-weight:600; color:#d9534f; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.3rem;">
-                        <i class="bi bi-x-circle-fill"></i> Inasistencias Registradas
-                    </h6>
-                    <div class="semaforo" style="flex-wrap:wrap;">
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('FISIATRA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">🩺 Fisiatra:</span>
-                            <span id="inasistencia-fisiatra" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('JUNTA MEDICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">👥 Junta Médica:</span>
-                            <span id="inasistencia-junta" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('VALORACION OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">💼 Valoración Ocup.:</span>
-                            <span id="inasistencia-valoracion" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('MEDICINA LABORAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">⚕️ Medicina Lab.:</span>
-                            <span id="inasistencia-medicina-laboral" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('PSICOLOGIA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">🧠 Psicología:</span>
-                            <span id="inasistencia-psicologia" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA OCUPACIONAL')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">🛠️ Terapia Ocup.:</span>
-                            <span id="inasistencia-terapia-ocupacional" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                        <div class="indicador-cita" onclick="filtrarPorInasistencia('TERAPIA FISICA')" style="background:#ffebee; border:1px solid #c62828; padding:0.3rem 0.6rem; border-radius:15px;" title="Click para filtrar inasistencias">
-                            <span style="font-weight:600; color:#c62828;">🏃 Terapia Física:</span>
-                            <span id="inasistencia-terapia-fisica" style="font-weight:bold; color:#c62828;">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABLA DE DATOS -->
-            <div class="table-wrapper">
-                <table id="tablaDatos">
-                    <thead id="tablaHead"></thead>
-                    <tbody id="tablaBody"></tbody>
-                </table>
-            </div>
-        </main>
     </div>
 
     <!-- ========== MODAL AGREGAR USUARIO ========== -->
-    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">➕ Agregar Usuario</h5>
+                <div class="modal-header" style="background: linear-gradient(135deg, #001f3f 0%, #003366 100%);">
+                    <h5 class="modal-title text-white"><i class="bi bi-plus-circle"></i> Agregar Nuevo Usuario</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="formAgregarUsuario">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Asegurador</label>
-                                <select class="form-select" name="hoja" required>
-                                    <option value="">-- Seleccione --</option>
-                                    <option value="Positiva">Positiva</option>
-                                    <option value="Colmena">Colmena</option>
-                                    <option value="Colsanitas">Colsanitas</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label d-block">Paciente por Evento</label>
-                                <div class="form-check" style="padding-top:0.4rem;">
-                                    <input class="form-check-input" type="checkbox" name="PACIENTE_EVENTO" id="checkPacienteEvento">
-                                    <label class="form-check-label" for="checkPacienteEvento" style="font-size:0.85rem;">
-                                        Sí, es paciente por evento
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4"><label class="form-label">SINIESTRO</label><input class="form-control" name="SINIESTRO"></div>
-                            <div class="col-md-4"><label class="form-label"># MATRICULA</label><input class="form-control" name="# MATRICULA"></div>
-                            <div class="col-md-4"><label class="form-label">CEDULA</label><input class="form-control" name="CEDULA"></div>
-                            <div class="col-md-4"><label class="form-label">NOMBRE</label><input class="form-control" name="NOMBRE"></div>
-                            <div class="col-md-4"><label class="form-label">FECHA DE ASIGNACION A LA IPS</label><input type="date" class="form-control" name="FECHA DE ASIGNACION A LA IPS"></div>
-                            <div class="col-md-4">
-                                <label class="form-label">GENERO</label>
-                                <select class="form-select" name="GENERO">
-                                    <option value="">-- Seleccione --</option>
-                                    <option>Masculino</option>
-                                    <option>Femenino</option>
-                                    <option>Otro</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4"><label class="form-label">MAYOR A 56 AÑOS SI O NO</label>
-                                <select class="form-select" name="MAYOR A 56 AÑOS SI O NO">
-                                    <option value="">-- Seleccione --</option>
-                                    <option>SI</option>
-                                    <option>NO</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">CLASIFICACION SEVERIDAD</label>
-                                <select class="form-select" name="CLASIFICACION SEVERIDAD">
-                                    <option value="">-- Seleccione --</option>
-                                    <option>AT Caso Muy Leve</option>
-                                    <option>AT Caso Leve</option>
-                                    <option>AT Caso Moderado</option>
-                                    <option>AT Caso Grave</option>
-                                    <option>AT Caso Muy Grave</option>
-                                    <option>AT Caso Severo</option>
-                                    <option>Enfermedad Laboral</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4"><label class="form-label">CITA INICIAL</label><input type="date" class="form-control" name="CITA INICIAL"></div>
-                            <div class="col-md-4"><label class="form-label">ALTA INMEDIATA</label><input class="form-control" name="ALTA INMEDIATA"></div>
-                            <div class="col-md-4"><label class="form-label">ESTADO DE LA MATRICULA</label><input class="form-control" name="ESTADO DE LA MATRICULA"></div>
-                            <div class="col-md-4"><label class="form-label">FECHA CIERRE</label><input type="date" class="form-control" name="FECHA CIERRE"></div>
-                            <div class="col-md-4"><label class="form-label">NUM AGENDAMIENTOS y CITAS FORMALES INICIALES</label><input type="number" class="form-control" name="NUM AGENDAMIENTOS y CITAS FORMALES INICIALES"></div>
-                            <div class="col-md-4"><label class="form-label">OBSERVACION</label><textarea class="form-control" name="OBSERVACION"></textarea></div>
-                            <div class="col-md-4"><label class="form-label">SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOR</label><textarea class="form-control" name="SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOR"></textarea></div>
-                            <div class="col-md-4">
-                                <label class="form-label">AUDITOR</label>
-                                <select class="form-select" name="AUDITOR">
-                                    <option value="">-- Seleccione --</option>
-                                    <option>FABIAN MACIAS</option>
-                                    <option>YANETH OBREGON</option>
-                                    <option>MELISA SANCHEZ</option>
-                                    <option>ANGELA LOPEZ</option>
-                                    <option>ADRIANA VILLOTA</option>
-                                    <option>YULAINE VERGARA</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4"><label class="form-label">OBSERVACION FACTURACION</label><textarea class="form-control" name="OBSERVACION FACTURACION"></textarea></div>
-                            <div class="col-md-4"><label class="form-label">Fecha Último Seguimiento</label><input type="date" class="form-control" name="Fecha Último Seguimiento"></div>
+                        <!-- Sección: Información del Paciente -->
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-person-badge"></i> Información del Paciente
+                            </h6>
+                            <div id="seccionAgregarPaciente" class="row g-2"></div>
+                        </div>
+
+                        <!-- Sección: Seguimiento y Estado -->
+                        <div class="seccion-form">
+                            <h6 class="seccion-titulo">
+                                <i class="bi bi-clipboard-check"></i> Seguimiento y Estado
+                            </h6>
+                            <div id="seccionAgregarSeguimiento" class="row g-2"></div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="btnGuardarUsuario">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarUsuario">
+                        <i class="bi bi-save"></i> Guardar Usuario
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ========== MODAL EDITAR USUARIO ========== -->
-    <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content" style="border:none; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
-                <div class="modal-header" style="background: linear-gradient(135deg, #001f3f 0%, #003366 100%); border:none; padding:1rem 1.25rem;">
-                    <h5 class="modal-title text-white" style="font-size:1.1rem; font-weight:600; letter-spacing:0.3px;">
-                        <i class="bi bi-pencil-square" style="font-size:1rem;"></i> Editar Usuario
-                    </h5>
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #001f3f 0%, #003366 100%);">
+                    <h5 class="modal-title text-white"><i class="bi bi-pencil-square"></i> Editar Usuario</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" style="background:#f8f9fa;">
+                <div class="modal-body">
                     <form id="formEditarUsuario">
-                        <input type="hidden" id="editRowIndex" name="rowIndex">
+                        <input type="hidden" id="editRowIndex">
+
+                        <!-- Sección: Información del Paciente -->
                         <div class="seccion-form">
                             <h6 class="seccion-titulo">
-                                <i class="bi bi-person-badge" style="font-size:0.9rem;"></i> Información del Paciente
+                                <i class="bi bi-person-badge"></i> Información del Paciente
                             </h6>
                             <div id="seccionPaciente" class="row g-2"></div>
                         </div>
-                        <div style="height:1px; background:linear-gradient(to right, transparent, #cbd5e0 20%, #cbd5e0 80%, transparent); margin:0.8rem 0;"></div>
+
+                        <!-- Sección: Seguimiento y Estado -->
                         <div class="seccion-form">
                             <h6 class="seccion-titulo">
-                                <i class="bi bi-clipboard-check" style="font-size:0.9rem;"></i> Seguimiento y Estado
+                                <i class="bi bi-clipboard-check"></i> Seguimiento y Estado
                             </h6>
                             <div id="seccionSeguimiento" class="row g-2"></div>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer" style="background:#f8f9fa; border-top:1px solid #dee2e6; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.5rem;">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem;">
-                        <i class="bi bi-x-circle"></i> Cancelar
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <select class="form-select" id="selectTipoCierre" style="max-width: 300px;">
+                        <option value="">-- Tipo de Cierre --</option>
+                        <option>Cierre Caso Auditor</option>
+                        <option>Cierre Caso Desertor</option>
+                        <option>Cierre Caso Acta</option>
+                        <option>Cierre Caso Finalizó Ciclo</option>
+                    </select>
+                    <button type="button" class="btn btn-warning" id="btnCerrarCaso">
+                        <i class="bi bi-archive"></i> Cerrar Caso
                     </button>
-                    <div style="flex-grow:1; max-width:350px;">
-                        <label class="form-label" style="font-size:0.75rem; margin-bottom:0.25rem; font-weight:600; color:#d9534f;">
-                            * Tipo de Cierre (requerido para cerrar caso)
-                        </label>
-                        <select class="form-select form-select-sm" id="selectTipoCierre" style="font-size:0.8rem; border:1px solid #ced4da;">
-                            <option value="">-- Seleccione motivo de cierre --</option>
-                            <option value="Cierre Caso Auditor">Cierre Caso Auditor</option>
-                            <option value="Cierre Caso Desertor">Cierre Caso Desertor</option>
-                            <option value="Cierre Caso Acta">Cierre Caso Acta</option>
-                            <option value="Cierre Caso Finalizó Ciclo">Cierre Caso Finalizó Ciclo</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-warning btn-sm" id="btnCerrarCaso" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem;">
-                        <i class="bi bi-folder-x"></i> Cerrar Caso
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" id="btnActualizarUsuario" style="padding:0.4rem 1rem; font-weight:500; font-size:0.85rem; background:#001f3f; border:none;">
+                    <button type="button" class="btn btn-primary" id="btnActualizarUsuario">
                         <i class="bi bi-check-circle"></i> Actualizar
                     </button>
                 </div>
@@ -1271,11 +841,1118 @@ tr:hover {
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-content">
             <div class="spinner"></div>
-            <p id="loadingMessage" style="margin: 0; color: #001f3f; font-weight: 600; font-size: 16px;">Cargando...</p>
+            <p id="loadingMessage" style="margin: 0; color: #001f3f; font-weight: 600;">Cargando...</p>
         </div>
     </div>
 
+    <!-- ========== SCRIPTS ========== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="code-microsoft.js"></script>
+    <script>
+        // ====================================
+        // CONFIGURACIÓN GLOBAL
+        // ====================================
+        const CONFIG = {
+            clientId: 'fd5c8d86-882e-4942-9b59-4fec3bc0d267',
+            redirectUri: window.location.origin + window.location.pathname
+        };
+
+        let accessToken = null;
+        let excelFileId = null;
+        let userEmail = null;
+
+        const STATE = {
+            hoja: 'Positiva',
+            headers: [],
+            rows: [],
+            filtros: {
+                auditor: '',
+                semaforo: '',
+                inasistencias: '',
+                busqueda: ''
+            }
+        };
+
+        // Campos que van en cada sección
+        const camposPaciente = [
+            'SINIESTRO', '# MATRICULA', 'CEDULA', 'NOMBRE', 
+            'FECHA DE ASIGNACION A LA IPS', 'GENERO', 'MAYOR A 56 AÑOS SI O NO',
+            'CLASIFICACION SEVERIDAD', 'CITA INICIAL'
+        ];
+
+        const camposSeguimiento = [
+            'JUNTA MEDICA', 'FISIATRA', 'VALORACION OCUPACIONAL', 'ALTA INMEDIATA',
+            'ESTADO DE LA MATRICULA', 'FECHA CIERRE', 'NUM AGENDAMIENTOS y CITAS FORMALES INICIALES',
+            'OBSERVACION', 'SEGUIMIENTO DE IMAGENES/NOVEDAD FUERA DE LOS TIEMPOR', 'AUDITOR',
+            'OBSERVACION FACTURACION', 'Fecha Último Seguimiento', 'Hoy', 'Días sin seguimiento'
+        ];
+
+        const camposCitas = [
+            'JUNTA MEDICA', 'FISIATRA', 'VALORACION OCUPACIONAL', 'ALTA INMEDIATA', 'CITA INICIAL'
+        ];
+
+        const camposInasistencia = [
+            'INASISTENCIA JUNTA MEDICA', 'INASISTENCIA FISIATRA', 
+            'INASISTENCIA VALORACION OCUPACIONAL', 'INASISTENCIA ALTA INMEDIATA',
+            'INASISTENCIA CITA INICIAL'
+        ];
+
+        // ====================================
+        // AUTENTICACIÓN MICROSOFT
+        // ====================================
+        function iniciarSesionMicrosoft() {
+            const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
+                `client_id=${CONFIG.clientId}` +
+                `&response_type=token` +
+                `&redirect_uri=${encodeURIComponent(CONFIG.redirectUri)}` +
+                `&scope=https://graph.microsoft.com/Files.ReadWrite.All https://graph.microsoft.com/User.Read` +
+                `&response_mode=fragment`;
+            
+            window.location.href = authUrl;
+        }
+
+        function procesarToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const token = params.get('access_token');
+
+            if (token) {
+                accessToken = token;
+                window.history.replaceState({}, document.title, window.location.pathname);
+                obtenerInfoUsuario();
+            }
+        }
+
+        async function obtenerInfoUsuario() {
+            try {
+                showLoading('Obteniendo información del usuario...');
+                const response = await fetch('https://graph.microsoft.com/v1.0/me', {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                if (!response.ok) throw new Error('Error al obtener información del usuario');
+
+                const userData = await response.json();
+                userEmail = userData.mail || userData.userPrincipalName;
+                
+                document.getElementById('userEmail').textContent = userEmail;
+                
+                await buscarArchivoExcel();
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Error al obtener información del usuario');
+                hideLoading();
+            }
+        }
+
+        async function buscarArchivoExcel() {
+            try {
+                showLoading('Buscando archivo Excel...');
+                
+                // Intentar múltiples búsquedas
+                let excelFiles = [];
+                
+                // Búsqueda 1: Por nombre completo
+                console.log('🔍 Búsqueda 1: Seguimiento_ARL');
+                let response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/root/search(q='Seguimiento_ARL')`,
+                    { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                );
+
+                if (response.ok) {
+                    let data = await response.json();
+                    console.log('📁 Archivos encontrados (búsqueda 1):', data.value.length);
+                    excelFiles = data.value.filter(item => 
+                        item.file && 
+                        item.name.endsWith('.xlsx') &&
+                        (item.name.includes('Seguimiento') || item.name.includes('ARL'))
+                    );
+                }
+
+                // Si no encontró nada, intentar búsqueda más amplia
+                if (excelFiles.length === 0) {
+                    console.log('🔍 Búsqueda 2: ARL');
+                    response = await fetch(
+                        `https://graph.microsoft.com/v1.0/me/drive/root/search(q='ARL')`,
+                        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                    );
+
+                    if (response.ok) {
+                        let data = await response.json();
+                        console.log('📁 Archivos encontrados (búsqueda 2):', data.value.length);
+                        excelFiles = data.value.filter(item => 
+                            item.file && 
+                            item.name.endsWith('.xlsx')
+                        );
+                    }
+                }
+
+                // Si aún no encuentra, listar todos los archivos Excel
+                if (excelFiles.length === 0) {
+                    console.log('🔍 Búsqueda 3: Todos los .xlsx');
+                    response = await fetch(
+                        `https://graph.microsoft.com/v1.0/me/drive/root/search(q='.xlsx')`,
+                        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                    );
+
+                    if (response.ok) {
+                        let data = await response.json();
+                        console.log('📁 Archivos Excel encontrados (búsqueda 3):', data.value.length);
+                        data.value.forEach(item => {
+                            if (item.file && item.name.endsWith('.xlsx')) {
+                                console.log('  📄', item.name);
+                            }
+                        });
+                        excelFiles = data.value.filter(item => 
+                            item.file && 
+                            item.name.endsWith('.xlsx')
+                        );
+                    }
+                }
+
+                if (excelFiles.length === 0) {
+                    throw new Error('No se encontró ningún archivo Excel en OneDrive. Por favor, sube el archivo "Seguimiento_ARL.xlsx" a tu OneDrive.');
+                }
+
+                // Si hay múltiples archivos, mostrarlos en consola
+                if (excelFiles.length > 1) {
+                    console.log('⚠️ Se encontraron múltiples archivos Excel:');
+                    excelFiles.forEach((file, index) => {
+                        console.log(`  ${index + 1}. ${file.name} (ID: ${file.id})`);
+                    });
+                }
+
+                // Tomar el primer archivo que coincida mejor
+                excelFileId = excelFiles[0].id;
+                const nombreArchivo = excelFiles[0].name;
+                console.log('✅ Usando archivo:', nombreArchivo);
+                console.log('📋 ID del archivo:', excelFileId);
+                
+                showMessage('success', `Archivo encontrado: ${nombreArchivo}`);
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                await cargarHoja('Positiva');
+            } catch (error) {
+                console.error('❌ Error completo:', error);
+                showMessage('error', 'Error: ' + error.message);
+                hideLoading();
+            }
+        }
+
+        function cerrarSesion() {
+            accessToken = null;
+            excelFileId = null;
+            userEmail = null;
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        }
+
+        // ====================================
+        // CARGAR DATOS DE EXCEL
+        // ====================================
+        async function cargarHoja(nombreHoja) {
+            try {
+                showLoading(`Cargando datos de ${nombreHoja}...`);
+                STATE.hoja = nombreHoja;
+                document.getElementById('hojaActual').textContent = nombreHoja;
+
+                // Actualizar sidebar
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.textContent.trim() === nombreHoja) {
+                        item.classList.add('active');
+                    }
+                });
+
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(nombreHoja)}/usedRange`,
+                    { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                );
+
+                if (!response.ok) throw new Error('Error al leer la hoja');
+
+                const data = await response.json();
+                const valores = data.values;
+
+                if (!valores || valores.length === 0) {
+                    STATE.headers = [];
+                    STATE.rows = [];
+                    renderizarTabla();
+                    hideLoading();
+                    return;
+                }
+
+                STATE.headers = valores[0];
+                STATE.rows = valores.slice(1).map((row, index) => ({
+                    rowIndex: index + 2,
+                    data: row
+                }));
+
+                console.log(`✅ Cargados ${STATE.rows.length} registros de ${nombreHoja}`);
+                
+                cargarAuditores();
+                aplicarFiltros();
+                hideLoading();
+            } catch (error) {
+                console.error('Error al cargar hoja:', error);
+                showMessage('error', 'Error al cargar datos: ' + error.message);
+                hideLoading();
+            }
+        }
+
+        function cargarAuditores() {
+            const selectAuditor = document.getElementById('filtroAuditor');
+            const indexAuditor = STATE.headers.findIndex(h => 
+                h && h.toString().toUpperCase().includes('AUDITOR')
+            );
+
+            if (indexAuditor === -1) return;
+
+            const auditoresUnicos = new Set();
+            STATE.rows.forEach(row => {
+                const auditor = row.data[indexAuditor];
+                if (auditor && auditor.toString().trim()) {
+                    auditoresUnicos.add(auditor.toString().trim());
+                }
+            });
+
+            selectAuditor.innerHTML = '<option value="">Todos los auditores</option>';
+            Array.from(auditoresUnicos).sort().forEach(auditor => {
+                selectAuditor.innerHTML += `<option value="${auditor}">${auditor}</option>`;
+            });
+        }
+
+        // ====================================
+        // FILTROS Y RENDERIZADO
+        // ====================================
+        function aplicarFiltros() {
+            STATE.filtros = {
+                auditor: document.getElementById('filtroAuditor').value,
+                semaforo: document.getElementById('filtroSemaforo').value,
+                inasistencias: document.getElementById('filtroInasistencias').value,
+                busqueda: document.getElementById('filtroBusqueda').value.toLowerCase()
+            };
+
+            renderizarTabla();
+        }
+
+        function renderizarTabla() {
+            const thead = document.querySelector('#tablaUsuarios thead tr');
+            const tbody = document.querySelector('#tablaUsuarios tbody');
+
+            // Renderizar headers
+            thead.innerHTML = STATE.headers.map(h => `<th>${h || ''}</th>`).join('') + '<th>Acciones</th>';
+
+            // Filtrar rows
+            let rowsFiltrados = STATE.rows.filter(row => {
+                // Filtro auditor
+                if (STATE.filtros.auditor) {
+                    const indexAuditor = STATE.headers.findIndex(h => 
+                        h && h.toString().toUpperCase().includes('AUDITOR')
+                    );
+                    if (indexAuditor !== -1) {
+                        const auditor = row.data[indexAuditor];
+                        if (!auditor || auditor.toString().trim() !== STATE.filtros.auditor) {
+                            return false;
+                        }
+                    }
+                }
+
+                // Filtro semáforo
+                if (STATE.filtros.semaforo) {
+                    const indexDias = STATE.headers.findIndex(h => 
+                        h && h.toString().toUpperCase().includes('DÍAS SIN SEGUIMIENTO')
+                    );
+                    if (indexDias !== -1) {
+                        const dias = parseInt(row.data[indexDias]) || 0;
+                        const color = calcularColorSemaforo(dias);
+                        if (color !== STATE.filtros.semaforo) {
+                            return false;
+                        }
+                    }
+                }
+
+                // Filtro inasistencias
+                if (STATE.filtros.inasistencias) {
+                    const tieneInasistencia = camposInasistencia.some(campo => {
+                        const index = STATE.headers.findIndex(h => 
+                            h && h.toString().toUpperCase() === campo
+                        );
+                        if (index !== -1) {
+                            const valor = row.data[index];
+                            return valor === 'SI' || valor === 'Sí' || valor === true;
+                        }
+                        return false;
+                    });
+                    
+                    if (STATE.filtros.inasistencias === 'si' && !tieneInasistencia) return false;
+                    if (STATE.filtros.inasistencias === 'no' && tieneInasistencia) return false;
+                }
+
+                // Filtro búsqueda
+                if (STATE.filtros.busqueda) {
+                    const textoRow = row.data.join(' ').toLowerCase();
+                    if (!textoRow.includes(STATE.filtros.busqueda)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Renderizar tbody
+            tbody.innerHTML = rowsFiltrados.map(row => {
+                const indexDias = STATE.headers.findIndex(h => 
+                    h && h.toString().toUpperCase().includes('DÍAS SIN SEGUIMIENTO')
+                );
+                
+                let tdDiasSeguimiento = '';
+                if (indexDias !== -1) {
+                    const dias = parseInt(row.data[indexDias]) || 0;
+                    const color = calcularColorSemaforo(dias);
+                    tdDiasSeguimiento = `<td><span class="semaforo-badge semaforo-${color}">${dias} días</span></td>`;
+                }
+
+                const tds = STATE.headers.map((h, i) => {
+                    if (i === indexDias) {
+                        return tdDiasSeguimiento;
+                    }
+                    const valor = row.data[i] !== undefined ? row.data[i] : '';
+                    return `<td>${valor}</td>`;
+                }).join('');
+
+                return `<tr>
+                    ${tds}
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-edit" onclick="abrirModalEditar(${row.rowIndex})">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            // Actualizar estadísticas
+            actualizarEstadisticas(rowsFiltrados);
+            
+            document.getElementById('contadorRegistros').textContent = `${rowsFiltrados.length} registros`;
+        }
+
+        function calcularColorSemaforo(dias) {
+            if (dias <= 7) return 'verde';
+            if (dias <= 15) return 'naranja';
+            return 'rojo';
+        }
+
+        function actualizarEstadisticas(rows) {
+            const indexDias = STATE.headers.findIndex(h => 
+                h && h.toString().toUpperCase().includes('DÍAS SIN SEGUIMIENTO')
+            );
+
+            let verde = 0, naranja = 0, rojo = 0;
+
+            rows.forEach(row => {
+                if (indexDias !== -1) {
+                    const dias = parseInt(row.data[indexDias]) || 0;
+                    const color = calcularColorSemaforo(dias);
+                    if (color === 'verde') verde++;
+                    else if (color === 'naranja') naranja++;
+                    else rojo++;
+                }
+            });
+
+            document.getElementById('statTotal').textContent = rows.length;
+            document.getElementById('statVerde').textContent = verde;
+            document.getElementById('statNaranja').textContent = naranja;
+            document.getElementById('statRojo').textContent = rojo;
+        }
+
+        // ====================================
+        // MODAL AGREGAR
+        // ====================================
+        function abrirModalAgregar() {
+            const modal = new bootstrap.Modal(document.getElementById('modalAgregarUsuario'));
+            
+            const seccionPaciente = document.getElementById('seccionAgregarPaciente');
+            const seccionSeguimiento = document.getElementById('seccionAgregarSeguimiento');
+            
+            seccionPaciente.innerHTML = '';
+            seccionSeguimiento.innerHTML = '';
+
+            STATE.headers.forEach((header, index) => {
+                if (!header) return;
+                
+                const headerUpper = header.toString().toUpperCase().trim();
+                const campo = crearCampoFormularioAgregar(header, '', index);
+                
+                if (camposPaciente.some(c => c.toUpperCase() === headerUpper)) {
+                    seccionPaciente.appendChild(campo);
+                } else if (camposSeguimiento.some(c => c.toUpperCase() === headerUpper)) {
+                    seccionSeguimiento.appendChild(campo);
+                }
+            });
+
+            modal.show();
+        }
+
+        function crearCampoFormularioAgregar(header, valor, index) {
+            const headerUpper = header.toString().toUpperCase().trim();
+            const headerTrim = header.toString().trim();
+
+            const div = document.createElement('div');
+            
+            let colSize = 'col-form';
+            if (headerUpper === 'NOMBRE' || headerUpper === 'CLASIFICACION SEVERIDAD') {
+                colSize = 'col-form-wide';
+            } else if (headerUpper.includes('OBSERVACION')) {
+                colSize = 'col-form-full';
+            }
+            
+            div.className = `${colSize} mb-2`;
+
+            let inputHTML = '';
+            const labelStyle = 'font-weight:600; color:#2c3e50; font-size:0.7rem; margin-bottom:0.15rem; text-transform:uppercase; letter-spacing:0.3px;';
+            const inputStyle = 'border-radius:4px; border:1px solid #cbd5e0; padding:0.25rem 0.4rem; font-size:0.75rem; height:28px;';
+
+            if (camposCitas.includes(headerUpper)) {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select agregar-cita-select" data-header="${headerTrim}" data-index="${index}" onchange="toggleCitaInputAgregar(this)" style="${inputStyle}">
+                        <option value="">-- Vacío --</option>
+                        <option value="sincita">Sin asignación de cita</option>
+                        <option value="fecha">Asignar fecha</option>
+                    </select>
+                    <input type="date" class="form-control mt-1 agregar-cita-fecha" data-header="${headerTrim}" data-index="${index}" style="display:none; ${inputStyle}" disabled>
+                `;
+            } else if (camposInasistencia.includes(headerUpper)) {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <div class="checkbox-inasistencia">
+                        <input type="checkbox" id="check_agregar_${index}" data-header="${headerTrim}" data-index="${index}">
+                        <label for="check_agregar_${index}">Inasistencia</label>
+                    </div>
+                `;
+            } else if (headerUpper === 'CLASIFICACION SEVERIDAD') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option>AT Caso Muy Leve</option>
+                        <option>AT Caso Leve</option>
+                        <option>AT Caso Moderado</option>
+                        <option>AT Caso Grave</option>
+                        <option>AT Caso Muy Grave</option>
+                        <option>AT Caso Severo</option>
+                        <option>Enfermedad Laboral</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'ESTADO DE LA MATRICULA') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option>ACTIVA</option>
+                        <option>INACTIVA</option>
+                        <option>CERRADA</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'AUDITOR') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option>MELISA SANCHEZ</option>
+                        <option>ANGELA LOPEZ</option>
+                        <option>ADRIANA VILLOTA</option>
+                        <option>YULAINE VERGARA</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'GENERO') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+                        <option>Otro</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'MAYOR A 56 AÑOS SI O NO') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option>SI</option>
+                        <option>NO</option>
+                    </select>
+                `;
+            } else if (headerTrim.toLowerCase().includes('fecha')) {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <input type="date" class="form-control" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                `;
+            } else if (headerUpper.includes('OBSERVACION')) {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <textarea class="form-control" data-header="${headerTrim}" data-index="${index}" rows="2" style="border-radius:4px; border:1px solid #cbd5e0; padding:0.5rem; font-size:0.85rem;"></textarea>
+                `;
+            } else if (headerUpper === 'HOY' || headerUpper === 'DÍAS SIN SEGUIMIENTO') {
+                // Campos calculados automáticamente, no mostrar en agregar
+                return div;
+            } else {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <input type="text" class="form-control" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                `;
+            }
+
+            div.innerHTML = inputHTML;
+            return div;
+        }
+
+        function toggleCitaInputAgregar(select) {
+            const index = select.dataset.index;
+            const inputFecha = document.querySelector(`.agregar-cita-fecha[data-index="${index}"]`);
+            
+            if (select.value === 'fecha') {
+                inputFecha.style.display = 'block';
+                inputFecha.disabled = false;
+            } else {
+                inputFecha.style.display = 'none';
+                inputFecha.disabled = true;
+                inputFecha.value = '';
+            }
+        }
+
+        // ====================================
+        // MODAL EDITAR
+        // ====================================
+        function abrirModalEditar(rowIndex) {
+            const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+            document.getElementById('editRowIndex').value = rowIndex;
+
+            const registro = STATE.rows.find(r => r.rowIndex === rowIndex);
+            if (!registro) {
+                showMessage('error', 'No se encontró el registro');
+                return;
+            }
+
+            const seccionPaciente = document.getElementById('seccionPaciente');
+            const seccionSeguimiento = document.getElementById('seccionSeguimiento');
+            
+            seccionPaciente.innerHTML = '';
+            seccionSeguimiento.innerHTML = '';
+
+            STATE.headers.forEach((header, index) => {
+                if (!header) return;
+                
+                const valor = registro.data[index];
+                const headerUpper = header.toString().toUpperCase().trim();
+                const campo = crearCampoFormulario(header, valor, index);
+                
+                if (camposPaciente.some(c => c.toUpperCase() === headerUpper)) {
+                    seccionPaciente.appendChild(campo);
+                } else if (camposSeguimiento.some(c => c.toUpperCase() === headerUpper)) {
+                    seccionSeguimiento.appendChild(campo);
+                }
+            });
+
+            modal.show();
+        }
+
+        function crearCampoFormulario(header, valor, index) {
+            const headerUpper = header.toString().toUpperCase().trim();
+            const headerTrim = header.toString().trim();
+            
+            valor = valor !== undefined && valor !== null ? valor : '';
+
+            const div = document.createElement('div');
+            
+            let colSize = 'col-form';
+            if (headerUpper === 'NOMBRE' || headerUpper === 'CLASIFICACION SEVERIDAD') {
+                colSize = 'col-form-wide';
+            } else if (headerUpper.includes('OBSERVACION') || headerUpper === 'ESTADO DE LA MATRICULA') {
+                colSize = 'col-form-full';
+            }
+            
+            div.className = `${colSize} mb-2`;
+
+            let inputHTML = '';
+            const labelStyle = 'font-weight:600; color:#2c3e50; font-size:0.7rem; margin-bottom:0.15rem; text-transform:uppercase; letter-spacing:0.3px;';
+            const inputStyle = 'border-radius:4px; border:1px solid #cbd5e0; padding:0.25rem 0.4rem; font-size:0.75rem; height:28px;';
+
+            if (camposCitas.includes(headerUpper)) {
+                const valorTrim = String(valor).trim();
+                const esVacio = !valorTrim || valorTrim === '';
+                const esSinCita = valorTrim === 'Sin asignación de cita';
+                const esFecha = !esVacio && !esSinCita;
+
+                let fechaConvertida = '';
+                if (esFecha) {
+                    if (valorTrim.includes('/')) {
+                        const partes = valorTrim.split('/');
+                        if (partes.length === 3) {
+                            fechaConvertida = `${partes[2]}-${partes[1].padStart(2,'0')}-${partes[0].padStart(2,'0')}`;
+                        }
+                    } else if (/^\d{4}-\d{2}-\d{2}$/.test(valorTrim)) {
+                        fechaConvertida = valorTrim;
+                    }
+                }
+
+                // Buscar columna de inasistencia
+                let columnaInasistencia = null;
+                let valorInasistencia = '';
+                
+                STATE.headers.forEach((h, idx) => {
+                    const hUpper = String(h).trim().toUpperCase();
+                    if (hUpper === `INASISTENCIA ${headerUpper}`) {
+                        columnaInasistencia = h;
+                        const registroRow = STATE.rows.find(r => r.rowIndex === document.getElementById('editRowIndex')?.value);
+                        if (registroRow) {
+                            valorInasistencia = registroRow.data[idx] || '';
+                        }
+                    }
+                });
+
+                const tieneInasistencia = (valorInasistencia === 'SI' || valorInasistencia === 'Sí' || valorInasistencia === true);
+
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <div style="display:flex; gap:0.5rem; align-items:flex-start;">
+                        <div style="flex-grow:1;">
+                            <select class="form-select editar-cita-select" data-header="${headerTrim}" data-index="${index}" onchange="toggleCitaInput(this)" style="${inputStyle}">
+                                <option value="" ${esVacio ? 'selected' : ''}>-- Vacío --</option>
+                                <option value="sincita" ${esSinCita ? 'selected' : ''}>Sin asignación de cita</option>
+                                <option value="fecha" ${esFecha ? 'selected' : ''}>Asignar fecha</option>
+                            </select>
+                            <input type="date" class="form-control mt-1 editar-cita-fecha" data-header="${headerTrim}" data-index="${index}" value="${fechaConvertida}" 
+                                   style="display: ${esFecha ? 'block' : 'none'}; ${inputStyle}" ${esFecha ? '' : 'disabled'}>
+                        </div>
+                        ${columnaInasistencia ? `
+                        <div class="checkbox-inasistencia" style="min-width:120px;">
+                            <input type="checkbox" id="check_inasist_${index}" data-header="INASISTENCIA ${headerUpper}" ${tieneInasistencia ? 'checked' : ''}>
+                            <label for="check_inasist_${index}" style="font-size:0.7rem;">Inasistencia</label>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else if (camposInasistencia.includes(headerUpper)) {
+                // Ya se maneja arriba con las citas
+                return div;
+            } else if (headerUpper === 'CLASIFICACION SEVERIDAD') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option ${valor==='AT Caso Muy Leve'?'selected':''}>AT Caso Muy Leve</option>
+                        <option ${valor==='AT Caso Leve'?'selected':''}>AT Caso Leve</option>
+                        <option ${valor==='AT Caso Moderado'?'selected':''}>AT Caso Moderado</option>
+                        <option ${valor==='AT Caso Grave'?'selected':''}>AT Caso Grave</option>
+                        <option ${valor==='AT Caso Muy Grave'?'selected':''}>AT Caso Muy Grave</option>
+                        <option ${valor==='AT Caso Severo'?'selected':''}>AT Caso Severo</option>
+                        <option ${valor==='Enfermedad Laboral'?'selected':''}>Enfermedad Laboral</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'ESTADO DE LA MATRICULA') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option ${valor==='ACTIVA'?'selected':''}>ACTIVA</option>
+                        <option ${valor==='INACTIVA'?'selected':''}>INACTIVA</option>
+                        <option ${valor==='CERRADA'?'selected':''}>CERRADA</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'AUDITOR') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option ${valor==='MELISA SANCHEZ'?'selected':''}>MELISA SANCHEZ</option>
+                        <option ${valor==='ANGELA LOPEZ'?'selected':''}>ANGELA LOPEZ</option>
+                        <option ${valor==='ADRIANA VILLOTA'?'selected':''}>ADRIANA VILLOTA</option>
+                        <option ${valor==='YULAINE VERGARA'?'selected':''}>YULAINE VERGARA</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'GENERO') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option ${valor==='Masculino'?'selected':''}>Masculino</option>
+                        <option ${valor==='Femenino'?'selected':''}>Femenino</option>
+                        <option ${valor==='Otro'?'selected':''}>Otro</option>
+                    </select>
+                `;
+            } else if (headerUpper === 'MAYOR A 56 AÑOS SI O NO') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <select class="form-select" data-header="${headerTrim}" data-index="${index}" style="${inputStyle}">
+                        <option value="">-- Seleccione --</option>
+                        <option ${valor==='SI'?'selected':''}>SI</option>
+                        <option ${valor==='NO'?'selected':''}>NO</option>
+                    </select>
+                `;
+            } else if (headerTrim.toLowerCase().includes('fecha')) {
+                let valorFecha = '';
+                if (valor instanceof Date) {
+                    valorFecha = valor.toISOString().split('T')[0];
+                } else if (typeof valor === 'string' && valor) {
+                    if (valor.includes('/')) {
+                        const partes = valor.split('/');
+                        if (partes.length === 3) {
+                            valorFecha = `${partes[2]}-${partes[1].padStart(2,'0')}-${partes[0].padStart(2,'0')}`;
+                        }
+                    } else {
+                        valorFecha = valor;
+                    }
+                }
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <input type="date" class="form-control" data-header="${headerTrim}" data-index="${index}" value="${valorFecha}" style="${inputStyle}">
+                `;
+            } else if (headerUpper.includes('OBSERVACION')) {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <textarea class="form-control" data-header="${headerTrim}" data-index="${index}" rows="2" style="border-radius:4px; border:1px solid #cbd5e0; padding:0.5rem; font-size:0.85rem;">${valor || ''}</textarea>
+                `;
+            } else if (headerUpper === 'HOY' || headerUpper === 'DÍAS SIN SEGUIMIENTO') {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <input type="text" class="form-control" data-header="${headerTrim}" data-index="${index}" value="${valor || ''}" style="${inputStyle}" readonly disabled>
+                `;
+            } else {
+                inputHTML = `
+                    <label class="form-label" style="${labelStyle}">${header}</label>
+                    <input type="text" class="form-control" data-header="${headerTrim}" data-index="${index}" value="${valor || ''}" style="${inputStyle}">
+                `;
+            }
+
+            div.innerHTML = inputHTML;
+            return div;
+        }
+
+        function toggleCitaInput(select) {
+            const index = select.dataset.index;
+            const inputFecha = document.querySelector(`.editar-cita-fecha[data-index="${index}"]`);
+            
+            if (select.value === 'fecha') {
+                inputFecha.style.display = 'block';
+                inputFecha.disabled = false;
+            } else {
+                inputFecha.style.display = 'none';
+                inputFecha.disabled = true;
+                inputFecha.value = '';
+            }
+        }
+
+        // ====================================
+        // GUARDAR Y ACTUALIZAR
+        // ====================================
+        document.getElementById('btnGuardarUsuario')?.addEventListener('click', async function() {
+            try {
+                showLoading('Guardando usuario...');
+                
+                const nuevaFila = new Array(STATE.headers.length).fill('');
+                
+                // Recopilar valores de inputs normales
+                document.querySelectorAll('#modalAgregarUsuario input, #modalAgregarUsuario select, #modalAgregarUsuario textarea').forEach(input => {
+                    const index = parseInt(input.dataset.index);
+                    if (index >= 0 && !input.classList.contains('agregar-cita-fecha') && !input.classList.contains('agregar-cita-select')) {
+                        if (input.type === 'checkbox') {
+                            nuevaFila[index] = input.checked ? 'SI' : '';
+                        } else {
+                            nuevaFila[index] = input.value || '';
+                        }
+                    }
+                });
+
+                // Procesar campos de citas
+                document.querySelectorAll('.agregar-cita-select').forEach(select => {
+                    const index = parseInt(select.dataset.index);
+                    const inputFecha = document.querySelector(`.agregar-cita-fecha[data-index="${index}"]`);
+                    
+                    if (select.value === 'sincita') {
+                        nuevaFila[index] = 'Sin asignación de cita';
+                    } else if (select.value === 'fecha' && inputFecha && inputFecha.value) {
+                        nuevaFila[index] = inputFecha.value;
+                    } else {
+                        nuevaFila[index] = '';
+                    }
+                });
+
+                // Calcular "Hoy" y "Días sin seguimiento"
+                const indexHoy = STATE.headers.findIndex(h => h && h.toString().toUpperCase().trim() === 'HOY');
+                const indexDiasSin = STATE.headers.findIndex(h => h && h.toString().toUpperCase().includes('DÍAS SIN SEGUIMIENTO'));
+                const indexUltimoSeg = STATE.headers.findIndex(h => h && h.toString().toUpperCase().includes('FECHA ÚLTIMO SEGUIMIENTO'));
+
+                if (indexHoy !== -1) {
+                    nuevaFila[indexHoy] = new Date().toISOString().split('T')[0];
+                }
+
+                if (indexDiasSin !== -1 && indexUltimoSeg !== -1) {
+                    const fechaUltimo = nuevaFila[indexUltimoSeg];
+                    if (fechaUltimo) {
+                        const hoy = new Date();
+                        const ultimo = new Date(fechaUltimo);
+                        const diffTime = Math.abs(hoy - ultimo);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        nuevaFila[indexDiasSin] = diffDays;
+                    } else {
+                        nuevaFila[indexDiasSin] = 0;
+                    }
+                }
+
+                // Agregar fila al Excel
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(STATE.hoja)}/range(address='A${STATE.rows.length + 2}:${getColumnLetter(STATE.headers.length)}${STATE.rows.length + 2}')`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            values: [nuevaFila]
+                        })
+                    }
+                );
+
+                if (!response.ok) throw new Error('Error al agregar usuario');
+
+                showMessage('success', 'Usuario agregado exitosamente');
+                bootstrap.Modal.getInstance(document.getElementById('modalAgregarUsuario')).hide();
+                await cargarHoja(STATE.hoja);
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Error al agregar usuario: ' + error.message);
+                hideLoading();
+            }
+        });
+
+        document.getElementById('btnActualizarUsuario')?.addEventListener('click', async function() {
+            try {
+                showLoading('Actualizando usuario...');
+                
+                const rowIndex = parseInt(document.getElementById('editRowIndex').value);
+                const filaActualizada = new Array(STATE.headers.length).fill('');
+                
+                // Recopilar valores
+                document.querySelectorAll('#modalEditarUsuario input, #modalEditarUsuario select, #modalEditarUsuario textarea').forEach(input => {
+                    const index = parseInt(input.dataset.index);
+                    if (index >= 0 && !input.classList.contains('editar-cita-fecha') && !input.classList.contains('editar-cita-select')) {
+                        if (input.type === 'checkbox') {
+                            filaActualizada[index] = input.checked ? 'SI' : '';
+                        } else if (!input.disabled) {
+                            filaActualizada[index] = input.value || '';
+                        }
+                    }
+                });
+
+                // Procesar campos de citas
+                document.querySelectorAll('.editar-cita-select').forEach(select => {
+                    const index = parseInt(select.dataset.index);
+                    const inputFecha = document.querySelector(`.editar-cita-fecha[data-index="${index}"]`);
+                    
+                    if (select.value === 'sincita') {
+                        filaActualizada[index] = 'Sin asignación de cita';
+                    } else if (select.value === 'fecha' && inputFecha && inputFecha.value) {
+                        filaActualizada[index] = inputFecha.value;
+                    } else {
+                        filaActualizada[index] = '';
+                    }
+                });
+
+                // Recalcular "Hoy" y "Días sin seguimiento"
+                const indexHoy = STATE.headers.findIndex(h => h && h.toString().toUpperCase().trim() === 'HOY');
+                const indexDiasSin = STATE.headers.findIndex(h => h && h.toString().toUpperCase().includes('DÍAS SIN SEGUIMIENTO'));
+                const indexUltimoSeg = STATE.headers.findIndex(h => h && h.toString().toUpperCase().includes('FECHA ÚLTIMO SEGUIMIENTO'));
+
+                if (indexHoy !== -1) {
+                    filaActualizada[indexHoy] = new Date().toISOString().split('T')[0];
+                }
+
+                if (indexDiasSin !== -1 && indexUltimoSeg !== -1) {
+                    const fechaUltimo = filaActualizada[indexUltimoSeg];
+                    if (fechaUltimo) {
+                        const hoy = new Date();
+                        const ultimo = new Date(fechaUltimo);
+                        const diffTime = Math.abs(hoy - ultimo);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        filaActualizada[indexDiasSin] = diffDays;
+                    }
+                }
+
+                // Actualizar en Excel
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(STATE.hoja)}/range(address='A${rowIndex}:${getColumnLetter(STATE.headers.length)}${rowIndex}')`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            values: [filaActualizada]
+                        })
+                    }
+                );
+
+                if (!response.ok) throw new Error('Error al actualizar usuario');
+
+                showMessage('success', 'Usuario actualizado exitosamente');
+                bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+                await cargarHoja(STATE.hoja);
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Error al actualizar usuario: ' + error.message);
+                hideLoading();
+            }
+        });
+
+        document.getElementById('btnCerrarCaso')?.addEventListener('click', async function() {
+            const tipoCierre = document.getElementById('selectTipoCierre').value;
+            if (!tipoCierre) {
+                showMessage('error', 'Por favor seleccione un tipo de cierre');
+                return;
+            }
+
+            if (!confirm(`¿Está seguro de cerrar este caso como "${tipoCierre}"?`)) {
+                return;
+            }
+
+            try {
+                showLoading('Cerrando caso...');
+                
+                const rowIndex = parseInt(document.getElementById('editRowIndex').value);
+                const registro = STATE.rows.find(r => r.rowIndex === rowIndex);
+                
+                if (!registro) throw new Error('No se encontró el registro');
+
+                // Preparar fila para CERRADOS
+                const filaCerrados = [...registro.data];
+                filaCerrados.push(tipoCierre); // TIPO DE CIERRE
+                filaCerrados.push(STATE.hoja); // HOJA ORIGEN
+                filaCerrados.push(new Date().toISOString().split('T')[0]); // FECHA DE CIERRE
+
+                // 1. Agregar a CERRADOS
+                const responseCerrados = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/CERRADOS/range(address='A${STATE.rows.length + 2}:${getColumnLetter(filaCerrados.length)}${STATE.rows.length + 2}')`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            values: [filaCerrados]
+                        })
+                    }
+                );
+
+                if (!responseCerrados.ok) throw new Error('Error al mover a CERRADOS');
+
+                // 2. Eliminar de hoja origen (limpiar fila)
+                const filaVacia = new Array(STATE.headers.length).fill('');
+                const responseEliminar = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/drive/items/${excelFileId}/workbook/worksheets/${encodeURIComponent(STATE.hoja)}/range(address='A${rowIndex}:${getColumnLetter(STATE.headers.length)}${rowIndex}')`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            values: [filaVacia]
+                        })
+                    }
+                );
+
+                if (!responseEliminar.ok) throw new Error('Error al eliminar de origen');
+
+                showMessage('success', 'Caso cerrado exitosamente');
+                bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+                await cargarHoja(STATE.hoja);
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Error al cerrar caso: ' + error.message);
+                hideLoading();
+            }
+        });
+
+        // ====================================
+        // UTILIDADES
+        // ====================================
+        function getColumnLetter(columnNumber) {
+            let temp, letter = '';
+            while (columnNumber > 0) {
+                temp = (columnNumber - 1) % 26;
+                letter = String.fromCharCode(temp + 65) + letter;
+                columnNumber = (columnNumber - temp - 1) / 26;
+            }
+            return letter;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const btnFixed = document.getElementById('btnToggleSidebarFixed');
+            
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                btnFixed.style.display = 'block';
+            } else {
+                btnFixed.style.display = 'none';
+            }
+        }
+
+        function showLoading(message) {
+            document.getElementById('loadingMessage').textContent = message;
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        function showMessage(type, message) {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            
+            let alertContainer = document.getElementById('alertContainer');
+            if (!alertContainer) {
+                alertContainer = document.createElement('div');
+                alertContainer.id = 'alertContainer';
+                alertContainer.style.cssText = 'position:fixed; top:20px; right:20px; z-index:10000; max-width:400px;';
+                document.body.appendChild(alertContainer);
+            }
+            
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
+            alert.role = 'alert';
+            alert.style.cssText = 'margin-bottom:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 150);
+            }, 5000);
+        }
+
+        // ====================================
+        // INICIALIZACIÓN
+        // ====================================
+        window.addEventListener('load', () => {
+            procesarToken();
+        });
+    </script>
 </body>
 </html>
